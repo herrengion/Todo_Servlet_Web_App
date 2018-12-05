@@ -12,6 +12,7 @@
 </head>
 <body>
 <form action="todoUser.do" method="post">
+    <input type="hidden" name="redirect" value="login"/>
     Name: <input type="text" name="name">
     <br/><br/>
     Password: <input type="text" name="pw">

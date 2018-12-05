@@ -30,6 +30,7 @@ public class TodoUser extends HttpServlet {
     //HTTP Methods
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         String activeRedirectPath = request.getParameter("redirect");
+        System.out.println(activeRedirectPath);
         response.setContentType("text/html");
         if(activeRedirectPath.equals("login")) {
             try (PrintWriter out = response.getWriter()) {
@@ -41,8 +42,20 @@ public class TodoUser extends HttpServlet {
     }
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         //String name = request.getParameter("name");
-        loginRoutine(request, response);
-            //case "newtodo":
+        String activeRedirectPath = request.getParameter("redirect");
+        /*System.out.println(activeRedirectPath);
+        response.setContentType("text/html");
+        if(activeRedirectPath.equals("login")) {
+            try (PrintWriter out = response.getWriter()) {
+
+                out.println("<html><body><h1>" + activeRedirectPath + "</h1></body></html>");
+            }
+        }*/
+        switch (activeRedirectPath) {
+            case "login":
+            loginRoutine(request, response);
+            case "newtodo":
+        }
     }
 
     //Auxiliary Methods
@@ -93,6 +106,11 @@ public class TodoUser extends HttpServlet {
         pwList.add(activePassWord);
         todoList.add(activeUserTodoList);
     }
+
+    /*private TodoEntry newTodo(String todoContent){
+        TodoEntry todoEntry = new TodoEntry(activeUserName, ac, )
+        return todoEntry;
+    }*/
 
     //Public get/set routines
     public String getActiveUserName(){return activeUserName;}
