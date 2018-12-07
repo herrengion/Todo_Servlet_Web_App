@@ -32,15 +32,45 @@ public class TodoEntry /*extends HttpServlet*/ {
     private boolean completed = false;
 
     //Constructor
-    public TodoEntry(String activeUserName, int currentID, String todoContent){
-        id = currentID;
-        title = todoContent;
+    public TodoEntry(int id, String title, String category, LocalDate dueDate, boolean important){
+        this.id = id;
+        this.title = title;
+        this.category = category;
+        this.dueDate = dueDate;
+        this.important = important;
+        this.completed = false;
     }
-    //Methods
+    //Get Methods
     public int getId(){
         return id;
     }
     public String getTitle(){
         return title;
+    }
+    public String getCategory(){return category;}
+    public LocalDate getDueDate(){return dueDate;}
+    public boolean isCompleted() {return completed;}
+    public boolean isImportant() {return important;}
+
+    //Set Methods
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    public void setCompleted(boolean completed) {
+        this.completed = completed;
+    }
+
+    public void setDueDate(LocalDate dueDate) {
+        this.dueDate = dueDate;
+    }
+
+    public void setImportant(boolean important) {
+        this.important = important;
     }
 }
