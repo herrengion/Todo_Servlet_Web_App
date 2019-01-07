@@ -7,14 +7,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.LinkedList;
 
 @WebServlet("/todoFSM.do")
@@ -33,23 +28,9 @@ public class TodoServlet extends HttpServlet {
     //Users
     private ArrayList<TodoUser> todoUserList = new ArrayList<>();
 
-    //Todos
-    //private String activeTodoContent = null;
 
     //HTTP Methods
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-        /*String todoId = request.getParameter("todoID");
-        int todoIdIntZeroed = Integer.parseInt(todoId)-1;
-        String activeRedirectPath = request.getParameter("redirect");
-        System.out.println(activeRedirectPath);
-        response.setContentType("text/html");
-        if(activeRedirectPath.equals("login")) {
-            try (PrintWriter out = response.getWriter()) {
-
-                out.println("<html><body><h1>" + activeRedirectPath + "</h1></body></html>");
-            }
-        }
-        loginRoutine(request, response);*/
     }
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 
@@ -66,8 +47,6 @@ public class TodoServlet extends HttpServlet {
 
             switch (activeRedirectPath) {
                 case "login":
-                    /*request.setAttribute("name",activeUserName);
-                    request.setAttribute("pw", activePassWord);*/
                     loginRoutine(request, response);
                     break;
                 case "newTodo":
@@ -76,91 +55,22 @@ public class TodoServlet extends HttpServlet {
 
                 case "toUpdateTodo":
                     toUpdateTodo(request, response);
-                /*private void toUpdateTodo(HttpServletRequest request, HttpServletResponse response){
-                    String updateTodoId = request.getParameter("todoID");
-                    int updateTodoIdIntZeroed = Integer.parseInt(updateTodoId) - 1;
-                    request.setAttribute("todoTitle", activeUserTodoList.get(updateTodoIdIntZeroed).getTitle());
-                    request.setAttribute("todoDate", activeUserTodoList.get(updateTodoIdIntZeroed).getDueDate());
-                    if (activeUserTodoList.get(updateTodoIdIntZeroed).isImportant()) {
-                        request.setAttribute("highPriority", "checked");
-                    } else {
-                        request.setAttribute("normalPriority", "checked");
-                    }
-                    request.setAttribute("category", activeUserTodoList.get(updateTodoIdIntZeroed).getCategory());
-                    request.setAttribute("todoId", updateTodoId);
-                    request.getRequestDispatcher("/edittodo.jsp").forward(request, response);
-                }*/
                     break;
 
                 case "fromUpdateTodo":
                     fromUpdateTodo(request, response);
-                    /*public void fromUpdateTodo(HttpServletRequest request, HttpServletResponse response){
-                    String updatedTodoId = request.getParameter("todoId");
-                    int updatedTodoIdIntZeroed = Integer.parseInt(updatedTodoId) - 1;
-
-                    String updatedTodoTitle = request.getParameter("newTodo");
-
-                    String updatedDueDateString = request.getParameter("dueDate");
-                    DateTimeFormatter frm = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-                    LocalDate updatedDueDate;
-                    if (updatedDueDateString.isEmpty()) {
-                        updatedDueDate = null;
-                    } else {
-                        updatedDueDate = LocalDate.parse(updatedDueDateString, frm);
-                    }
-                    String updatedCategoryString = request.getParameter("category");
-                    String updatedHighPriority = request.getParameter("priority");
-                    activeUserTodoList.get(updatedTodoIdIntZeroed).setTitle(updatedTodoTitle);
-                    activeUserTodoList.get(updatedTodoIdIntZeroed).setDueDate(updatedDueDate);
-                    activeUserTodoList.get(updatedTodoIdIntZeroed).setCategory(updatedCategoryString);
-                    if (updatedHighPriority.equals("high")) {
-                        activeUserTodoList.get(updatedTodoIdIntZeroed).setImportant(true);
-                    } else {
-                        activeUserTodoList.get(updatedTodoIdIntZeroed).setImportant(false);
-                    }
-                    request.setAttribute("loginMessage", "Todo : '" + updatedTodoTitle + "' updated!");
-                    request.setAttribute("todoList", activeUserTodoList);
-                    request.getRequestDispatcher("/todolist.jsp").forward(request, response);
-                }*/
                     break;
 
                 case "discardTodo":
-                discardTodo(request, response);
-                /*public void discardTodo(HttpServletRequest request, HttpServletResponse response){
-                String discardTodoId = request.getParameter("todoID");
-                int discardTodoIdIntZeroed = Integer.parseInt(discardTodoId) - 1;
-                String discardedTodoTitle = activeUserTodoList.get(discardTodoIdIntZeroed).getTitle();
-                activeUserTodoList.remove(discardTodoIdIntZeroed);
-                for (int i = activeUserTodoList.size() - 1; i >= 0; i--) {
-                    activeUserTodoList.get(i).setId(i + 1);
-                }
-                request.setAttribute("loginMessage", "Todo Item: '" + discardedTodoTitle + "' discarded!");
-                request.setAttribute("todoList", activeUserTodoList);
-                request.getRequestDispatcher("/todolist.jsp").forward(request, response);
-                }*/
+                    discardTodo(request, response);
                     break;
 
                 case "todoCompletedToggle":
                     todoCompletedToggle(request, response);
-                    /*private void todoCompletedToggle(HttpServletRequest request, HttpServletResponse response){
-                    String toggleTodoId = request.getParameter("todoID");
-                    int toggleTodoIdIntZeroed = Integer.parseInt(toggleTodoId) - 1;
-                    if (activeUserTodoList.get(toggleTodoIdIntZeroed).isCompleted()) {
-                        activeUserTodoList.get(toggleTodoIdIntZeroed).setCompleted(false);
-                    } else {
-                        activeUserTodoList.get(toggleTodoIdIntZeroed).setCompleted(true);
-                    }
-                    request.setAttribute("loginMessage", "Todo Item: '" + activeUserTodoList.get(toggleTodoIdIntZeroed).getTitle() + "' status changed!");
-                    request.setAttribute("todoList", activeUserTodoList);
-                    request.getRequestDispatcher("/todolist.jsp").forward(request, response);
-                    }*/
                     break;
 
                 default:
                     defaultRoutine(request, response);
-                    /*private void defaultRoutine(HttpServletRequest request, HttpServletResponse response){
-                    request.getRequestDispatcher("/oopserror.html").forward(request, response);
-                    }*/
                     break;
             }
     }
