@@ -8,10 +8,10 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>Title</title>
+    <title>Todo Application - login</title>
 </head>
 <body>
-<form action="todoUser.do" method="post">
+<form action="todoFSM.do" method="post">
     <input type="hidden" name="redirect" value="login"/>
     Name: <input type="text" name="name">
     <br/><br/>

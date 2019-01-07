@@ -12,12 +12,16 @@
 </head>
 <body>
 <h1>Create New Todo</h1>
-<h2>hello ${name}</h2>
-<form action="todoUser.do" method="post">
-    New Todo: <input type="text" name="Todo"/>
-    <br/><br/>
+<%--<h2>hello ${name}</h2>--%>
+<form action="todoFSM.do" method="post">
+    New Todo: <input type="text" name="newTodo"/><br/>
+    Due Date: <input type= "date" name="dueDate"/><br/>
+    <input type="radio" name="priority" value="normal" checked> Normal Priority<br/>
+    <input type="radio" name="priority" value="high"> High Priority<br/>
+    Category: <input type="text"  name="category"/><br/>
     <br/><br/>
     <input type="submit" value="add Todo"/>
+    <input type="hidden" name="redirect" value="newTodo"/>
 </form>
 </body>
 </html>

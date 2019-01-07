@@ -1,12 +1,14 @@
 package org.todo;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.LinkedList;
 
 public class TodoUser {
 
-    private String userName = new String();
-    private String passWord = new String();
+    private String userName;
+    private String passWord;
     //Make sure displayed List starts off at '1', not '0'!
     private LinkedList<TodoEntry> userTodoList = new LinkedList();
 
@@ -14,7 +16,6 @@ public class TodoUser {
     public TodoUser(String userName, String passWord){
         this.userName=userName;
         this.passWord=passWord;
-        int todoIdCounter = 0;
     }
 
     //Get Methods
@@ -44,6 +45,13 @@ public class TodoUser {
     //Generic Get Method for User Todos
     public TodoEntry getTodo(int todoId){
         return userTodoList.get(todoId);
+    }
+
+    public void deleteTodoEntry(int todoId){
+        userTodoList.remove(todoId);
+        for(int i=0;i<userTodoList.size();i++){
+            userTodoList.get(i).setId(i);
+        }
     }
 
     //Specific Update Methods for User Todos

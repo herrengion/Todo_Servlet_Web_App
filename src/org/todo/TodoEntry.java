@@ -9,6 +9,8 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.lang.reflect.Field;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.LinkedList;
 
 //@WebServlet("/todoEntry.do")
@@ -24,21 +26,26 @@ public class TodoEntry /*extends HttpServlet*/ {
 
     }*/
     //Fields
-    private int id = 0;
-    private String title = "blank Todo";
-    private String category = "Generic";
+    private int id;
+    private String title;
+    private String category;
     private LocalDate dueDate;
-    private boolean important = false;
-    private boolean completed = false;
+    private boolean important;
+    private String priority = "low";
+    private boolean completed;
+    private String status = "Todo";
 
     //Constructor
-    public TodoEntry(int id, String title, String category, LocalDate dueDate, boolean important){
+    public TodoEntry(int id, String title, String category, LocalDate dueDate, boolean important) {
         this.id = id;
         this.title = title;
         this.category = category;
         this.dueDate = dueDate;
         this.important = important;
         this.completed = false;
+        if (this.important) {
+            priority = "high";
+        }
     }
     //Get Methods
     public int getId(){
@@ -51,8 +58,13 @@ public class TodoEntry /*extends HttpServlet*/ {
     public LocalDate getDueDate(){return dueDate;}
     public boolean isCompleted() {return completed;}
     public boolean isImportant() {return important;}
+    public String getPriority() {return priority;}
+    public String getStatus() {return status;}
 
     //Set Methods
+    public void setId(int newId){
+        this.id = newId;
+    }
 
     public void setTitle(String title) {
         this.title = title;
@@ -64,6 +76,22 @@ public class TodoEntry /*extends HttpServlet*/ {
 
     public void setCompleted(boolean completed) {
         this.completed = completed;
+        if(completed){
+            this.status = "Done";
+        }
+        else {
+            this.status = "Todo";
+        }
+
+    }
+    public void setCompleted() {
+        if(completed){
+            this.status = "Done";
+        }
+        else {
+            this.status = "Todo";
+        }
+
     }
 
     public void setDueDate(LocalDate dueDate) {
@@ -72,5 +100,9 @@ public class TodoEntry /*extends HttpServlet*/ {
 
     public void setImportant(boolean important) {
         this.important = important;
+        this.priority = "low";
+        if(this.important){
+            this.priority = "high";
+        }
     }
 }
