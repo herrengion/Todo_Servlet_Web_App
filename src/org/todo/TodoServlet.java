@@ -46,9 +46,11 @@ public class TodoServlet extends HttpServlet {
         }
 
             switch (activeRedirectPath) {
+
                 case "login":
                     loginRoutine(request, response);
                     break;
+
                 case "newTodo":
                     newTodoRoutine(request, response);
                     break;
@@ -72,11 +74,13 @@ public class TodoServlet extends HttpServlet {
                 default:
                     defaultRoutine(request, response);
                     break;
+
             }
     }
 
     //Auxiliary Methods
-    //General login routine---------------------------------------------------------------------------------------------
+
+    //------------------------------------------------------------------------------------------------------------------
     private void loginRoutine(HttpServletRequest request, HttpServletResponse response)
                     throws IOException,ServletException{
         activeUserName = request.getParameter("name");
