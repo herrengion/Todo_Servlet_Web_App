@@ -11,6 +11,9 @@ public class TodoUser {
     private LinkedList<TodoEntry> userTodoList = new LinkedList();
 
     //Constructor
+    public TodoUser(){
+
+    }
     public TodoUser(String userName, String passWord){
         this.userName=userName;
         this.passWord=passWord;
@@ -56,9 +59,7 @@ public class TodoUser {
     public void updateTodoTitle(int todoId, String newTitle){
         userTodoList.get(todoId).setTitle(newTitle);
     }
-    public void updateTodoCategory(int todoId, String newCategory){
-        userTodoList.get(todoId).setCategory(newCategory);
-    }
+    public void updateTodoCategory(int todoId, String newCategory){ userTodoList.get(todoId).setCategory(newCategory); }
     public void updateTodoCompleted(int todoId, boolean newStatus){
         userTodoList.get(todoId).setCompleted(newStatus);
     }
