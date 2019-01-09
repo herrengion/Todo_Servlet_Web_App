@@ -15,7 +15,7 @@
     <input type="hidden" name="redirect" value="login"/>
     Name: <input type="text" name="name">
     <br/><br/>
-    Password: <input type="text" name="pw">
+    Password: <input type="password" name="pw">
     <br/><br/>
     <br/><br/>
     <input type="submit" value="login/sign up">
