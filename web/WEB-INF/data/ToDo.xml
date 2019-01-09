@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<todo_list>
+    <todo id="1">
+        <title>Brot einkaufen</title>
+        <important>true</important>
+        <completed>true</completed>
+        <category>HOME</category>
+    </todo>
+    <todo id="2">
+        <title>Kurs vorbereiten</title>
+        <important>false</important>
+        <completed>false</completed>
+        <category>OFFICE</category>
+        <due_date>2019-01-01</due_date>
+    </todo>
+    <todo id="3">
+        <title>Velo putzen</title>
+        <important>false</important>
+        <completed>false</completed>
+    </todo>
+    <todo id="4">
+        <title>Filme ausleihen</title>
+        <important>true</important>
+        <completed>false</completed>
+        <category>HOME</category>
+        <due_date>2018-12-22</due_date>
+    </todo>
+</todo_list>

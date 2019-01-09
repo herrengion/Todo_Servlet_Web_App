@@ -3,6 +3,7 @@ package org.todo;
 import data.TodoList;
 import org.xml.sax.SAXException;
 
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -32,13 +33,14 @@ public class InsertToDo extends HttpServlet {
         String errorMessage = "";
 
         if(errorMessage == "") {
-            File file = new File("C:\\Users\\Nath\\Documents\\BueroNath\\Ausbildung\\CAS SD\\WebApp\\Uebungen\\ToDo.xml");
-
+            ServletContext context = getServletContext();
+            File file = new File(context.getResource("/WEB-INF/data/ToDo.xml").getFile());
+            File fileXsdSchema = new File(context.getResource("/WEB-INF/data/ToDo.xsd").getFile());
             try{
                 jc = JAXBContext.newInstance(TodoList.class);
                 Unmarshaller unmarshaller = jc.createUnmarshaller();
                 SchemaFactory schemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
-                Schema schema = schemaFactory.newSchema(new File("C:\\Users\\Nath\\Documents\\BueroNath\\Ausbildung\\CAS SD\\WebApp\\Uebungen\\ToDo.xsd"));
+                Schema schema = schemaFactory.newSchema(fileXsdSchema);
                 unmarshaller.setSchema(schema);
                 todosObj = (TodoList) unmarshaller.unmarshal( file );
             }
@@ -73,7 +75,7 @@ public class InsertToDo extends HttpServlet {
             try{
                 Marshaller marshaller = jc.createMarshaller();
                 SchemaFactory schemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
-                Schema schema = schemaFactory.newSchema(new File("C:\\Users\\Nath\\Documents\\BueroNath\\Ausbildung\\CAS SD\\WebApp\\Uebungen\\ToDo.xsd"));
+                Schema schema = schemaFactory.newSchema(fileXsdSchema);
                 marshaller.setSchema(schema);
                 marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
                 marshaller.marshal(todosObj, file);

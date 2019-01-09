@@ -3,6 +3,7 @@ package org.todo;
 import data.TodoList;
 import org.xml.sax.SAXException;
 
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -17,6 +18,7 @@ import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -45,16 +47,19 @@ public class ShowAllToDo extends HttpServlet {
         }
 
         if(errorMessage == "") {
-            File file = new File("C:\\Users\\Nath\\Documents\\BueroNath\\Ausbildung\\CAS SD\\WebApp\\Uebungen\\ToDo.xml");
+            ServletContext context = getServletContext();
+            File file = new File(context.getResource("/WEB-INF/data/ToDo.xml").getFile());
+            //File  = new File(resourceUrl);
             try{
                 JAXBContext jc = JAXBContext.newInstance(TodoList.class);
                 Unmarshaller unmarshaller = jc.createUnmarshaller();
                 SchemaFactory schemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
-                Schema schema = schemaFactory.newSchema(new File("C:\\Users\\Nath\\Documents\\BueroNath\\Ausbildung\\CAS SD\\WebApp\\Uebungen\\ToDo.xsd"));
+                Schema schema = schemaFactory.newSchema(new File(context.getResource("/WEB-INF/data/ToDo.xsd").getFile()));
                 unmarshaller.setSchema(schema);
                 todosObj = (TodoList) unmarshaller.unmarshal( file );
             }
             catch(JAXBException | SAXException e)
+            //catch(JAXBException e)
             {
                 e.printStackTrace();
                 errorMessage = errorMessage + " & ToDo list is not possible to read!";
