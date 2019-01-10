@@ -2,15 +2,24 @@ package org.todo.auxiliary;
 
 import org.todo.*;
 
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 
-public class LoginRoutine {
+import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
 
+public class LoginRoutine {
+    public static final String DATA_PATH_WEB_INF_USER_DATA = "/WEB-INF/data/UserData";
+    private File templateUserToDoXml;
     //Fields
     private HttpSession userSession;
     private TodoUser activeTodoUser = new TodoUser();
@@ -18,14 +27,16 @@ public class LoginRoutine {
     private String enteredPassWord;
     private boolean firstTimeLogin = true;
     private boolean invalidLogin = true;
+    private String serveletContextPath;
 
 
     //Constructor
-    public LoginRoutine(HttpServletRequest request, HttpServletResponse response, ArrayList<TodoUser> todoUserList){
+    public LoginRoutine(HttpServletRequest request, HttpServletResponse response, ArrayList<TodoUser> todoUserList, String servletContextPath){
 
         //Load entered username and pw
         enteredUserName = request.getParameter("name");
         enteredPassWord = request.getParameter("pw");
+        this.serveletContextPath = servletContextPath;
 
         //if username is empty or not valid
         if ((enteredUserName == null || enteredUserName.isEmpty())) {
@@ -78,6 +89,7 @@ public class LoginRoutine {
         }
 
         if(firstTimeLogin){
+            templateUserToDoXml = new File(serveletContextPath + DATA_PATH_WEB_INF_USER_DATA + "/ToDoTemplate.xml");
             activeTodoUser = initializeUser(todoUserList);
             initializeUserSession(request, response);
             try {
@@ -108,6 +120,33 @@ public class LoginRoutine {
     private TodoUser initializeUser(ArrayList<TodoUser> todoUserList){
         TodoUser newUser = new TodoUser(enteredUserName, enteredPassWord);
         todoUserList.add(newUser);
+        // Create new empty template to persist his todos
+        System.out.println("New User is: "+enteredUserName);
+        System.out.println("Initial context path: "+serveletContextPath);
+        File newDirUserData = new File(serveletContextPath + DATA_PATH_WEB_INF_USER_DATA + "/" + enteredUserName);
+        if(newDirUserData.mkdirs())
+        {
+            try {
+                File newUserToDoXml = new File(serveletContextPath +
+                        DATA_PATH_WEB_INF_USER_DATA +
+                        "/" + enteredUserName + "/ToDo_list_" + enteredUserName+".xml");
+                Files.copy(templateUserToDoXml.toPath(),newUserToDoXml.toPath());
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+        }
+        else if(newDirUserData.isDirectory())
+        {
+            System.err.println("Directory exists already for user: "+enteredUserName);
+        }
+        else
+        {
+            System.err.println("Not able to create directory for user: "+enteredUserName);
+        }
+
         return newUser;
     }
 

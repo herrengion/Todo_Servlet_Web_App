@@ -9,12 +9,12 @@ import org.todo.auxiliary.*;
 //Todo: Change UserList to LinkedList, possibility of deleting account
 //Todo: Implement "forgot password" functionality
 
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 import java.io.IOException;
 import java.util.ArrayList;
-
 
 @WebServlet("/todoFSM.do")
 public class TodoServlet extends HttpServlet {
@@ -22,7 +22,7 @@ public class TodoServlet extends HttpServlet {
     //------------------------------------------------------------------------------------------------------------------
     //Fields:
     //------------------------------------------------------------------------------------------------------------------
-
+    public static final String DATA_PATH_WEB_INF = "/WEB-INF";
     //Active Session
     HttpSession userSession;
 
@@ -30,6 +30,7 @@ public class TodoServlet extends HttpServlet {
     private TodoUser activeUser = new TodoUser();
 
     //All User Data
+    /* TODO: Need to be persisted and still available after reboot of server -> store in File or XML too*/
     private ArrayList<TodoUser> todoUserList = new ArrayList<>();
 
     //------------------------------------------------------------------------------------------------------------------
@@ -50,8 +51,9 @@ public class TodoServlet extends HttpServlet {
             switch (activeRedirectPath) {
 
                 case "login":
-
-                    LoginRoutine loginRoutine = new LoginRoutine(request, response, todoUserList);
+                    ServletContext context = getServletContext();
+                    String contextPath = context.getRealPath("/");
+                    LoginRoutine loginRoutine = new LoginRoutine(request, response, todoUserList, contextPath);
                     activeUser = loginRoutine.getActiveTodoUser();
                     userSession = loginRoutine.getUserSession();
                     break;
