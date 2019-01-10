@@ -78,6 +78,11 @@ public class TodoServlet extends HttpServlet {
                     TodoCompletedToggle todoCompletedToggle = new TodoCompletedToggle(request, response, activeUser);
                     break;
 
+                case "sortRoutine":
+                    System.out.println("sort routine entered");
+
+                    break;
+
                 default:
                     DefaultRoutine defaultRoutine = new DefaultRoutine(request, response, activeUser);
                     break;
