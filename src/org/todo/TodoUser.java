@@ -1,5 +1,17 @@
 package org.todo;
 
+import data.TodoList;
+import org.xml.sax.SAXException;
+
+import javax.xml.XMLConstants;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
+import javax.xml.bind.Unmarshaller;
+import javax.xml.validation.Schema;
+import javax.xml.validation.SchemaFactory;
+import java.io.File;
+import java.text.ParseException;
 import java.time.LocalDate;
 import java.util.LinkedList;
 
@@ -7,14 +19,19 @@ public class TodoUser {
 
     private String userName;
     private String passWord;
+    private File userTodoXmlFile;
+    private File xmlSchemaTodoFile;
     //Make sure displayed List starts off at '1', not '0'!
-    private LinkedList<TodoEntry> userTodoList = new LinkedList();
+    private TodoList todosObj = new TodoList();
+    private LinkedList<TodoList.Todo> userTodoList = new LinkedList();
 
     //Constructor
-    public TodoUser(){
+    public TodoUser()
+    {
 
     }
-    public TodoUser(String userName, String passWord){
+    public TodoUser(String userName, String passWord)
+    {
         this.userName=userName;
         this.passWord=passWord;
     }
@@ -31,7 +48,7 @@ public class TodoUser {
         return passWord;
     }
 
-    public LinkedList<TodoEntry> getUserTodoList()
+    public LinkedList<TodoList.Todo> getUserTodoList()
     {
         return userTodoList;
     }
@@ -47,23 +64,66 @@ public class TodoUser {
     {
         this.passWord = passWord;
     }
-    public void addTodo(TodoEntry newTodo){
+    public void addTodo(TodoList.Todo newTodo)
+    {
         this.userTodoList.add(newTodo);
     }
-    public void setUserTodoList(LinkedList<TodoEntry> userTodoList)
+    public void setUserTodoList(File userToDoFile, File schemaFile)
     {
-        this.userTodoList = userTodoList;
+        this.userTodoXmlFile = userToDoFile;
+        this.xmlSchemaTodoFile =  schemaFile;
+        convertTodoXmlToLinkedList();
     }
 
     //Generic Get Method for User Todos
-    public TodoEntry getTodo(int todoId){
+    public TodoList.Todo getTodo(int todoId)
+    {
         return userTodoList.get(todoId);
     }
 
-    public void deleteTodoEntry(int todoId){
+    public void deleteTodoEntry(int todoId)
+    {
         userTodoList.remove(todoId);
         for(int i=0;i<userTodoList.size();i++){
-            userTodoList.get(i).setId(i);
+            userTodoList.get(i).setId((long) i);
+        }
+    }
+    private void convertTodoXmlToLinkedList()
+    {
+        try{
+            JAXBContext jc = JAXBContext.newInstance(TodoList.class);
+            Unmarshaller unmarshaller = jc.createUnmarshaller();
+            SchemaFactory schemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
+            Schema schema = schemaFactory.newSchema(xmlSchemaTodoFile);
+            unmarshaller.setSchema(schema);
+            todosObj = (TodoList) unmarshaller.unmarshal( userTodoXmlFile );
+            System.out.println(todosObj.getTodo().get(0).getTitle());
+        }
+        catch(JAXBException | SAXException e)
+        //catch(JAXBException e)
+        {
+            e.printStackTrace();
+            System.err.println(" ToDo list is not possible to read!");
+        }
+
+    }
+
+    public void updateTodo()
+    {
+        JAXBContext jc = null;
+        System.out.println("update ToDo XML");
+        try{
+            Marshaller marshaller = jc.createMarshaller();
+            SchemaFactory schemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
+            Schema schema = schemaFactory.newSchema(xmlSchemaTodoFile);
+            marshaller.setSchema(schema);
+            marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+            marshaller.marshal(todosObj, userTodoXmlFile);
+        }
+        catch(JAXBException | SAXException e)
+        {
+            e.printStackTrace();
+            System.err.println(" & ToDo list is not possible to write!");
         }
     }
 
@@ -80,9 +140,17 @@ public class TodoUser {
     {
         userTodoList.get(todoId).setCompleted(newStatus);
     }
-    public void updateTodoDueDate(int todoId, LocalDate newDueDate)
+    public void updateTodoDueDate(int todoId, String dueDate)
     {
-        userTodoList.get(todoId).setDueDate(newDueDate);
+        DueDate dueDateObj = new DueDate(null);
+        try{
+            dueDateObj.setDateByString(dueDate);
+        }
+        catch (ParseException e)
+        {
+            System.out.println("Unable to convert string to date -> Check input format and load form with received inputs!");
+        }
+        userTodoList.get(todoId).setDueDate(dueDateObj.getXmlGregorianCalendar());
     }
     public void updateTodoImportant(int todoId, boolean newStatus)
     {

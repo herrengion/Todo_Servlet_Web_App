@@ -12,7 +12,7 @@ public class DiscardTodo {
         String discardedTodoTitle = activeUser.getUserTodoList().get(discardTodoIdIntZeroed).getTitle();
         activeUser.getUserTodoList().remove(discardTodoIdIntZeroed);
         for (int i = activeUser.getUserTodoList().size() - 1; i >= 0; i--) {
-            activeUser.getUserTodoList().get(i).setId(i + 1);
+            activeUser.getUserTodoList().get(i).setId((long) (i + 1));
         }
         request.setAttribute("loginMessage", "Todo Item: '" + discardedTodoTitle + "' discarded!");
         request.setAttribute("todoList", activeUser.getUserTodoList());

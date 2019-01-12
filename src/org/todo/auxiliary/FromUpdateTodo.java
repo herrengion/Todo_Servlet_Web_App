@@ -4,6 +4,7 @@ import org.todo.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.xml.datatype.XMLGregorianCalendar;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
@@ -17,16 +18,11 @@ public class FromUpdateTodo {
 
         String updatedDueDateString = request.getParameter("dueDate");
         DateTimeFormatter frm = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        LocalDate updatedDueDate;
-        if (updatedDueDateString.isEmpty()) {
-            updatedDueDate = null;
-        } else {
-            updatedDueDate = LocalDate.parse(updatedDueDateString, frm);
-        }
+        XMLGregorianCalendar xmlGregorianCalendar = activeUser.getUserTodoList().get(updatedTodoIdIntZeroed).getDueDate();
         String updatedCategoryString = request.getParameter("category");
         String updatedHighPriority = request.getParameter("priority");
         activeUser.getUserTodoList().get(updatedTodoIdIntZeroed).setTitle(updatedTodoTitle);
-        activeUser.getUserTodoList().get(updatedTodoIdIntZeroed).setDueDate(updatedDueDate);
+        activeUser.getUserTodoList().get(updatedTodoIdIntZeroed).setDueDate(xmlGregorianCalendar);
         activeUser.getUserTodoList().get(updatedTodoIdIntZeroed).setCategory(updatedCategoryString);
         if (updatedHighPriority.equals("high")) {
             activeUser.getUserTodoList().get(updatedTodoIdIntZeroed).setImportant(true);
@@ -39,7 +35,7 @@ public class FromUpdateTodo {
             request.getRequestDispatcher("/todolist.jsp").forward(request, response);
         }
         catch(Exception e){
-            System.out.println("Exception handling FromUpdateTodo()");
+            System.err.println("Exception handling FromUpdateTodo()");
         }
     }
 }

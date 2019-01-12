@@ -67,9 +67,9 @@
             <td>${todoInstance.id}</td>
             <td>${todoInstance.title}</td>
             <td>${todoInstance.dueDate}</td>
-            <td>${todoInstance.priority}</td>
+            <td>${todoInstance.important}</td>
             <td>${todoInstance.category}</td>
-            <td>${todoInstance.status}<br>
+            <td>${todoInstance.completed}<br>
                 <form action="todoFSM.do" method="post">
                     <input type="hidden" name="redirect" value="todoCompletedToggle"/>
                     <input type="hidden" name="todoID" value=${todoInstance.id}>
