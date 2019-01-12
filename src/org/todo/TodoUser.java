@@ -28,7 +28,8 @@ public class TodoUser {
     //List to sort after attribute (maybe better as ArrayList?)
     private LinkedList<TodoEntry> sortedUserTodoList = new LinkedList();
 
-    //Set categorySet = new NavigableSet();
+    private Set categorySet = new HashSet();
+
 
     //Constructor
     public TodoUser()
@@ -163,5 +164,20 @@ public class TodoUser {
     public void updateTodoImportant(int todoId, boolean newStatus)
     {
         userTodoList.get(todoId).setImportant(newStatus);
+    }
+
+    public void updateCategoryHashSet(LinkedList<TodoList.Todo> activeTodoList){
+        categorySet.clear();
+        for(int i = 0; i<userTodoList.size(); i++){
+            categorySet.add(userTodoList.get(i).getCategory());
+        }
+    }
+
+    public Set getCategorySet(){
+        return categorySet;
+    }
+
+    public LinkedList<TodoEntry> getSortedUserTodoList() {
+        return sortedUserTodoList;
     }
 }
