@@ -58,6 +58,10 @@ public class TodoUser {
 
     public LinkedList<TodoList.Todo> getUserTodoList()
     {
+        userTodoList.clear();
+        for(int i = 0; i<todosObj.getTodo().size(); i++) {
+            userTodoList.add(todosObj.getTodo().get(i));
+        }
         return userTodoList;
     }
 
@@ -74,7 +78,7 @@ public class TodoUser {
     }
     public void addTodo(TodoList.Todo newTodo)
     {
-        this.userTodoList.add(newTodo);
+        this.todosObj.getTodo().add(newTodo);
     }
     public void setUserTodoList(File userToDoFile, File schemaFile)
     {
@@ -98,7 +102,6 @@ public class TodoUser {
     }
     private void convertTodoXmlToLinkedList()
     {
-        userTodoList.clear();
         try{
             JAXBContext jc = JAXBContext.newInstance(TodoList.class);
             Unmarshaller unmarshaller = jc.createUnmarshaller();
@@ -106,10 +109,6 @@ public class TodoUser {
             Schema schema = schemaFactory.newSchema(xmlSchemaTodoFile);
             unmarshaller.setSchema(schema);
             todosObj = (TodoList) unmarshaller.unmarshal( userTodoXmlFile );
-            for(int i = 0; i<todosObj.getTodo().size(); i++) {
-                userTodoList.add(todosObj.getTodo().get(i));
-            }
-            //System.out.println(todosObj.getTodo().get(0).getTitle());
         }
         catch(JAXBException | SAXException e)
         //catch(JAXBException e)
