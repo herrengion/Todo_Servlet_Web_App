@@ -66,6 +66,16 @@ public class TodoServlet extends HttpServlet {
 
                     activeUser = loginRoutine.getActiveTodoUser();
                     userSession = loginRoutine.getUserSession();
+                    try{
+                        request.setAttribute("todoList", activeUser.getUserTodoList());
+                        request.getRequestDispatcher("/todolist.jsp").forward(request, response);
+                    }
+                    catch (IOException e){
+
+                    }
+                    catch (ServletException e){
+
+                    }
                     break;
 
                 case "newTodo":

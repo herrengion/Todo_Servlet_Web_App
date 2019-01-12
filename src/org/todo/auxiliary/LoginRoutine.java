@@ -60,16 +60,8 @@ public class LoginRoutine {
                     loginSuccessful(todoUserList, i);
                     initializeUserSession(request, response);
                     invalidLogin = false;
-                    try {
                         request.setAttribute("loginMessage", "Hello Again!");
-                        request.getRequestDispatcher("/todolist.jsp").forward(request, response);
-                    }
-                    catch (IOException e){
 
-                    }
-                    catch (ServletException e){
-
-                    }
                 }
                 else{
                     //password incorrect
@@ -95,16 +87,8 @@ public class LoginRoutine {
             activeTodoUser = initializeUser(todoUserList);
 
             initializeUserSession(request, response);
-            try {
-                request.setAttribute("loginMessage", "First Time Login!");
-                request.getRequestDispatcher("/todolist.jsp").forward(request, response);
-            }
-            catch (IOException e){
+            request.setAttribute("loginMessage", "First Time Login!");
 
-            }
-            catch (ServletException e){
-
-            }
         }
     }
 
@@ -113,7 +97,6 @@ public class LoginRoutine {
     private void loginSuccessful(ArrayList<TodoUser> todoUserList, int id){
         activeTodoUser.setUserName(todoUserList.get(id).getUserName());
         activeTodoUser.setPassWord(todoUserList.get(id).getPassWord());
-
     }
     //Exception handling Todo
     private void loginFailed(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException{
@@ -165,7 +148,7 @@ public class LoginRoutine {
             userSession = request.getSession();
             userSession.setAttribute("name", activeTodoUser.getUserName());
             userSession.setAttribute("pw", activeTodoUser.getPassWord());
-            userSession.setAttribute("todoList", activeTodoUser.getUserTodoList());
+            //userSession.setAttribute("todoList", activeTodoUser.getUserTodoList());
     }
     private String getEnteredUserName(){
         return enteredUserName;

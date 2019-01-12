@@ -13,7 +13,7 @@ import javax.xml.validation.SchemaFactory;
 import java.io.File;
 import java.text.ParseException;
 import java.time.LocalDate;
-import java.util.LinkedList;
+import java.util.*;
 
 public class TodoUser {
 
@@ -24,6 +24,11 @@ public class TodoUser {
     //Make sure displayed List starts off at '1', not '0'!
     private TodoList todosObj = new TodoList();
     private LinkedList<TodoList.Todo> userTodoList = new LinkedList();
+
+    //List to sort after attribute (maybe better as ArrayList?)
+    private LinkedList<TodoEntry> sortedUserTodoList = new LinkedList();
+
+    //Set categorySet = new NavigableSet();
 
     //Constructor
     public TodoUser()
@@ -97,6 +102,9 @@ public class TodoUser {
             Schema schema = schemaFactory.newSchema(xmlSchemaTodoFile);
             unmarshaller.setSchema(schema);
             todosObj = (TodoList) unmarshaller.unmarshal( userTodoXmlFile );
+            for(int i = 0; i<todosObj.getTodo().size(); i++) {
+                userTodoList.add(todosObj.getTodo().get(i));
+            }
             System.out.println(todosObj.getTodo().get(0).getTitle());
         }
         catch(JAXBException | SAXException e)
