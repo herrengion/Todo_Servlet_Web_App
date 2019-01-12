@@ -8,6 +8,7 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
+import javax.xml.datatype.XMLGregorianCalendar;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 import java.io.File;
@@ -60,9 +61,14 @@ public class TodoUser {
     public LinkedList<TodoList.Todo> getUserTodoList()
     {
         userTodoList.clear();
+        //userTodoList.add(todosObj.getTodo().get(0));
         for(int i = 0; i<todosObj.getTodo().size(); i++) {
+            //int comparator = todosObj.getTodo().get(i-1).getDueDate(), todosObj.getTodo().get(i-1).getDueDate());
             userTodoList.add(todosObj.getTodo().get(i));
         }
+        //LinkedList<TodoList.Todo> dueDateSortedTodolist = new LinkedList<>();
+        //dueDateSortedTodolist.add(userTodoList.get(0));
+
         return userTodoList;
     }
 
@@ -157,16 +163,9 @@ public class TodoUser {
     {
         userTodoList.get(todoId).setCompleted(newStatus);
     }
-    public void updateTodoDueDate(int todoId, String dueDate)
-    {
+    public void updateTodoDueDate(int todoId, String dueDate) throws ParseException {
         DueDate dueDateObj = new DueDate(null);
-        try{
-            dueDateObj.setDateByString(dueDate);
-        }
-        catch (ParseException e)
-        {
-            System.out.println("Unable to convert string to date -> Check input format and load form with received inputs!");
-        }
+        dueDateObj.setDateByString(dueDate);
         userTodoList.get(todoId).setDueDate(dueDateObj.getXmlGregorianCalendar());
     }
     public void updateTodoImportant(int todoId, boolean newStatus)

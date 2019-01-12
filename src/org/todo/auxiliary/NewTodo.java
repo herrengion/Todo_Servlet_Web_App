@@ -23,13 +23,7 @@ public class NewTodo {
         String highPriority = request.getParameter("priority");
 
         DueDate dueDateObj = new DueDate(null);
-        try{
-            dueDateObj.setDateByString(dueDateString);
-        }
-        catch (ParseException e)
-        {
-            System.out.println("Unable to convert string to date -> Check input format and load form with received inputs!");
-        }
+        dueDateObj.setDateByString(dueDateString);
         TodoList.Todo newToDoObj = new TodoList.Todo();
         int size = activeUser.getUserTodoList().size();
         if(size > 0)

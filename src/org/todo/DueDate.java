@@ -1,18 +1,21 @@
 package org.todo;
 
+import javax.swing.text.DateFormatter;
 import javax.xml.datatype.DatatypeConfigurationException;
+import javax.xml.datatype.DatatypeConstants;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
 public class DueDate {
     protected XMLGregorianCalendar xmlGregorianCalendar;
-    protected Date date;
-    protected DateFormat  dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+    protected LocalDate date;
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
 
     public DueDate(XMLGregorianCalendar xmlGregorianCalendar) {
@@ -24,25 +27,27 @@ public class DueDate {
         else
         {
             xmlGregorianCalendar = xmlGregorianCalendar;
-            date = xmlGregorianCalendar.toGregorianCalendar().getTime();
+            date = xmlGregorianCalendar.toGregorianCalendar().toZonedDateTime().toLocalDate();
         }
     }
 
-    public void setDate(Date date)
+    public void setDate(LocalDate date)
     {
-        GregorianCalendar gCalendar = new GregorianCalendar();
-        gCalendar.setTime(date);
-        xmlGregorianCalendar = null;
+        GregorianCalendar cal = new GregorianCalendar();
+        cal.setTime(new Date());
         try {
-            xmlGregorianCalendar = DatatypeFactory.newInstance().newXMLGregorianCalendar(gCalendar);
-        } catch (DatatypeConfigurationException ex) {
-            System.out.println("Unable to set due Gregorian due date");
+            xmlGregorianCalendar = DatatypeFactory.newInstance().newXMLGregorianCalendarDate(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH) + 1, cal.get(Calendar.DAY_OF_MONTH), DatatypeConstants.FIELD_UNDEFINED);
+        }
+        catch (Exception e){
+            System.err.println("setDate(LocalDate date)");
         }
     }
 
-    public void setDateByString(String dateString) throws ParseException {
-        date = dateFormat.parse(dateString);
-        setDate(date);
+    public void setDateByString(String dateString) {
+        if(!dateString.isEmpty()) {
+            date = LocalDate.parse(dateString, formatter);
+            setDate(date);
+        }
     }
 
     public XMLGregorianCalendar getXmlGregorianCalendar()
@@ -50,11 +55,16 @@ public class DueDate {
         return xmlGregorianCalendar;
     }
 
+    public LocalDate getLocalDate()
+    {
+        return date;
+    }
+
     @Override
     public String toString() {
         if(date != null)
         {
-            return dateFormat.format(date);
+            return formatter.format(date);
         }
         return "NONE";
     }

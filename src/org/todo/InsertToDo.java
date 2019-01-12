@@ -51,13 +51,7 @@ public class InsertToDo extends HttpServlet {
             }
 
             DueDate dueDateObj = new DueDate(null);
-            try{
-                dueDateObj.setDateByString(dueDate);
-            }
-            catch (ParseException e)
-            {
-                System.out.println("Unable to convert string to date -> Check input format and load form with received inputs!");
-            }
+            dueDateObj.setDateByString(dueDate);
             TodoList.Todo newToDoObj = new TodoList.Todo();
             int size = todosObj.getTodo().size();
             TodoList.Todo lastToDo = todosObj.getTodo().get(size-1);
