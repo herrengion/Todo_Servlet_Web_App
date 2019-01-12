@@ -92,6 +92,11 @@ public class TodoServlet extends HttpServlet {
                     break;
 
                 case "newTodo":
+                    userToDoXmlFile = new File(contextPath +
+                            DATA_PATH_WEB_INF_USER_DATA +
+                            "/" + activeUser.getUserName() + "/ToDo_list_" + activeUser.getUserName()+".xml");
+                    xmlSchemaFile = new File(contextPath + DATA_PATH_WEB_INF_DATA + "/ToDo.xsd");
+                    activeUser.setUserTodoList(userToDoXmlFile, xmlSchemaFile);
                     NewTodo newTodo = new NewTodo(request, response, activeUser);
                     break;
 

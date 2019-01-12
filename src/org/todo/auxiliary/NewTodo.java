@@ -10,10 +10,12 @@ import java.text.ParseException;
 
 
 public class NewTodo {
+    private TodoUser todoUser;
 
     //Constructor
     public NewTodo(HttpServletRequest request, HttpServletResponse response, TodoUser activeUser)
     {
+        this.todoUser = activeUser;
         Long newId = Long.valueOf(1);
         String newTodoString = request.getParameter("newTodo");
         String dueDateString = request.getParameter("dueDate");
@@ -32,7 +34,7 @@ public class NewTodo {
         int size = activeUser.getUserTodoList().size();
         if(size > 0)
         {
-            TodoList.Todo lastToDo = activeUser.getUserTodoList().get(size - 1);
+            TodoList.Todo lastToDo = todoUser.getUserTodoList().get(size - 1);
             newId = lastToDo.getId();
         }
 
@@ -41,10 +43,10 @@ public class NewTodo {
         newToDoObj.setCategory(categoryString);
         newToDoObj.setDueDate(dueDateObj.getXmlGregorianCalendar());
         newToDoObj.setImportant(highPriority.equals("high"));
-        activeUser.getUserTodoList().add(newToDoObj);
-        activeUser.updateTodo();
+        todoUser.addTodo(newToDoObj);
+        todoUser.updateTodo();
         request.setAttribute("loginMessage", "Todo added!");
-        request.setAttribute("todoList", activeUser.getUserTodoList());
+        request.setAttribute("todoList", todoUser.getUserTodoList());
         try {
             request.getRequestDispatcher("/todolist.jsp").forward(request, response);
         }

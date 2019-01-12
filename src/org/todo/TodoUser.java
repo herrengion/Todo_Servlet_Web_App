@@ -11,6 +11,9 @@ import javax.xml.bind.Unmarshaller;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.OutputStream;
 import java.text.ParseException;
 import java.time.LocalDate;
 import java.util.*;
@@ -56,6 +59,10 @@ public class TodoUser {
 
     public LinkedList<TodoList.Todo> getUserTodoList()
     {
+        userTodoList.clear();
+        for(int i = 0; i<todosObj.getTodo().size(); i++) {
+            userTodoList.add(todosObj.getTodo().get(i));
+        }
         return userTodoList;
     }
 
@@ -72,7 +79,7 @@ public class TodoUser {
     }
     public void addTodo(TodoList.Todo newTodo)
     {
-        this.userTodoList.add(newTodo);
+        this.todosObj.getTodo().add(newTodo);
     }
     public void setUserTodoList(File userToDoFile, File schemaFile)
     {
@@ -103,10 +110,6 @@ public class TodoUser {
             Schema schema = schemaFactory.newSchema(xmlSchemaTodoFile);
             unmarshaller.setSchema(schema);
             todosObj = (TodoList) unmarshaller.unmarshal( userTodoXmlFile );
-            for(int i = 0; i<todosObj.getTodo().size(); i++) {
-                userTodoList.add(todosObj.getTodo().get(i));
-            }
-            System.out.println(todosObj.getTodo().get(0).getTitle());
         }
         catch(JAXBException | SAXException e)
         //catch(JAXBException e)
@@ -119,16 +122,21 @@ public class TodoUser {
 
     public void updateTodo()
     {
-        JAXBContext jc = null;
+
         System.out.println("update ToDo XML");
         try{
+            JAXBContext jc = JAXBContext.newInstance(TodoList.class);
             Marshaller marshaller = jc.createMarshaller();
             SchemaFactory schemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
             Schema schema = schemaFactory.newSchema(xmlSchemaTodoFile);
             marshaller.setSchema(schema);
+            //marshaller.setProperty(Marshaller.JAXB_ENCODING, "UTF-8");
             marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+            System.out.println("Store new todo object in file!"+userTodoXmlFile.getAbsolutePath());
+            //OutputStream os = new FileOutputStream(userTodoXmlFile);
             marshaller.marshal(todosObj, userTodoXmlFile);
         }
+        //catch(JAXBException | SAXException | FileNotFoundException e)
         catch(JAXBException | SAXException e)
         {
             e.printStackTrace();
