@@ -94,8 +94,8 @@
 <select>
     <optgroup label="Select category">
         <option value="all">all</option>
-        <c:forEach items="${todoList}" var="todoInstance" >
-            <option value="${todoInstance.category}">${todoInstance.category}</option>
+        <c:forEach items="${todoUserCategorySet}" var="todoUserCategorySet" >
+            <option value="${todoUserCategorySet}">${todoUserCategorySet}</option>
         </c:forEach>
     </optgroup>
 </select>

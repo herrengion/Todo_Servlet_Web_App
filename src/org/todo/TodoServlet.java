@@ -16,6 +16,7 @@ import javax.servlet.http.*;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Enumeration;
 
 @WebServlet("/todoFSM.do")
 public class TodoServlet extends HttpServlet {
@@ -53,6 +54,16 @@ public class TodoServlet extends HttpServlet {
         ServletContext context = getServletContext();
         String contextPath = context.getRealPath("/");
 
+        Enumeration<String> contextAttributeNames = context.getAttributeNames();
+        while(contextAttributeNames.hasMoreElements()){
+            System.out.println("Context: "+contextAttributeNames.nextElement());
+        }
+
+        if(context.getAttribute("name") != null){
+            activeUser.setUserName(context.getAttribute("name").toString());
+
+        }
+
             switch (activeRedirectPath) {
 
                 case "login":
@@ -63,11 +74,12 @@ public class TodoServlet extends HttpServlet {
                             "/" + activeUser.getUserName() + "/ToDo_list_" + activeUser.getUserName()+".xml");
                     xmlSchemaFile = new File(contextPath + DATA_PATH_WEB_INF_DATA + "/ToDo.xsd");
                     activeUser.setUserTodoList(userToDoXmlFile, xmlSchemaFile);
-
-                    activeUser = loginRoutine.getActiveTodoUser();
+                    activeUser.updateCategoryHashSet(activeUser.getUserTodoList());
                     userSession = loginRoutine.getUserSession();
                     try{
+                        request.setAttribute("todoUserCategorySet", activeUser.getCategorySet());
                         request.setAttribute("todoList", activeUser.getUserTodoList());
+                        context.setAttribute("name", activeUser.getUserName());
                         request.getRequestDispatcher("/todolist.jsp").forward(request, response);
                     }
                     catch (IOException e){

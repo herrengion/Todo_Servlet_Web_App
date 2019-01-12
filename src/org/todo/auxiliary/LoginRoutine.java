@@ -51,8 +51,8 @@ public class LoginRoutine {
         //Check for user in database
         for (int i = 0; i < todoUserList.size(); i++)
         {
-            enteredUserName="test";
-            enteredPassWord="123";
+            //enteredUserName="test";
+            //enteredPassWord="123";
             if (todoUserList.get(i).getUserName().equals(enteredUserName)) {
                 if (todoUserList.get(i).getPassWord().equals(enteredPassWord)) {
 
@@ -60,7 +60,8 @@ public class LoginRoutine {
                     loginSuccessful(todoUserList, i);
                     initializeUserSession(request, response);
                     invalidLogin = false;
-                        request.setAttribute("loginMessage", "Hello Again!");
+                    firstTimeLogin = false;
+                    request.setAttribute("loginMessage", "Hello Again!");
 
                 }
                 else{
