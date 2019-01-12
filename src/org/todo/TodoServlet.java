@@ -13,6 +13,7 @@ import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -23,12 +24,15 @@ public class TodoServlet extends HttpServlet {
     //Fields:
     //------------------------------------------------------------------------------------------------------------------
     public static final String DATA_PATH_WEB_INF = "/WEB-INF";
+    public static final String DATA_PATH_WEB_INF_DATA = DATA_PATH_WEB_INF+"/data";
+    public static final String DATA_PATH_WEB_INF_USER_DATA = DATA_PATH_WEB_INF_DATA+"/UserData";
     //Active Session
     HttpSession userSession;
 
     //Active User
     private TodoUser activeUser = new TodoUser();
-
+    private File xmlSchemaFile;
+    private File userToDoXmlFile;
     //All User Data
     /* TODO: Need to be persisted and still available after reboot of server -> store in File or XML too*/
     private ArrayList<TodoUser> todoUserList = new ArrayList<>();
@@ -46,16 +50,32 @@ public class TodoServlet extends HttpServlet {
 
 
         String activeRedirectPath = request.getParameter("redirect");
-
+        ServletContext context = getServletContext();
+        String contextPath = context.getRealPath("/");
 
             switch (activeRedirectPath) {
 
                 case "login":
-                    ServletContext context = getServletContext();
-                    String contextPath = context.getRealPath("/");
                     LoginRoutine loginRoutine = new LoginRoutine(request, response, todoUserList, contextPath);
                     activeUser = loginRoutine.getActiveTodoUser();
+                    userToDoXmlFile = new File(contextPath +
+                            DATA_PATH_WEB_INF_USER_DATA +
+                            "/" + activeUser.getUserName() + "/ToDo_list_" + activeUser.getUserName()+".xml");
+                    xmlSchemaFile = new File(contextPath + DATA_PATH_WEB_INF_DATA + "/ToDo.xsd");
+                    activeUser.setUserTodoList(userToDoXmlFile, xmlSchemaFile);
+
+                    activeUser = loginRoutine.getActiveTodoUser();
                     userSession = loginRoutine.getUserSession();
+                    try{
+                        request.setAttribute("todoList", activeUser.getUserTodoList());
+                        request.getRequestDispatcher("/todolist.jsp").forward(request, response);
+                    }
+                    catch (IOException e){
+
+                    }
+                    catch (ServletException e){
+
+                    }
                     break;
 
                 case "newTodo":
@@ -76,6 +96,11 @@ public class TodoServlet extends HttpServlet {
 
                 case "todoCompletedToggle":
                     TodoCompletedToggle todoCompletedToggle = new TodoCompletedToggle(request, response, activeUser);
+                    break;
+
+                case "sortRoutine":
+                    System.out.println("sort routine entered");
+
                     break;
 
                 default:

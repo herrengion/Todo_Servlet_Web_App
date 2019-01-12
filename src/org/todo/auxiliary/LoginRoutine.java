@@ -2,23 +2,19 @@ package org.todo.auxiliary;
 
 import org.todo.*;
 
-import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 
-import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
-
 public class LoginRoutine {
-    public static final String DATA_PATH_WEB_INF_USER_DATA = "/WEB-INF/data/UserData";
+    public static final String DATA_PATH_WEB_INF_DATA = "/WEB-INF/data/";
+    public static final String DATA_PATH_WEB_INF_USER_DATA = DATA_PATH_WEB_INF_DATA+"/UserData";
     private File templateUserToDoXml;
     //Fields
     private HttpSession userSession;
@@ -27,7 +23,8 @@ public class LoginRoutine {
     private String enteredPassWord;
     private boolean firstTimeLogin = true;
     private boolean invalidLogin = true;
-    private String serveletContextPath;
+    private String servletContextPath;
+    private File userToDoXmlFile;
 
 
     //Constructor
@@ -36,7 +33,7 @@ public class LoginRoutine {
         //Load entered username and pw
         enteredUserName = request.getParameter("name");
         enteredPassWord = request.getParameter("pw");
-        this.serveletContextPath = servletContextPath;
+        this.servletContextPath = servletContextPath;
 
         //if username is empty or not valid
         if ((enteredUserName == null || enteredUserName.isEmpty())) {
@@ -52,22 +49,19 @@ public class LoginRoutine {
         }
 
         //Check for user in database
-        for (int i = 0; i < todoUserList.size(); i++) {
+        for (int i = 0; i < todoUserList.size(); i++)
+        {
+            enteredUserName="test";
+            enteredPassWord="123";
             if (todoUserList.get(i).getUserName().equals(enteredUserName)) {
                 if (todoUserList.get(i).getPassWord().equals(enteredPassWord)) {
+
+
                     loginSuccessful(todoUserList, i);
                     initializeUserSession(request, response);
                     invalidLogin = false;
-                    try {
                         request.setAttribute("loginMessage", "Hello Again!");
-                        request.getRequestDispatcher("/todolist.jsp").forward(request, response);
-                    }
-                    catch (IOException e){
 
-                    }
-                    catch (ServletException e){
-
-                    }
                 }
                 else{
                     //password incorrect
@@ -89,19 +83,12 @@ public class LoginRoutine {
         }
 
         if(firstTimeLogin){
-            templateUserToDoXml = new File(serveletContextPath + DATA_PATH_WEB_INF_USER_DATA + "/ToDoTemplate.xml");
+            setGeneralXmlFileParameters();
             activeTodoUser = initializeUser(todoUserList);
+
             initializeUserSession(request, response);
-            try {
-                request.setAttribute("loginMessage", "First Time Login!");
-                request.getRequestDispatcher("/todolist.jsp").forward(request, response);
-            }
-            catch (IOException e){
+            request.setAttribute("loginMessage", "First Time Login!");
 
-            }
-            catch (ServletException e){
-
-            }
         }
     }
 
@@ -110,24 +97,29 @@ public class LoginRoutine {
     private void loginSuccessful(ArrayList<TodoUser> todoUserList, int id){
         activeTodoUser.setUserName(todoUserList.get(id).getUserName());
         activeTodoUser.setPassWord(todoUserList.get(id).getPassWord());
-        activeTodoUser.setUserTodoList(todoUserList.get(id).getUserTodoList());
     }
     //Exception handling Todo
     private void loginFailed(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException{
         request.getRequestDispatcher("/incorrectlogin.html").forward(request, response);
     }
 
+    private void setGeneralXmlFileParameters()
+    {
+        templateUserToDoXml = new File(this.servletContextPath + DATA_PATH_WEB_INF_USER_DATA + "/ToDoTemplate.xml");
+    }
+
     private TodoUser initializeUser(ArrayList<TodoUser> todoUserList){
         TodoUser newUser = new TodoUser(enteredUserName, enteredPassWord);
+        File newUserToDoXml = null;
         todoUserList.add(newUser);
         // Create new empty template to persist his todos
         System.out.println("New User is: "+enteredUserName);
-        System.out.println("Initial context path: "+serveletContextPath);
-        File newDirUserData = new File(serveletContextPath + DATA_PATH_WEB_INF_USER_DATA + "/" + enteredUserName);
+        System.out.println("Initial context path: "+ servletContextPath);
+        File newDirUserData = new File(servletContextPath + DATA_PATH_WEB_INF_USER_DATA + "/" + enteredUserName);
         if(newDirUserData.mkdirs())
         {
             try {
-                File newUserToDoXml = new File(serveletContextPath +
+                newUserToDoXml = new File(servletContextPath +
                         DATA_PATH_WEB_INF_USER_DATA +
                         "/" + enteredUserName + "/ToDo_list_" + enteredUserName+".xml");
                 Files.copy(templateUserToDoXml.toPath(),newUserToDoXml.toPath());
@@ -136,6 +128,7 @@ public class LoginRoutine {
             } catch (IOException e) {
                 e.printStackTrace();
             }
+            userToDoXmlFile = newUserToDoXml;
 
         }
         else if(newDirUserData.isDirectory())
@@ -155,7 +148,7 @@ public class LoginRoutine {
             userSession = request.getSession();
             userSession.setAttribute("name", activeTodoUser.getUserName());
             userSession.setAttribute("pw", activeTodoUser.getPassWord());
-            userSession.setAttribute("todoList", activeTodoUser.getUserTodoList());
+            //userSession.setAttribute("todoList", activeTodoUser.getUserTodoList());
     }
     private String getEnteredUserName(){
         return enteredUserName;
