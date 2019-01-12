@@ -26,7 +26,7 @@ public class TodoUser {
     private LinkedList<TodoList.Todo> userTodoList = new LinkedList();
 
     //List to sort after attribute (maybe better as ArrayList?)
-    private LinkedList<TodoEntry> sortedUserTodoList = new LinkedList();
+    private LinkedList<TodoList.Todo> sortedUserTodoList = new LinkedList();
 
     private Set categorySet = new HashSet();
 
@@ -168,8 +168,8 @@ public class TodoUser {
 
     public void updateCategoryHashSet(LinkedList<TodoList.Todo> activeTodoList){
         categorySet.clear();
-        for(int i = 0; i<userTodoList.size(); i++){
-            categorySet.add(userTodoList.get(i).getCategory());
+        for(int i = 0; i<activeTodoList.size(); i++){
+            categorySet.add(activeTodoList.get(i).getCategory());
         }
     }
 
@@ -177,7 +177,22 @@ public class TodoUser {
         return categorySet;
     }
 
-    public LinkedList<TodoEntry> getSortedUserTodoList() {
+    public LinkedList<TodoList.Todo> getSortedUserTodoList() {
         return sortedUserTodoList;
+    }
+
+    public void setSortedUserTodoList(String category){
+        sortedUserTodoList.clear();
+        for(int i = 0; i<userTodoList.size(); i++){
+            if(userTodoList.get(i).getCategory().equals(category)){
+                sortedUserTodoList.add(userTodoList.get(i));
+            }
+        }
+        if(category.equals("all")){
+            sortedUserTodoList.clear();
+            for(int i = 0; i<userTodoList.size(); i++){
+                    sortedUserTodoList.add(userTodoList.get(i));
+            }
+        }
     }
 }

@@ -15,7 +15,10 @@ public class TodoCompletedToggle {
             activeUser.getUserTodoList().get(toggleTodoIdIntZeroed).setCompleted(true);
         }
         request.setAttribute("loginMessage", "Todo Item: '" + activeUser.getUserTodoList().get(toggleTodoIdIntZeroed).getTitle() + "' status changed!");
-        request.setAttribute("todoList", activeUser.getUserTodoList());
+        //request.setAttribute("todoList", activeUser.getUserTodoList());
+        request.setAttribute("todoList", activeUser.getSortedUserTodoList());
+        request.setAttribute("todoUserCategorySet", activeUser.getCategorySet());
+
         try {
             request.getRequestDispatcher("/todolist.jsp").forward(request, response);
         }

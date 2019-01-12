@@ -1,4 +1,5 @@
 package org.todo;
+import data.TodoList;
 import org.todo.auxiliary.*;
 
 
@@ -17,6 +18,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.LinkedList;
 
 @WebServlet("/todoFSM.do")
 public class TodoServlet extends HttpServlet {
@@ -61,7 +63,6 @@ public class TodoServlet extends HttpServlet {
 
         if(context.getAttribute("name") != null){
             activeUser.setUserName(context.getAttribute("name").toString());
-
         }
 
             switch (activeRedirectPath) {
@@ -113,6 +114,17 @@ public class TodoServlet extends HttpServlet {
                 case "sortRoutine":
                     System.out.println("sort routine entered");
 
+                    break;
+
+                case "category":
+                    String categoryName = request.getParameter("categoryList");
+                    System.out.println("category sort routine entered. Value: "+categoryName);
+                    activeUser.updateCategoryHashSet(activeUser.getUserTodoList());
+                    activeUser.setSortedUserTodoList(categoryName);
+                    LinkedList<TodoList.Todo> sortedUserTodoList = activeUser.getSortedUserTodoList();
+                    request.setAttribute("todoList", sortedUserTodoList);
+                    request.setAttribute("todoUserCategorySet", activeUser.getCategorySet());
+                    request.getRequestDispatcher("/todolist.jsp").forward(request, response);
                     break;
 
                 default:
