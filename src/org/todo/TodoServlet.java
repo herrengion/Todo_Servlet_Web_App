@@ -52,17 +52,17 @@ public class TodoServlet extends HttpServlet {
         String activeRedirectPath = request.getParameter("redirect");
         ServletContext context = getServletContext();
         String contextPath = context.getRealPath("/");
-        LoginRoutine loginRoutine = new LoginRoutine(request, response, todoUserList, contextPath);
-        activeUser = loginRoutine.getActiveTodoUser();
-        userToDoXmlFile = new File(contextPath +
-                DATA_PATH_WEB_INF_USER_DATA +
-                "/" + activeUser.getUserName() + "/ToDo_list_" + activeUser.getUserName()+".xml");
-        xmlSchemaFile = new File(contextPath + DATA_PATH_WEB_INF_DATA + "/ToDo.xsd");
-        activeUser.setUserTodoList(userToDoXmlFile, xmlSchemaFile);
+
             switch (activeRedirectPath) {
 
                 case "login":
-
+                    LoginRoutine loginRoutine = new LoginRoutine(request, response, todoUserList, contextPath);
+                    activeUser = loginRoutine.getActiveTodoUser();
+                    userToDoXmlFile = new File(contextPath +
+                            DATA_PATH_WEB_INF_USER_DATA +
+                            "/" + activeUser.getUserName() + "/ToDo_list_" + activeUser.getUserName()+".xml");
+                    xmlSchemaFile = new File(contextPath + DATA_PATH_WEB_INF_DATA + "/ToDo.xsd");
+                    activeUser.setUserTodoList(userToDoXmlFile, xmlSchemaFile);
 
                     activeUser = loginRoutine.getActiveTodoUser();
                     userSession = loginRoutine.getUserSession();
