@@ -97,7 +97,18 @@ public class TodoUser {
     //Generic Get Method for User Todos
     public TodoList.Todo getTodo(int todoId)
     {
-        return userTodoList.get(todoId);
+        userTodoList  = getUserTodoList();
+        Iterator<TodoList.Todo> iterator = userTodoList.iterator();
+        while (iterator.hasNext()) {
+            TodoList.Todo thisTodo = iterator.next();
+            System.out.println("This todo ID:"+thisTodo.getId());
+            if(thisTodo.getId() == todoId)
+            {
+                return thisTodo;
+            }
+        }
+        //Throw exception with message: Invalid todo index
+        return null;
     }
 
     public void deleteTodoEntry(int todoId)
@@ -159,9 +170,22 @@ public class TodoUser {
     {
         userTodoList.get(todoId).setCategory(newCategory);
     }
-    public void updateTodoCompleted(int todoId, boolean newStatus)
+    public void updateTodoCompleted(Long todoId, boolean newStatus)
     {
-        userTodoList.get(todoId).setCompleted(newStatus);
+//        this.todosObj.getTodo().iterator()
+        for (final ListIterator<TodoList.Todo> iterator = this.todosObj.getTodo().listIterator(); iterator.hasNext();) {
+            final TodoList.Todo thisTodo = iterator.next();
+            System.out.println("This todo ID:"+thisTodo.getId());
+
+            if(thisTodo.getId().equals(todoId))
+            {
+                thisTodo.setCompleted(newStatus);
+                iterator.remove();
+                iterator.add(thisTodo);
+                break;
+            }
+
+        }
     }
     public void updateTodoDueDate(int todoId, String dueDate) throws ParseException {
         DueDate dueDateObj = new DueDate(null);

@@ -123,6 +123,7 @@
                 <form action="todoFSM.do" method="post">
                     <input type="hidden" name="redirect" value="todoCompletedToggle"/>
                     <input type="hidden" name="todoID" value=${todoInstance.id}>
+                    <input type="hidden" name="todoStatus" value=${todoInstance.completed}>
                     <input type="submit" value="Change Status"/></form></td>
             <td>
                 <form action="todoFSM.do" method="post">

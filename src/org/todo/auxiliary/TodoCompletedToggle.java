@@ -6,18 +6,25 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 public class TodoCompletedToggle {
+    private TodoUser todoUser;
+
     public TodoCompletedToggle(HttpServletRequest request, HttpServletResponse response, TodoUser activeUser){
-        String toggleTodoId = request.getParameter("todoID");
-        int toggleTodoIdIntZeroed = Integer.parseInt(toggleTodoId) - 1;
-        if (activeUser.getUserTodoList().get(toggleTodoIdIntZeroed).isCompleted()) {
-            activeUser.getUserTodoList().get(toggleTodoIdIntZeroed).setCompleted(false);
-        } else {
-            activeUser.getUserTodoList().get(toggleTodoIdIntZeroed).setCompleted(true);
-        }
-        request.setAttribute("loginMessage", "Todo Item: '" + activeUser.getUserTodoList().get(toggleTodoIdIntZeroed).getTitle() + "' status changed!");
+        this.todoUser = activeUser;
+
+        String todoIdString = request.getParameter("todoID");
+        String todoStatusString = request.getParameter("todoStatus");
+        Integer todoId = Integer.parseInt(todoIdString);
+        /* Status index is false = 0 and true if it is 1 ()*/
+        boolean todoStatusBoolean = todoStatusString.equals("false") ? true : false;
+
+
+        todoUser.updateTodoCompleted(new Long(todoId), todoStatusBoolean);
+        todoUser.updateTodo();
+        request.setAttribute("redirect", "showTodos");
+        request.setAttribute("loginMessage", "Todo Item: '" + todoUser.getTodo(todoId).getTitle() + "' status changed!");
         //request.setAttribute("todoList", activeUser.getUserTodoList());
-        request.setAttribute("todoList", activeUser.getSortedUserTodoList());
-        request.setAttribute("todoUserCategorySet", activeUser.getCategorySet());
+        request.setAttribute("todoList", todoUser.getUserTodoList());
+        request.setAttribute("todoUserCategorySet", todoUser.getCategorySet());
 
         try {
             request.getRequestDispatcher("/todolist.jsp").forward(request, response);
