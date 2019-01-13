@@ -16,6 +16,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 import java.io.File;
 import java.io.IOException;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.LinkedList;
@@ -111,7 +112,11 @@ public class TodoServlet extends HttpServlet {
                     break;
 
                 case "fromUpdateTodo":
-                    FromUpdateTodo fromUpdateTodo = new FromUpdateTodo(request, response, activeUser);
+                    try {
+                        FromUpdateTodo fromUpdateTodo = new FromUpdateTodo(request, response, activeUser);
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
                     break;
 
                 case "discardTodo":

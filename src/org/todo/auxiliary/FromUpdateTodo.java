@@ -5,29 +5,30 @@ import org.todo.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.xml.datatype.XMLGregorianCalendar;
+import java.text.ParseException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 public class FromUpdateTodo {
+    private TodoUser todoUser;
 
-    public FromUpdateTodo(HttpServletRequest request, HttpServletResponse response, TodoUser activeUser){
+    public FromUpdateTodo(HttpServletRequest request, HttpServletResponse response, TodoUser activeUser) throws ParseException {
+        this.todoUser = activeUser;
         String updatedTodoId = request.getParameter("todoId");
-        int updatedTodoIdIntZeroed = Integer.parseInt(updatedTodoId) - 1;
-
+        Long updatedTodoIdLong = Long.parseLong(updatedTodoId);
         String updatedTodoTitle = request.getParameter("newTodo");
-
         String updatedDueDateString = request.getParameter("dueDate");
-        DateTimeFormatter frm = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        XMLGregorianCalendar xmlGregorianCalendar = activeUser.getUserTodoList().get(updatedTodoIdIntZeroed).getDueDate();
         String updatedCategoryString = request.getParameter("category");
         String updatedHighPriority = request.getParameter("priority");
-        activeUser.getUserTodoList().get(updatedTodoIdIntZeroed).setTitle(updatedTodoTitle);
-        activeUser.getUserTodoList().get(updatedTodoIdIntZeroed).setDueDate(xmlGregorianCalendar);
-        activeUser.getUserTodoList().get(updatedTodoIdIntZeroed).setCategory(updatedCategoryString);
+        // Fix this as I did for the dueDate
+
+        todoUser.updateTodoTitle(updatedTodoIdLong,updatedTodoTitle);
+        todoUser.updateTodoDueDate(updatedTodoIdLong,updatedDueDateString);
+        todoUser.updateTodoCategory(updatedTodoIdLong,updatedCategoryString);
         if (updatedHighPriority.equals("high")) {
-            activeUser.getUserTodoList().get(updatedTodoIdIntZeroed).setImportant(true);
+           todoUser.updateTodoImportant(updatedTodoIdLong,true);
         } else {
-            activeUser.getUserTodoList().get(updatedTodoIdIntZeroed).setImportant(false);
+            todoUser.updateTodoImportant(updatedTodoIdLong,false);
         }
         request.setAttribute("loginMessage", "Todo : '" + updatedTodoTitle + "' updated!");
         request.setAttribute("todoList", activeUser.getUserTodoList());

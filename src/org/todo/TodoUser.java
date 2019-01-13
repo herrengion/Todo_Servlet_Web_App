@@ -85,6 +85,7 @@ public class TodoUser {
     }
     public void addTodo(TodoList.Todo newTodo)
     {
+
         this.todosObj.getTodo().add(newTodo);
     }
     public void setUserTodoList(File userToDoFile, File schemaFile)
@@ -169,13 +170,13 @@ public class TodoUser {
     }
 
     //Specific Update Methods for User Todos
-    public void updateTodoTitle(int todoId, String newTitle)
+    public void updateTodoTitle(Long todoId, String newTitle)
     {
-        userTodoList.get(todoId).setTitle(newTitle);
+        getTodo(todoId).setTitle(newTitle);
     }
-    public void updateTodoCategory(int todoId, String newCategory)
+    public void updateTodoCategory(Long todoId, String newCategory)
     {
-        userTodoList.get(todoId).setCategory(newCategory);
+        getTodo(todoId).setCategory(newCategory);
     }
     public void updateTodoCompleted(Long todoId, boolean newStatus)
     {
@@ -193,14 +194,14 @@ public class TodoUser {
 
         }
     }
-    public void updateTodoDueDate(int todoId, String dueDate) throws ParseException {
+    public void updateTodoDueDate(Long todoId, String dueDate) throws ParseException {
         DueDate dueDateObj = new DueDate(null);
         dueDateObj.setDateByString(dueDate);
-        userTodoList.get(todoId).setDueDate(dueDateObj.getXmlGregorianCalendar());
+       getTodo(todoId).setDueDate(dueDateObj.getXmlGregorianCalendar());
     }
-    public void updateTodoImportant(int todoId, boolean newStatus)
+    public void updateTodoImportant(Long todoId, boolean newStatus)
     {
-        userTodoList.get(todoId).setImportant(newStatus);
+        getTodo(todoId).setImportant(newStatus);
     }
 
     public void updateCategoryHashSet(LinkedList<TodoList.Todo> activeTodoList){
