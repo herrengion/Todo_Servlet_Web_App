@@ -36,7 +36,7 @@ public class TodoServlet extends HttpServlet {
     /* TODO: Multiple users is not working and logged in user can be high chaked and inserting new todo causes troubles
     * when other page is reloaded. Adding Todos from other user to both xml files. Probably there are other problems when
      * with the class data and shall be initialized in method each time it will pass.*/
-    private TodoUser activeUser = new TodoUser();
+//    private
     private File xmlSchemaFile;
     private File userToDoXmlFile;
     //All User Data
@@ -53,7 +53,7 @@ public class TodoServlet extends HttpServlet {
     //------------------------------------------------------------------------------------------------------------------
 
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-
+        TodoUser activeUser = new TodoUser();
 
         String activeRedirectPath = request.getParameter("redirect");
         ServletContext context = getServletContext();
@@ -66,6 +66,14 @@ public class TodoServlet extends HttpServlet {
 
         if(context.getAttribute("name") != null){
             activeUser.setUserName(context.getAttribute("name").toString());
+        }
+        if(!activeRedirectPath.equals("login"))
+        {
+            userToDoXmlFile = new File(contextPath +
+                    DATA_PATH_WEB_INF_USER_DATA +
+                    "/" + activeUser.getUserName() + "/ToDo_list_" + activeUser.getUserName()+".xml");
+            xmlSchemaFile = new File(contextPath + DATA_PATH_WEB_INF_DATA + "/ToDo.xsd");
+            activeUser.setUserTodoList(userToDoXmlFile, xmlSchemaFile);
         }
 
             switch (activeRedirectPath) {
@@ -80,27 +88,22 @@ public class TodoServlet extends HttpServlet {
                     activeUser.setUserTodoList(userToDoXmlFile, xmlSchemaFile);
                     activeUser.updateCategoryHashSet(activeUser.getUserTodoList());
                     userSession = loginRoutine.getUserSession();
-                    try{
-                        request.setAttribute("todoUserCategorySet", activeUser.getCategorySet());
-                        request.setAttribute("todoList", activeUser.getUserTodoList());
-                        context.setAttribute("name", activeUser.getUserName());
-                        request.getRequestDispatcher("/todolist.jsp").forward(request, response);
-                    }
-                    catch (IOException e){
+                    request.setAttribute("todoUserCategorySet", activeUser.getCategorySet());
+                    request.setAttribute("todoList", activeUser.getUserTodoList());
+                    context.setAttribute("name", activeUser.getUserName());
+                    request.getRequestDispatcher("/todolist.jsp").forward(request, response);
 
-                    }
-                    catch (ServletException e){
-
-                    }
                     break;
 
+                case "showTodos":
+                    request.setAttribute("todoUserCategorySet", activeUser.getCategorySet());
+                    request.setAttribute("todoList", activeUser.getUserTodoList());
+                    context.setAttribute("name", activeUser.getUserName());
+                    request.getRequestDispatcher("/todolist.jsp").forward(request, response);
+
                 case "newTodo":
-                    userToDoXmlFile = new File(contextPath +
-                            DATA_PATH_WEB_INF_USER_DATA +
-                            "/" + activeUser.getUserName() + "/ToDo_list_" + activeUser.getUserName()+".xml");
-                    xmlSchemaFile = new File(contextPath + DATA_PATH_WEB_INF_DATA + "/ToDo.xsd");
-                    activeUser.setUserTodoList(userToDoXmlFile, xmlSchemaFile);
                     NewTodo newTodo = new NewTodo(request, response, activeUser);
+
                     break;
 
                 case "toUpdateTodo":
@@ -121,7 +124,6 @@ public class TodoServlet extends HttpServlet {
 
                 case "sortRoutine":
                     System.out.println("sort routine entered");
-
                     break;
 
                 case "category":
