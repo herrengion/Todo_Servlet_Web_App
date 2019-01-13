@@ -33,6 +33,9 @@ public class TodoServlet extends HttpServlet {
     HttpSession userSession;
 
     //Active User
+    /* TODO: Multiple users is not working and logged in user can be high chaked and inserting new todo causes troubles
+    * when other page is reloaded. Adding Todos from other user to both xml files. Probably there are other problems when
+     * with the class data and shall be initialized in method each time it will pass.*/
     private TodoUser activeUser = new TodoUser();
     private File xmlSchemaFile;
     private File userToDoXmlFile;
