@@ -6,16 +6,17 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 public class DiscardTodo {
+    private TodoUser todoUser;
+
     public DiscardTodo(HttpServletRequest request, HttpServletResponse response, TodoUser activeUser){
+        this.todoUser = activeUser;
         String discardTodoId = request.getParameter("todoID");
-        int discardTodoIdIntZeroed = Integer.parseInt(discardTodoId) - 1;
-        String discardedTodoTitle = activeUser.getUserTodoList().get(discardTodoIdIntZeroed).getTitle();
-        activeUser.getUserTodoList().remove(discardTodoIdIntZeroed);
-        for (int i = activeUser.getUserTodoList().size() - 1; i >= 0; i--) {
-            activeUser.getUserTodoList().get(i).setId((long) (i + 1));
-        }
+        Long discardTodoIdInt = Long.parseLong(discardTodoId);
+        String discardedTodoTitle = todoUser.getTodo(discardTodoIdInt).getTitle();
+        todoUser.deleteTodoEntry(discardTodoIdInt);
+        todoUser.updateTodo();
         request.setAttribute("loginMessage", "Todo Item: '" + discardedTodoTitle + "' discarded!");
-        request.setAttribute("todoList", activeUser.getUserTodoList());
+        request.setAttribute("todoList", todoUser.getUserTodoList());
         try {
             request.getRequestDispatcher("/todolist.jsp").forward(request, response);
         }

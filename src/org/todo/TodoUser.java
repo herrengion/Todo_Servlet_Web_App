@@ -95,14 +95,14 @@ public class TodoUser {
     }
 
     //Generic Get Method for User Todos
-    public TodoList.Todo getTodo(int todoId)
+    public TodoList.Todo getTodo(Long todoId)
     {
         userTodoList  = getUserTodoList();
         Iterator<TodoList.Todo> iterator = userTodoList.iterator();
         while (iterator.hasNext()) {
             TodoList.Todo thisTodo = iterator.next();
             System.out.println("This todo ID:"+thisTodo.getId());
-            if(thisTodo.getId() == todoId)
+            if(thisTodo.getId().equals(todoId))
             {
                 return thisTodo;
             }
@@ -111,11 +111,18 @@ public class TodoUser {
         return null;
     }
 
-    public void deleteTodoEntry(int todoId)
+    public void deleteTodoEntry(Long todoId)
     {
-        userTodoList.remove(todoId);
-        for(int i=0;i<userTodoList.size();i++){
-            userTodoList.get(i).setId((long) i);
+        for (final ListIterator<TodoList.Todo> iterator = this.todosObj.getTodo().listIterator(); iterator.hasNext();) {
+            final TodoList.Todo thisTodo = iterator.next();
+            System.out.println("Delete todo ID:"+thisTodo.getId());
+
+            if(thisTodo.getId().equals(todoId))
+            {
+                iterator.remove();
+                break;
+            }
+
         }
     }
     private void convertTodoXmlToLinkedList()
@@ -172,7 +179,6 @@ public class TodoUser {
     }
     public void updateTodoCompleted(Long todoId, boolean newStatus)
     {
-//        this.todosObj.getTodo().iterator()
         for (final ListIterator<TodoList.Todo> iterator = this.todosObj.getTodo().listIterator(); iterator.hasNext();) {
             final TodoList.Todo thisTodo = iterator.next();
             System.out.println("This todo ID:"+thisTodo.getId());

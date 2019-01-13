@@ -13,12 +13,12 @@ public class TodoCompletedToggle {
 
         String todoIdString = request.getParameter("todoID");
         String todoStatusString = request.getParameter("todoStatus");
-        Integer todoId = Integer.parseInt(todoIdString);
+        Long todoId = Long.parseLong(todoIdString);
         /* Status index is false = 0 and true if it is 1 ()*/
         boolean todoStatusBoolean = todoStatusString.equals("false") ? true : false;
 
 
-        todoUser.updateTodoCompleted(new Long(todoId), todoStatusBoolean);
+        todoUser.updateTodoCompleted(todoId, todoStatusBoolean);
         todoUser.updateTodo();
         request.setAttribute("redirect", "showTodos");
         request.setAttribute("loginMessage", "Todo Item: '" + todoUser.getTodo(todoId).getTitle() + "' status changed!");
