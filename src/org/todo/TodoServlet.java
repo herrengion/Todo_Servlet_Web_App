@@ -1,6 +1,8 @@
 package org.todo;
 import data.TodoList;
 import org.todo.auxiliary.*;
+import org.xml.sax.SAXException;
+import users.UserList;
 
 
 //Done: create Classes for FSM functions, front controller paradigma (bis samstag)
@@ -14,6 +16,12 @@ import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
+import javax.xml.XMLConstants;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Unmarshaller;
+import javax.xml.validation.Schema;
+import javax.xml.validation.SchemaFactory;
 import java.io.File;
 import java.io.IOException;
 import java.text.ParseException;
@@ -40,9 +48,13 @@ public class TodoServlet extends HttpServlet {
 //    private
     private File xmlSchemaFile;
     private File userToDoXmlFile;
+
+    private File xmlUserFile;
+    private File xmlUserFileSchema;
     //All User Data
     /* TODO: Need to be persisted and still available after reboot of server -> store in File or XML too*/
-    private ArrayList<TodoUser> todoUserList = new ArrayList<>();
+    private LinkedList<TodoUser> todoUserList = new LinkedList<>();
+    private UserList userDB = new UserList();
 
     //------------------------------------------------------------------------------------------------------------------
     //HTTP Methods:
@@ -80,7 +92,28 @@ public class TodoServlet extends HttpServlet {
             switch (activeRedirectPath) {
 
                 case "login":
-                    LoginRoutine loginRoutine = new LoginRoutine(request, response, todoUserList, contextPath);
+
+                    xmlUserFile = new File(contextPath+DATA_PATH_WEB_INF_DATA+"/UserList.xml");
+                    xmlUserFileSchema = new File(contextPath+DATA_PATH_WEB_INF_DATA+"/UserList.xsd");
+
+                    /*try{
+                        JAXBContext jc = JAXBContext.newInstance(xmlUserFile.toString());
+                        Unmarshaller unmarshaller = jc.createUnmarshaller();
+                        SchemaFactory schemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
+                        Schema schema = schemaFactory.newSchema(xmlUserFileSchema);
+                        unmarshaller.setSchema(schema);
+                        //todoUserList = (LinkedList<TodoUser>) unmarshaller.unmarshal(xmlUserFile);
+                        userDB = (UserList) unmarshaller.unmarshal(xmlUserFile);
+
+                    }
+                    catch(JAXBException | SAXException e)
+                    //catch(JAXBException e)
+                    {
+                        e.printStackTrace();
+                        System.err.println(" User list is not possible to read!");
+                    }*/
+
+                    LoginRoutine loginRoutine = new LoginRoutine(request, response, userDB, todoUserList, contextPath);
                     activeUser = loginRoutine.getActiveTodoUser();
                     userToDoXmlFile = new File(contextPath +
                             DATA_PATH_WEB_INF_USER_DATA +
@@ -136,8 +169,7 @@ public class TodoServlet extends HttpServlet {
                     System.out.println("category sort routine entered. Value: "+categoryName);
                     activeUser.updateCategoryHashSet(activeUser.getUserTodoList());
                     activeUser.setSortedUserTodoList(categoryName);
-                    LinkedList<TodoList.Todo> sortedUserTodoList = activeUser.getSortedUserTodoList();
-                    request.setAttribute("todoList", sortedUserTodoList);
+                    request.setAttribute("todoList", activeUser.getSortedUserTodoList());
                     request.setAttribute("todoUserCategorySet", activeUser.getCategorySet());
                     request.getRequestDispatcher("/todolist.jsp").forward(request, response);
                     break;

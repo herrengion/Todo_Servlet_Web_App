@@ -159,7 +159,11 @@
 <br/>
 <a href="newtodo.jsp">new Todo</a><br>
 <br>
-<select>
+<form action="todoFSM.do" method="post" id="filterCategory">
+    <input type="hidden" name="redirect" value="category">
+    <input type="submit" value="filter category">
+</form>
+<select name="categoryList" id= "categoryList" form="filterCategory">
     <optgroup label="Select category">
         <option value="all">all</option>
         <c:forEach items="${todoUserCategorySet}" var="todoUserCategorySet" >

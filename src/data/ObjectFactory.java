@@ -1,10 +1,3 @@
-//
-// Diese Datei wurde mit der JavaTM Architecture for XML Binding(JAXB) Reference Implementation, v2.2.8-b130911.1802 generiert 
-// Siehe <a href="http://java.sun.com/xml/jaxb">http://java.sun.com/xml/jaxb</a> 
-// Änderungen an dieser Datei gehen bei einer Neukompilierung des Quellschemas verloren. 
-// Generiert: 2018.12.22 um 03:33:19 PM CET 
-//
-
 
 package data;
 
@@ -37,19 +30,19 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link TodoList }
+     * Create an instance of {@link Todos }
      * 
      */
-    public TodoList createTodoList() {
-        return new TodoList();
+    public Todos createTodos() {
+        return new Todos();
     }
 
     /**
-     * Create an instance of {@link TodoList.Todo }
+     * Create an instance of {@link Todos.Todo }
      * 
      */
-    public TodoList.Todo createTodoListTodo() {
-        return new TodoList.Todo();
+    public Todos.Todo createTodosTodo() {
+        return new Todos.Todo();
     }
 
 }

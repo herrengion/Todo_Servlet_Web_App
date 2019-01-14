@@ -1,20 +1,32 @@
 package org.todo.auxiliary;
 
+import data.TodoList;
+import users.ObjectFactory;
+import users.UserList;
 import org.todo.*;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.xml.XMLConstants;
+import javax.xml.bind.*;
+import javax.xml.validation.Schema;
+import javax.xml.validation.SchemaFactory;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.util.ArrayList;
+import java.util.LinkedList;
+
 
 public class LoginRoutine {
     public static final String DATA_PATH_WEB_INF_DATA = "/WEB-INF/data/";
     public static final String DATA_PATH_WEB_INF_USER_DATA = DATA_PATH_WEB_INF_DATA+"/UserData";
+
+    public static final String SRC_PATH = "/src/data/";
+
     private File templateUserToDoXml;
     //Fields
     private HttpSession userSession;
@@ -28,7 +40,7 @@ public class LoginRoutine {
 
 
     //Constructor
-    public LoginRoutine(HttpServletRequest request, HttpServletResponse response, ArrayList<TodoUser> todoUserList, String servletContextPath){
+    public LoginRoutine(HttpServletRequest request, HttpServletResponse response, UserList userDB, LinkedList<TodoUser> todoUserList, String servletContextPath){
 
         //Load entered username and pw
         enteredUserName = request.getParameter("name");
@@ -49,6 +61,18 @@ public class LoginRoutine {
         }
 
         //Check for user in database
+        for (int i = 0; i<userDB.getUser().size(); i++){
+            if(userDB.getUser().get(i).getUsername().equals(enteredUserName)){
+                if(userDB.getUser().get(i).getPassword().equals(enteredPassWord)){
+                    loginSuccessful(userDB, todoUserList, i);
+                    initializeUserSession(request, response);
+                    invalidLogin = false;
+                    firstTimeLogin = false;
+                    request.setAttribute("loginMessage", "Hello Again!");
+                }
+            }
+        }
+        /*
         for (int i = 0; i < todoUserList.size(); i++)
         {
             //enteredUserName="test";
@@ -70,6 +94,7 @@ public class LoginRoutine {
                 }
             }
         }
+        */
 
         if(invalidLogin && (!firstTimeLogin)){
             try {
@@ -85,19 +110,21 @@ public class LoginRoutine {
 
         if(firstTimeLogin){
             setGeneralXmlFileParameters();
-            activeTodoUser = initializeUser(todoUserList);
+            activeTodoUser = initializeUser(todoUserList, userDB);
 
             initializeUserSession(request, response);
             request.setAttribute("loginMessage", "First Time Login!");
+
+
 
         }
     }
 
 
     //Methods
-    private void loginSuccessful(ArrayList<TodoUser> todoUserList, int id){
-        activeTodoUser.setUserName(todoUserList.get(id).getUserName());
-        activeTodoUser.setPassWord(todoUserList.get(id).getPassWord());
+    private void loginSuccessful(UserList userList, LinkedList<TodoUser> todoUserList, int id){
+        activeTodoUser.setUserName(userList.getUser().get(id).getUsername());
+        activeTodoUser.setPassWord(userList.getUser().get(id).getPassword());
     }
     //Exception handling Todo
     private void loginFailed(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException{
@@ -109,9 +136,40 @@ public class LoginRoutine {
         templateUserToDoXml = new File(this.servletContextPath + DATA_PATH_WEB_INF_USER_DATA + "/ToDoTemplate.xml");
     }
 
-    private TodoUser initializeUser(ArrayList<TodoUser> todoUserList){
-        TodoUser newUser = new TodoUser(enteredUserName, enteredPassWord);
+    private TodoUser initializeUser(LinkedList<TodoUser> todoUserList, UserList userDB){
+        UserList.User newXMLUser = new UserList.User();
+        newXMLUser.setUsername(enteredUserName);
+        newXMLUser.setPassword(enteredPassWord);
         File newUserToDoXml = null;
+
+        //here new user xml persistence
+        File userList = new File(servletContextPath+DATA_PATH_WEB_INF_DATA+"/UserList.xml");
+        File userListSchema = new File(servletContextPath+DATA_PATH_WEB_INF_DATA+"/UserList.xsd");
+        try{
+            JAXBContext jaxbContext = JAXBContext.newInstance(UserList.class);
+            Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
+            SchemaFactory schemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
+            Schema schema = schemaFactory.newSchema(userListSchema);
+            unmarshaller.setSchema(schema);
+            //UserList oldUserDB = (UserList) unmarshaller.unmarshal(userList);
+            newXMLUser.setId((long) userDB.getUser().size());
+            userDB.getUser().add(newXMLUser);
+
+            Marshaller marshaller = jaxbContext.createMarshaller();
+            marshaller.setSchema(schema);
+            marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+
+
+            marshaller.marshal(userDB, userList);
+        }
+        catch (Exception e){
+            System.err.println("initializeUser() Exception thrown");
+        }
+
+
+        //end new user xml persistence
+
+        TodoUser newUser = new TodoUser(enteredUserName, enteredPassWord);
         todoUserList.add(newUser);
         // Create new empty template to persist his todos
         System.out.println("New User is: "+enteredUserName);
@@ -140,7 +198,6 @@ public class LoginRoutine {
         {
             System.err.println("Not able to create directory for user: "+enteredUserName);
         }
-
         return newUser;
     }
 

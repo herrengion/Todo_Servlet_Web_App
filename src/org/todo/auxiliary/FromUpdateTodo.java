@@ -32,6 +32,8 @@ public class FromUpdateTodo {
         }
         request.setAttribute("loginMessage", "Todo : '" + updatedTodoTitle + "' updated!");
         request.setAttribute("todoList", activeUser.getUserTodoList());
+        todoUser.updateCategoryHashSet(todoUser.getUserTodoList());
+        request.setAttribute("todoUserCategorySet", activeUser.getCategorySet());
         try {
             request.getRequestDispatcher("/todolist.jsp").forward(request, response);
         }
