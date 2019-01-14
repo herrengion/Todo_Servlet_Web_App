@@ -11,7 +11,7 @@
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta charset="UTF-8">
-    <title>Main list - Todo</title>
+    <title>List Todo</title>
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
@@ -23,6 +23,21 @@
     <div class="w3-col w3-container m6 w3-black w3-padding w3-text-white w3-hide-small">
         <h1><b>Todo for you</b></h1>
     </div>
+
+    <div class="w3-col w3-container m6 w3-black w3-padding w3-text-white w3-hide-small">
+        <div class="w3-dropdown-hover w3-right">
+        <button class="w3-button w3-black w3-border-black w3-hover-green w3-hide-small">
+            <h3 class="w3-right">${name} <i class="fa fa-user-circle-o w3-xxxlarge w3-margin-left"></i></h3>
+        </button>
+            <div class="w3-dropdown-content w3-bar-block w3-border w3-hide-small">
+                <a href="login.jsp" class="w3-bar-item w3-button w3-black w3-text-white w3-hover-red" style='text-decoration:none;'>
+                    <i class="fa fa-sign-out w3-xlarge w3-margin-right"></i><b> log out</b>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <%-- Dropdown Click
 
     <div class="w3-col w3-container m6 w3-black w3-padding w3-text-white w3-hide-small">
         <div class="w3-dropdown-click w3-right">
@@ -47,6 +62,7 @@
             }
         }
     </script>
+    --%>
 </div>
 
 <%--small--%>
@@ -120,6 +136,7 @@
             <td>${todoInstance.important}</td>
             <td>${todoInstance.category}</td>
             <td>${todoInstance.completed}<br>
+
                 <form action="todoFSM.do" method="post">
                     <input type="hidden" name="redirect" value="todoCompletedToggle"/>
                     <input type="hidden" name="todoID" value=${todoInstance.id}>
