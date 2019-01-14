@@ -14,7 +14,6 @@
     <title>New Todo</title>
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel='stylesheet' href='https://use.fontawesome.com/releases/v5.6.3/css/all.css' integrity='sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/' crossorigin='anonymous'>
     <style>
         input[type=text], select, textarea {
             width: 100%;
@@ -84,7 +83,7 @@
         </h1>
     </div>
     <div class="w3-col w3-container m6 w3-green w3-padding w3-text-black w3-hide-medium w3-hide-large">
-        <h3><i class="fa fa-user-circle-o w3-xxlarge w3-margin-right"></i>${name} </h3>
+        <h3><i class="fa fa-user-circle-o w3-xlarge w3-margin-right"></i>${name} </h3>
     </div>
 </div>
 
@@ -93,22 +92,22 @@
 <div class="w3-row">
     <div class="w3-col m2 l3 w3-padding w3-hide-small"></div>
     <div class="w3-col m8 l6 w3-card-4 w3-light-grey">
-        <header class="w3-container w3-padding w3-indigo">
-            <h2 style="font-weight:bold;">
-                New Todo
-                <a href="todolist.jsp"><i class="w3-btn fas fa-arrow-circle-left w3-xxlarge w3-right w3-margin-left w3-text-white"></i></a>
-            </h2>
+        <header class="w3-container w3-indigo">
+            <h3 class="w3-margin-top">
+                <b>New Todo</b>
+                <a href="todolist.jsp"><i class="w3-btn fa fa-arrow-left w3-xlarge w3-right w3-margin-bottom w3-margin-left w3-text-white"></i></a>
+            </h3>
         </header>
 
         <div class="w3-container">
             <form action="todoFSM.do" method="post" class="w3-container  w3-text-indigo w3-margin">
                 <div>
                     <label><b>Todo:</b></label>
-                    <textarea class="w3-hover-grey" placeholder="Write your Todo here!" name="newTodo" rows="2" cols="20"></textarea>
+                    <textarea class="w3-hover-grey" placeholder="Write your Todo here!" name="newTodo" rows="2" cols="20" required></textarea>
                 </div>
                 <div class="w3-padding-16">
                     <label><b>Category:</b></label>
-                    <input class="w3-hover-grey" type="text"  name="category"/>
+                    <input class="w3-hover-grey" type="text"  name="category" required/>
                 </div>
                 <div class="w3-padding-16">
                     <label><b>Due Date:</b></label>

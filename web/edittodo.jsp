@@ -16,7 +16,7 @@
     <title>Edit Todo</title>
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel='stylesheet' href='https://use.fontawesome.com/releases/v5.6.3/css/all.css' integrity='sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/' crossorigin='anonymous'>
+
     <style>
         input[type=text], select, textarea {
             width: 100%;
@@ -91,9 +91,59 @@
 </div>
 
 <%--________________BODY_________________________--%>
-<%--<h1>Update Todo '${todoTitle}'</h1>
+<div class="w3-row w3-padding w3-hide-small"></div>
+<div class="w3-row">
+    <div class="w3-col m2 l3 w3-padding w3-hide-small"></div>
+    <div class="w3-col m8 l6 w3-card-4 w3-light-grey">
+        <header class="w3-container w3-indigo">
+            <h3 class="w3-margin-top">
+                <b>Edit Todo number ${todoId}</b>
+                <a href="todolist.jsp"><i class="w3-btn fa fa-arrow-left w3-xlarge w3-right w3-margin-bottom w3-margin-left w3-text-white"></i></a>
+            </h3>
+        </header>
+
+        <div class="w3-container">
+            <form action="todoFSM.do" method="post" class="w3-container  w3-text-indigo w3-margin">
+                <div>
+                    <label><b>Todo:</b></label>
+                    <textarea class="w3-hover-grey" name="newTodo" rows="2" cols="20" required>${todoTitle}</textarea>
+                </div>
+                <div class="w3-padding-16">
+                    <label><b>Category:</b></label>
+                    <input class="w3-hover-grey" type="text"  name="category" value="${category}" required/>
+                </div>
+                <div class="w3-padding-16">
+                    <label><b>Due Date:</b></label>
+                    <input type= "date" name="dueDate" value="${todoDate}"/>
+                </div>
+                <div class="w3-padding-16">
+                    <div>
+                        <input class="w3-radio" type="radio" name="priority" value="high" ${highPriority}>
+                        <label><b>High Priority</b></label>
+                    </div>
+                    <div>
+                        <input class="w3-radio" type="radio" name="priority" value="normal" ${normalPriority}>
+                        <label><b>Normal Priority</b></label>
+                    </div>
+                </div>
+                <div class="w3-center w3-padding-24">
+                    <input class="w3-btn w3-center w3-padding-large w3-green" style="width:50%;font-size:110%;font-weight:bold;" type="submit" value="Apply"/>
+                </div>
+                <input type="hidden" name="redirect" value="newTodo"/>
+            </form>
+        </div>
+    </div>
+    <div class="w3-col m2 l3 w3-padding"></div>
+    <input type="hidden" name="todoId" value="${todoId}">
+    <input type="hidden" name="redirect" value="fromUpdateTodo"/>
+</div>
+
+
+
+
+<%--<h1>Update Todo '${todoTitle}'</h1>--%>
 <%--<h2>hello ${name}</h2>--%>
-<form action="todoFSM.do" method="post">
+<%--<form action="todoFSM.do" method="post">
     Todo Title: <input type="text" name="newTodo" value="${todoTitle}"/><br/>
     Due Date: <input type= "date" name="dueDate" value="${todoDate}"/><br/>
     <input type="radio" name="priority" value="normal" ${normalPriority}> Normal Priority<br/>
@@ -104,7 +154,7 @@
     <input type="hidden" name="todoId" value="${todoId}">
     <input type="hidden" name="redirect" value="fromUpdateTodo"/>
 </form>
-
+--%>
 
 
 <%--________________Footer_________________________--%>
