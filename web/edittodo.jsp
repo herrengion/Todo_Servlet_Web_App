@@ -129,13 +129,12 @@
                 <div class="w3-center w3-padding-24">
                     <input class="w3-btn w3-center w3-padding-large w3-green" style="width:50%;font-size:110%;font-weight:bold;" type="submit" value="Apply"/>
                 </div>
-                <input type="hidden" name="redirect" value="newTodo"/>
+                <input type="hidden" name="todoId" value="${todoId}">
+                <input type="hidden" name="redirect" value="fromUpdateTodo"/>
             </form>
         </div>
     </div>
     <div class="w3-col m2 l3 w3-padding"></div>
-    <input type="hidden" name="todoId" value="${todoId}">
-    <input type="hidden" name="redirect" value="fromUpdateTodo"/>
 </div>
 
 
