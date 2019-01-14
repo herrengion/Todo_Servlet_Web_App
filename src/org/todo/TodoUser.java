@@ -1,5 +1,6 @@
 package org.todo;
 
+import data.ObjectFactory;
 import data.TodoList;
 import org.xml.sax.SAXException;
 
@@ -26,7 +27,9 @@ public class TodoUser {
     private File userTodoXmlFile;
     private File xmlSchemaTodoFile;
     //Make sure displayed List starts off at '1', not '0'!
-    private TodoList todosObj = new TodoList();
+    private ObjectFactory todoObjectFactory = new ObjectFactory();
+
+    private TodoList todosObj = todoObjectFactory.createTodoList();
     private LinkedList<TodoList.Todo> userTodoList = new LinkedList();
 
     //List to sort after attribute (maybe better as ArrayList?)
@@ -155,8 +158,8 @@ public class TodoUser {
             SchemaFactory schemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
             Schema schema = schemaFactory.newSchema(xmlSchemaTodoFile);
             marshaller.setSchema(schema);
-            //marshaller.setProperty(Marshaller.JAXB_ENCODING, "UTF-8");
             marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+            marshaller.setProperty(Marshaller.JAXB_ENCODING, "UTF-8");
             System.out.println("Store new todo object in file!"+userTodoXmlFile.getAbsolutePath());
             //OutputStream os = new FileOutputStream(userTodoXmlFile);
             marshaller.marshal(todosObj, userTodoXmlFile);
