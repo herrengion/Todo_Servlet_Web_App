@@ -51,8 +51,7 @@ public class LoginRoutine {
         //Check for user in database
         for (int i = 0; i < todoUserList.size(); i++)
         {
-            //enteredUserName="test";
-            //enteredPassWord="123";
+
             if (todoUserList.get(i).getUserName().equals(enteredUserName)) {
                 if (todoUserList.get(i).getPassWord().equals(enteredPassWord)) {
 
