@@ -6,26 +6,39 @@ import org.todo.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.text.ParseException;
 
 
 public class NewTodo {
     private TodoUser todoUser;
 
+    private String convertStringToUtf8(String inputString)
+    {
+        byte[] bytes = inputString.getBytes(StandardCharsets.ISO_8859_1);
+        return new String(bytes, StandardCharsets.UTF_8);
+    }
+
     //Constructor
     public NewTodo(HttpServletRequest request, HttpServletResponse response, TodoUser activeUser)
     {
         this.todoUser = activeUser;
+
         Long newId = Long.valueOf(1);
         String newTodoString = request.getParameter("newTodo");
         String dueDateString = request.getParameter("dueDate");
         String categoryString = request.getParameter("category");
         String highPriority = request.getParameter("priority");
 
+        /*Convert input values to correct type*/
+        newTodoString = convertStringToUtf8(newTodoString);
+        categoryString = convertStringToUtf8(categoryString);
+
         DueDate dueDateObj = new DueDate(null);
         dueDateObj.setDateByString(dueDateString);
         TodoList.Todo newToDoObj = new TodoList.Todo();
-        int size = activeUser.getUserTodoList().size();
+        int size = todoUser.getUserTodoList().size();
         if(size > 0)
         {
             TodoList.Todo lastToDo = todoUser.getUserTodoList().get(size - 1);
@@ -41,6 +54,7 @@ public class NewTodo {
         todoUser.updateTodo();
         request.setAttribute("loginMessage", "Todo added!");
         request.setAttribute("todoList", todoUser.getUserTodoList());
+        request.setAttribute("name", todoUser.getUserName());
         try {
             request.getRequestDispatcher("/todolist.jsp").forward(request, response);
         }
