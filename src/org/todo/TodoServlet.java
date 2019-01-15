@@ -38,10 +38,6 @@ public class TodoServlet extends HttpServlet {
     public static final String DATA_PATH_WEB_INF_USER_DATA = DATA_PATH_WEB_INF_DATA+"/UserData";
     //Active Session
 
-
-
-    private File xmlUserFile;
-    private File xmlUserFileSchema;
     //All User Data
     /* TODO: Need to be persisted and still available after reboot of server -> store in File or XML too*/
     private LinkedList<TodoUser> todoUserList = new LinkedList<>();
@@ -71,28 +67,33 @@ public class TodoServlet extends HttpServlet {
             System.out.println("Context: "+contextAttributeNames.nextElement());
         }
 
-        if(context.getAttribute("name") != null){
-            activeUser.setUserName(context.getAttribute("name").toString());
+        if(context.getAttribute("userSessionMap") != null){
+            userSessionMap = (Map) context.getAttribute("userSessionMap");
         }
         File xmlSchemaFile;
         File userToDoXmlFile;
         if(!activeRedirectPath.equals("login"))
         {
-            userToDoXmlFile = new File(contextPath +
-                    DATA_PATH_WEB_INF_USER_DATA +
-                    "/" + activeUser.getUserName() + "/ToDo_list_" + activeUser.getUserName()+".xml");
-            xmlSchemaFile = new File(contextPath + DATA_PATH_WEB_INF_DATA + "/ToDo.xsd");
-            activeUser.setUserTodoList(userToDoXmlFile, xmlSchemaFile);
+
             activeUser.initializeUserSession(request);
             userSession = activeUser.getUserSession();
             if(null != context.getAttribute("userSessionMap"))
             {
-                userSessionMap = (Map) context.getAttribute("userSessionMap");
+
                 if(userSessionMap.containsKey(userSession.getId()))
                 {
                     activeUser.setUserName((String) userSessionMap.get(userSession.getId()));
+                    userToDoXmlFile = new File(contextPath +
+                            DATA_PATH_WEB_INF_USER_DATA +
+                            "/" + activeUser.getUserName() + "/ToDo_list_" + activeUser.getUserName()+".xml");
+                    xmlSchemaFile = new File(contextPath + DATA_PATH_WEB_INF_DATA + "/ToDo.xsd");
+                    activeUser.setUserTodoList(userToDoXmlFile, xmlSchemaFile);
                     System.out.println("Got valid session from user: "+userSessionMap.get(userSession.getId()));
                 }
+//                else
+//                {
+//                    userSessionMap.put(userSession.getId(), activeUser.getUserName());
+//                }
             }
             else
             {
@@ -105,8 +106,8 @@ public class TodoServlet extends HttpServlet {
 
                 case "login":
 
-                    xmlUserFile = new File(contextPath+DATA_PATH_WEB_INF_DATA+"/UserList.xml");
-                    xmlUserFileSchema = new File(contextPath+DATA_PATH_WEB_INF_DATA+"/UserList.xsd");
+                    File xmlUserFile = new File(contextPath+DATA_PATH_WEB_INF_DATA+"/UserList.xml");
+                    File xmlUserFileSchema = new File(contextPath + DATA_PATH_WEB_INF_DATA + "/UserList.xsd");
 
                     /*try{
                         JAXBContext jc = JAXBContext.newInstance(xmlUserFile.toString());
