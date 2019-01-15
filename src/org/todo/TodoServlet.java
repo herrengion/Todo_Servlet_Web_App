@@ -17,9 +17,7 @@ import javax.servlet.http.*;
 import java.io.File;
 import java.io.IOException;
 import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.Enumeration;
-import java.util.LinkedList;
+import java.util.*;
 
 @WebServlet("/todoFSM.do")
 public class TodoServlet extends HttpServlet {
@@ -31,15 +29,8 @@ public class TodoServlet extends HttpServlet {
     public static final String DATA_PATH_WEB_INF_DATA = DATA_PATH_WEB_INF+"/data";
     public static final String DATA_PATH_WEB_INF_USER_DATA = DATA_PATH_WEB_INF_DATA+"/UserData";
     //Active Session
-    HttpSession userSession;
 
-    //Active User
-    /* TODO: Multiple users is not working and logged in user can be high chaked and inserting new todo causes troubles
-    * when other page is reloaded. Adding Todos from other user to both xml files. Probably there are other problems when
-     * with the class data and shall be initialized in method each time it will pass.*/
-//    private
-    private File xmlSchemaFile;
-    private File userToDoXmlFile;
+
     //All User Data
     /* TODO: Need to be persisted and still available after reboot of server -> store in File or XML too*/
     private ArrayList<TodoUser> todoUserList = new ArrayList<>();
@@ -55,10 +46,13 @@ public class TodoServlet extends HttpServlet {
 
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         TodoUser activeUser = new TodoUser();
+        HttpSession userSession;
 
         String activeRedirectPath = request.getParameter("redirect");
         ServletContext context = getServletContext();
         String contextPath = context.getRealPath("/");
+        Map userSessionMap = new HashMap<String, String>();
+
 
         Enumeration<String> contextAttributeNames = context.getAttributeNames();
         while(contextAttributeNames.hasMoreElements()){
@@ -68,6 +62,8 @@ public class TodoServlet extends HttpServlet {
         if(context.getAttribute("name") != null){
             activeUser.setUserName(context.getAttribute("name").toString());
         }
+        File xmlSchemaFile;
+        File userToDoXmlFile;
         if(!activeRedirectPath.equals("login"))
         {
             userToDoXmlFile = new File(contextPath +
@@ -75,20 +71,43 @@ public class TodoServlet extends HttpServlet {
                     "/" + activeUser.getUserName() + "/ToDo_list_" + activeUser.getUserName()+".xml");
             xmlSchemaFile = new File(contextPath + DATA_PATH_WEB_INF_DATA + "/ToDo.xsd");
             activeUser.setUserTodoList(userToDoXmlFile, xmlSchemaFile);
+            activeUser.initializeUserSession(request);
+            userSession = activeUser.getUserSession();
+            if(null != context.getAttribute("userSessionMap"))
+            {
+                userSessionMap = (Map) context.getAttribute("userSessionMap");
+                if(userSessionMap.containsKey(userSession.getId()))
+                {
+                    activeUser.setUserName((String) userSessionMap.get(userSession.getId()));
+                    System.out.println("Got valid session from user: "+userSessionMap.get(userSession.getId()));
+                }
+            }
+            else
+            {
+                activeRedirectPath = "login";
+            }
+
         }
 
             switch (activeRedirectPath) {
 
                 case "login":
-                    LoginRoutine loginRoutine = new LoginRoutine(request, response, todoUserList, contextPath);
+                    LoginRoutine loginRoutine = new LoginRoutine(request, response, todoUserList, context);
                     activeUser = loginRoutine.getActiveTodoUser();
+
                     userToDoXmlFile = new File(contextPath +
                             DATA_PATH_WEB_INF_USER_DATA +
                             "/" + activeUser.getUserName() + "/ToDo_list_" + activeUser.getUserName()+".xml");
                     xmlSchemaFile = new File(contextPath + DATA_PATH_WEB_INF_DATA + "/ToDo.xsd");
                     activeUser.setUserTodoList(userToDoXmlFile, xmlSchemaFile);
                     activeUser.updateCategoryHashSet(activeUser.getUserTodoList());
-                    userSession = loginRoutine.getUserSession();
+                    userSession = activeUser.getUserSession();
+                    if(!userSessionMap.containsKey(userSession.getId()))
+                    {
+                        userSessionMap.put(userSession.getId(), activeUser.getUserName());
+                        context.setAttribute("userSessionMap",userSessionMap);
+                        System.out.println("Session would exist already");
+                    }
                     request.setAttribute("todoUserCategorySet", activeUser.getCategorySet());
                     request.setAttribute("todoList", activeUser.getUserTodoList());
                     context.setAttribute("name", activeUser.getUserName());

@@ -2,6 +2,7 @@ package org.todo.auxiliary;
 
 import org.todo.*;
 
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -17,23 +18,24 @@ public class LoginRoutine {
     public static final String DATA_PATH_WEB_INF_USER_DATA = DATA_PATH_WEB_INF_DATA+"/UserData";
     private File templateUserToDoXml;
     //Fields
-    private HttpSession userSession;
     private TodoUser activeTodoUser = new TodoUser();
     private String enteredUserName;
     private String enteredPassWord;
     private boolean firstTimeLogin = true;
     private boolean invalidLogin = true;
     private String servletContextPath;
+    private ServletContext servletContext;
     private File userToDoXmlFile;
 
 
     //Constructor
-    public LoginRoutine(HttpServletRequest request, HttpServletResponse response, ArrayList<TodoUser> todoUserList, String servletContextPath){
+    public LoginRoutine(HttpServletRequest request, HttpServletResponse response, ArrayList<TodoUser> todoUserList, ServletContext servletContext){
 
         //Load entered username and pw
         enteredUserName = request.getParameter("name");
         enteredPassWord = request.getParameter("pw");
-        this.servletContextPath = servletContextPath;
+        this.servletContext  = servletContext;
+        this.servletContextPath = servletContext.getRealPath("/");
 
         //if username is empty or not valid
         if ((enteredUserName == null || enteredUserName.isEmpty())) {
@@ -56,8 +58,7 @@ public class LoginRoutine {
                 if (todoUserList.get(i).getPassWord().equals(enteredPassWord)) {
 
 
-                    loginSuccessful(todoUserList, i);
-                    initializeUserSession(request, response);
+                    loginSuccessful(todoUserList, i, request);
                     invalidLogin = false;
                     firstTimeLogin = false;
                     request.setAttribute("loginMessage", "Hello Again!");
@@ -84,9 +85,8 @@ public class LoginRoutine {
 
         if(firstTimeLogin){
             setGeneralXmlFileParameters();
-            activeTodoUser = initializeUser(todoUserList);
+            activeTodoUser = initializeUser(todoUserList, request);
 
-            initializeUserSession(request, response);
             request.setAttribute("loginMessage", "First Time Login!");
 
         }
@@ -94,9 +94,10 @@ public class LoginRoutine {
 
 
     //Methods
-    private void loginSuccessful(ArrayList<TodoUser> todoUserList, int id){
+    private void loginSuccessful(ArrayList<TodoUser> todoUserList, int id, HttpServletRequest request){
         activeTodoUser.setUserName(todoUserList.get(id).getUserName());
         activeTodoUser.setPassWord(todoUserList.get(id).getPassWord());
+        activeTodoUser.initializeUserSession(request);
     }
     //Exception handling Todo
     private void loginFailed(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException{
@@ -108,8 +109,8 @@ public class LoginRoutine {
         templateUserToDoXml = new File(this.servletContextPath + DATA_PATH_WEB_INF_USER_DATA + "/ToDoTemplate.xml");
     }
 
-    private TodoUser initializeUser(ArrayList<TodoUser> todoUserList){
-        TodoUser newUser = new TodoUser(enteredUserName, enteredPassWord);
+    private TodoUser initializeUser(ArrayList<TodoUser> todoUserList, HttpServletRequest request){
+        TodoUser newUser = new TodoUser(servletContext, request);
         File newUserToDoXml = null;
         todoUserList.add(newUser);
         // Create new empty template to persist his todos
@@ -143,29 +144,22 @@ public class LoginRoutine {
         return newUser;
     }
 
-    private void initializeUserSession(HttpServletRequest request, HttpServletResponse response){
-            //Lock active user in HttpSession attributes
-            userSession = request.getSession();
-            userSession.setAttribute("name", activeTodoUser.getUserName());
-            userSession.setAttribute("pw", activeTodoUser.getPassWord());
-            //userSession.setAttribute("todoList", activeTodoUser.getUserTodoList());
-    }
-    private String getEnteredUserName(){
+    private String getEnteredUserName()
+            {
         return enteredUserName;
     }
     private String getEnteredPassWord(){
         return enteredPassWord;
     }
 
-    public HttpSession getUserSession() {
-        return userSession;
-    }
 
-    public boolean isFirstTimeLogin() {
+    public boolean isFirstTimeLogin()
+    {
         return firstTimeLogin;
     }
 
-    public TodoUser getActiveTodoUser() {
+    public TodoUser getActiveTodoUser()
+    {
         return activeTodoUser;
     }
 }

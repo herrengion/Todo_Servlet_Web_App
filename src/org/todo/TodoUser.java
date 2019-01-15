@@ -4,6 +4,10 @@ import data.ObjectFactory;
 import data.TodoList;
 import org.xml.sax.SAXException;
 
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.xml.XMLConstants;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -26,6 +30,7 @@ public class TodoUser {
     private String passWord;
     private File userTodoXmlFile;
     private File xmlSchemaTodoFile;
+    private HttpSession userSession;
     //Make sure displayed List starts off at '1', not '0'!
     private ObjectFactory todoObjectFactory = new ObjectFactory();
 
@@ -43,12 +48,18 @@ public class TodoUser {
     {
 
     }
-    public TodoUser(String userName, String passWord)
+    public TodoUser(ServletContext context, HttpServletRequest request)
     {
-        this.userName=userName;
-        this.passWord=passWord;
+        this.userName=request.getParameter("name");
+        this.passWord=request.getParameter("pw");
+        initializeUserSession(request);
     }
-
+    public void initializeUserSession(HttpServletRequest request){
+        //Lock active user in HttpSession attributes
+        userSession = request.getSession();
+        userSession.setAttribute("name", userName);
+        userSession.setAttribute("pw", passWord);
+    }
     //Get Methods
 
     public String getUserName()
@@ -59,6 +70,11 @@ public class TodoUser {
     public String getPassWord()
     {
         return passWord;
+    }
+
+    public HttpSession getUserSession()
+    {
+        return userSession;
     }
 
     public LinkedList<TodoList.Todo> getUserTodoList()
