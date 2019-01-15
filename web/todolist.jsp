@@ -79,7 +79,104 @@
 </div>
 
 <%--________________BODY_________________________--%>
-<style>
+<div class="w3-row w3-padding w3-container w3-orange">
+    <h2>
+        <b>Todo Overview</b>
+        <a href="newtodo.jsp"><i class="w3-btn fa fa-plus w3-xxlarge w3-right w3-margin-left"></i></a>
+    </h2>
+</div>
+<div class="w3-row w3-padding-24 w3-container">
+
+    <div class="w3-responsive">
+        <table class="w3-table-all w3-card-4 w3-hoverable w3-centered dofixed" style="width:100%;border-collapse: collapse;font-size:100%">
+            <tr class="w3-blue-gray" style="font-weight:bold">
+                <th width="10%">
+                    <form action="todoFSM.do" method="post">
+                        ID
+                        <input type="hidden" name="redirect" value="sortRoutine"/>
+                        <input type="hidden" name="sortAfter" value="title"/>
+                        <button type="submit" class="w3-btn fa fa-caret-down w3-right w3-margin-left"></button>
+                    </form></th>
+                <th width="35%">
+                    <form action="todoFSM.do" method="post">
+                        Todo
+                        <input type="hidden" name="redirect" value="sortRoutine"/>
+                        <input type="hidden" name="sortAfter" value="title"/>
+                        <button type="submit" class="w3-btn fa fa-caret-down w3-right w3-margin-left"></button>
+                    </form></th>
+                <th width="15%">
+                    <form action="todoFSM.do" method="post">
+                        Category
+                        <input type="hidden" name="redirect" value="sortRoutine"/>
+                        <input type="hidden" name="sortAfter" value="category"/>
+                        <button type="submit" class="w3-btn fa fa-caret-down w3-right w3-margin-left"></button>
+                    </form></th>
+                <th width="10%">
+                    <form action="todoFSM.do" method="post">
+                        Due Date
+                        <input type="hidden" name="redirect" value="sortRoutine"/>
+                        <input type="hidden" name="sortAfter" value="dueDate"/>
+                        <button type="submit" class="w3-btn fa fa-caret-down w3-right w3-margin-left"></button>
+                    </form></th>
+                <th width="10%">
+                    <form action="todoFSM.do" method="post">
+                        Priority
+                        <input type="hidden" name="redirect" value="sortRoutine"/>
+                        <input type="hidden" name="sortAfter" value="priority"/>
+                        <button type="submit" class="w3-btn fa fa-caret-down w3-margin-left w3-right"></button>
+                    </form></th>
+                <th width="10%">
+                    <form action="todoFSM.do" method="post">
+                        Status
+                        <input type="hidden" name="redirect" value="sortRoutine"/>
+                        <input type="hidden" name="sortAfter" value="status"/>
+                        <button type="submit" class="w3-btn fa fa-caret-down w3-margin-left w3-right"></button>
+                    </form></th>
+                <th width="10%">
+                    Action</th></tr>
+
+
+            <c:forEach items="${todoList}" var="todoInstance" >
+                <tr>
+                    <td>${todoInstance.id}</td>
+                    <td>${todoInstance.title}</td>
+                    <td>${todoInstance.category}</td>
+                    <td>${todoInstance.dueDate}</td>
+                    <td>${todoInstance.important}</td>
+                    <td>${todoInstance.completed}<br>
+                        <form action="todoFSM.do" method="post">
+                            <input type="hidden" name="redirect" value="todoCompletedToggle"/>
+                            <input type="hidden" name="todoID" value=${todoInstance.id}>
+                            <input type="hidden" name="todoStatus" value=${todoInstance.completed}>
+                            <input type="submit" value="Change Status"/></form></td>
+                    <td>
+                        <form action="todoFSM.do" method="post">
+                            <input type="hidden" name="redirect" value="toUpdateTodo"/>
+                            <input type="hidden" name="todoID" value=${todoInstance.id}>
+                            <button type="submit" class="w3-btn fa fa-pencil w3-margin-right w3-center w3-xlarge"></button>
+                        </form>
+                        <form>
+                            <input type="hidden" name="redirect" value="discardTodo"/>
+                            <input type="hidden" name="todoID" value=${todoInstance.id}>
+                            <button type="submit" class="w3-btn fa fa-trash w3-margin-left w3-center w3-xlarge"></button>
+                        </form></td>
+                </tr>
+            </c:forEach>
+        </table>
+    </div>
+    <div class="w3-row w3-padding-32"></div>
+
+    <select>
+        <optgroup label="Select category">
+            <option value="all">all</option>
+            <c:forEach items="${todoUserCategorySet}" var="todoUserCategorySet" >
+                <option value="${todoUserCategorySet}">${todoUserCategorySet}</option>
+            </c:forEach>
+        </optgroup>
+    </select>
+
+<%--
+        <style>
     table {
         font-family: arial, sans-serif;
         border-collapse: collapse;
@@ -171,15 +268,18 @@
         </c:forEach>
     </optgroup>
 </select>
-
+--%>
 <%--________________Footer_________________________--%>
-<div class="w3-row w3-padding-64"></div>
-<div class="w3-bottom w3-black">
-    <footer class="w3-col w3-container m12 w3-black w3-padding">
-        <div class="w3-right w3-text-white w3-padding-24 w3-hide-small">&copy Grunder, Herren, Plüss</div>
-    </footer>
-</div>
+        <div class="w3-row w3-padding-64"></div>
+        <div class="w3-row w3-padding w3-bottom w3-black">
+            <footer class="w3-col w3-container m12 w3-black w3-padding">
+                <div class="w3-left w3-text-white w3-hide-small">
+                    <h6><b>${loginMessage}</b></h6>
+                </div>
+                <div class="w3-right w3-display-bottomright w3-text-white w3-margin-right w3-padding-24 w3-hide-small">&copy Grunder, Herren, Plüss</div>
+            </footer>
+        </div>
 
-</body>
+    </body>
 </html>
 
