@@ -164,9 +164,14 @@
             </c:forEach>
         </table>
     </div>
-    <div class="w3-row w3-padding-32"></div>
 
-    <select>
+    <div class="w3-row w3-padding-32"></div>
+    
+    <form action="todoFSM.do" method="post" id="filterCategory">
+        <input type="hidden" name="redirect" value="category">
+        <input type="submit" value="filter category">
+    </form>
+    <select name="categoryList" id= "categoryList" form="filterCategory">
         <optgroup label="Select category">
             <option value="all">all</option>
             <c:forEach items="${todoUserCategorySet}" var="todoUserCategorySet" >
