@@ -92,7 +92,8 @@ public class TodoServlet extends HttpServlet {
                 }
 //                else
 //                {
-//                    userSessionMap.put(userSession.getId(), activeUser.getUserName());
+//                    TODO: Throw exception as it shall not be possible to be make a request without existing
+//                            session ID in the userSessionMap
 //                }
             }
             else
