@@ -66,8 +66,8 @@ public class LoginRoutine {
         for (int i = 0; i<userDB.getUser().size(); i++){
             if(userDB.getUser().get(i).getUsername().equals(enteredUserName)){
                 if(userDB.getUser().get(i).getPassword().equals(enteredPassWord)){
-                    loginSuccessful(userDB, todoUserList, i);
-                    initializeUserSession(request, response);
+                    loginSuccessful(userDB, todoUserList, i,request);
+                    activeTodoUser.initializeUserSession(request);
                     invalidLogin = false;
                     firstTimeLogin = false;
                     request.setAttribute("loginMessage", "Hello Again!");
@@ -169,7 +169,7 @@ public class LoginRoutine {
 
         //end new user xml persistence
 
-        TodoUser newUser = new TodoUser(enteredUserName, enteredPassWord);
+        TodoUser newUser = new TodoUser(servletContext, request);
         todoUserList.add(newUser);
         // Create new empty template to persist his todos
         System.out.println("New User is: "+enteredUserName);

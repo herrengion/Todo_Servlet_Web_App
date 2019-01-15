@@ -125,7 +125,7 @@ public class TodoServlet extends HttpServlet {
                         System.err.println(" User list is not possible to read!");
                     }*/
 
-                    LoginRoutine loginRoutine = new LoginRoutine(request, response, userDB, todoUserList, contextPath);
+                    LoginRoutine loginRoutine = new LoginRoutine(request, response, userDB, todoUserList, context);
                     activeUser = loginRoutine.getActiveTodoUser();
 
                     userToDoXmlFile = new File(contextPath +
