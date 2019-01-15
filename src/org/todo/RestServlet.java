@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.text.ParseException;
 import java.util.Enumeration;
 import java.util.LinkedList;
@@ -19,13 +20,19 @@ import java.util.LinkedList;
 @WebServlet("/restAPI.do")
 public class RestServlet extends HttpServlet{
 
-
-
     //------------------------------------------------------------------------------------------------------------------
     //HTTP Methods:
     //------------------------------------------------------------------------------------------------------------------
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+
+
+        System.out.println("Got request on REST API");
+        PrintWriter out = response.getWriter();
+        response.setContentType("application/text");
+        response.setCharacterEncoding("UTF-8");
+        out.print("My test for REST API");
+        out.flush();
     }
     //------------------------------------------------------------------------------------------------------------------
 
