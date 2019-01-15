@@ -233,4 +233,10 @@ public class TodoUser {
             }
         }
     }
+
+    /*public TodoList sortListAfterDueDate(TodoList inputList){
+        TodoList outputList = new TodoList();
+        outputList.getTodo().add(inputList.getTodo().get(0));
+
+    }*/
 }

@@ -151,7 +151,7 @@ public class LoginRoutine {
             SchemaFactory schemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
             Schema schema = schemaFactory.newSchema(userListSchema);
             unmarshaller.setSchema(schema);
-            //UserList oldUserDB = (UserList) unmarshaller.unmarshal(userList);
+            userDB = (UserList) unmarshaller.unmarshal(userList);
             newXMLUser.setId((long) userDB.getUser().size());
             userDB.getUser().add(newXMLUser);
 

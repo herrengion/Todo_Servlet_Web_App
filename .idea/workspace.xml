@@ -7,20 +7,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="36983777-44f2-44fe-b079-787a8d991bd7" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/org/todo/TodoXMLUser.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/web/WEB-INF/data/UserList.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/web/WEB-INF/data/UserList.xsd" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/data/UserList.xsd" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/data/ObjectFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/data/ObjectFactory.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/data/TodoList.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/data/TodoList.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/org/todo/DueDate.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/org/todo/DueDate.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/org/todo/TodoServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/org/todo/TodoServlet.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/org/todo/auxiliary/DiscardTodo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/org/todo/auxiliary/DiscardTodo.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/org/todo/auxiliary/FromUpdateTodo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/org/todo/auxiliary/FromUpdateTodo.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/org/todo/TodoUser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/org/todo/TodoUser.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/org/todo/auxiliary/LoginRoutine.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/org/todo/auxiliary/LoginRoutine.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/org/todo/auxiliary/NewTodo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/org/todo/auxiliary/NewTodo.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/org/todo/auxiliary/TodoCompletedToggle.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/org/todo/auxiliary/TodoCompletedToggle.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/todolist.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/web/todolist.jsp" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -33,24 +23,27 @@
     <session id="-1684268927">
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="JAVA" value="1705" />
-          <entry key="JSP" value="1" />
+          <entry key="JAVA" value="1999" />
+          <entry key="JSP" value="48" />
+          <entry key="PLAIN_TEXT" value="39" />
           <entry key="XML" value="90" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
-          <entry key="JAVA" value="36" />
+          <entry key="JAVA" value="38" />
+          <entry key="JSP" value="7" />
           <entry key="PLAIN_TEXT" value="1" />
-          <entry key="XML" value="30" />
+          <entry key="XML" value="33" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="2" />
+          <entry key="project.closed" value="3" />
           <entry key="project.open.time.19" value="1" />
           <entry key="project.open.time.25" value="1" />
-          <entry key="project.opened" value="2" />
+          <entry key="project.open.time.31" value="1" />
+          <entry key="project.opened" value="3" />
         </counts>
       </usages-collector>
     </session>
@@ -60,42 +53,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/org/todo/auxiliary/LoginRoutine.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="396">
-              <caret line="155" column="45" lean-forward="true" selection-start-line="155" selection-start-column="45" selection-end-line="155" selection-end-column="45" />
-              <folding>
-                <element signature="imports" expanded="true" />
-                <element signature="e#8055#8056#0" expanded="true" />
-                <element signature="e#8093#8094#0" expanded="true" />
-                <element signature="e#8134#8135#0" expanded="true" />
-                <element signature="e#8172#8173#0" expanded="true" />
-                <element signature="e#8215#8216#0" expanded="true" />
-                <element signature="e#8249#8250#0" expanded="true" />
-                <element signature="e#8290#8291#0" expanded="true" />
-                <element signature="e#8327#8328#0" expanded="true" />
-                <element signature="e#8370#8371#0" expanded="true" />
-                <element signature="e#8407#8408#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/org/todo/TodoServlet.java">
+        <entry file="file://$PROJECT_DIR$/src/org/todo/TodoUser.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="374">
-              <caret line="115" column="27" lean-forward="true" selection-start-line="115" selection-start-column="20" selection-end-line="115" selection-end-column="32" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/org/todo/auxiliary/NewTodo.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="164">
-              <caret line="31" column="78" lean-forward="true" selection-start-line="31" selection-start-column="78" selection-end-line="31" selection-end-column="78" />
+            <state relative-caret-position="657">
+              <caret line="240" column="4" selection-start-line="240" selection-start-column="4" selection-end-line="240" selection-end-column="4" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -115,55 +77,72 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/out/artifacts/todo_war_exploded/WEB-INF/data/UserList.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="34">
-              <caret line="2" selection-start-line="2" selection-end-line="2" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/out/artifacts/todo_war_exploded/WEB-INF/data/ToDo.xml">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="476">
-              <caret line="28" selection-start-line="28" selection-end-line="28" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/out/artifacts/todo_war_exploded/WEB-INF/data/UserData/ToDoTemplate.xml">
-          <provider selected="true" editor-type-id="text-editor" />
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/out/artifacts/todo_war_exploded/WEB-INF/data/UserData/user1/ToDo_list_user1.xml">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="289">
-              <caret line="17" lean-forward="true" selection-start-line="17" selection-end-line="17" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/out/artifacts/todo_war_exploded/WEB-INF/data/UserList.xsd">
-          <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="187">
-              <caret line="11" column="71" lean-forward="true" selection-start-line="11" selection-start-column="71" selection-end-line="11" selection-end-column="71" />
+              <caret line="11" lean-forward="true" selection-start-line="11" selection-end-line="11" />
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/org/todo/DueDate.java">
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/org/todo/auxiliary/LoginRoutine.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="305">
-              <caret line="66" selection-start-line="66" selection-end-line="66" />
+            <state relative-caret-position="396">
+              <caret line="155" column="45" lean-forward="true" selection-start-line="155" selection-start-column="45" selection-end-line="155" selection-end-column="45" />
               <folding>
-                <element signature="e#1741#1742#0" expanded="true" />
-                <element signature="e#1784#1785#0" expanded="true" />
+                <element signature="imports" expanded="true" />
               </folding>
             </state>
           </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/out/artifacts/todo_war_exploded/todolist.jsp">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="2720">
+              <caret line="160" column="37" selection-start-line="160" selection-start-column="37" selection-end-line="160" selection-end-column="37" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/web/login.jsp">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1037">
+              <caret line="61" column="64" selection-start-line="61" selection-start-column="64" selection-end-line="61" selection-end-column="64" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/web/todolist.jsp">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="2805">
+              <caret line="165" column="69" selection-start-line="165" selection-start-column="69" selection-end-line="165" selection-end-column="69" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/web/newtodo.jsp">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="289">
+              <caret line="17" column="44" selection-start-line="17" selection-start-column="44" selection-end-line="17" selection-end-column="44" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/web/edittodo.jsp">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1581">
+              <caret line="93" column="51" selection-start-line="93" selection-start-column="51" selection-end-line="93" selection-end-column="51" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/out/artifacts/todo_war_exploded/WEB-INF/data/UserData/user2/ToDo_list_user2.xml">
+          <provider selected="true" editor-type-id="text-editor" />
         </entry>
       </file>
     </leaf>
@@ -191,7 +170,6 @@
         <option value="$PROJECT_DIR$/src/org/todo/auxiliary/DefaultRoutine.java" />
         <option value="$PROJECT_DIR$/out/artifacts/todo_war_exploded/WEB-INF/data/UserData/test/ToDo_list_test.xml" />
         <option value="$PROJECT_DIR$/out/artifacts/todo_war_exploded/WEB-INF/data/UserData/Gugus/ToDo_list_Gugus.xml" />
-        <option value="$PROJECT_DIR$/src/org/todo/TodoUser.java" />
         <option value="$PROJECT_DIR$/web/oopserror.html" />
         <option value="$PROJECT_DIR$/web/incorrectlogin.html" />
         <option value="$PROJECT_DIR$/web/todolist.jsp" />
@@ -209,6 +187,8 @@
         <option value="$PROJECT_DIR$/src/org/todo/auxiliary/NewTodo.java" />
         <option value="$PROJECT_DIR$/src/org/todo/DueDate.java" />
         <option value="$PROJECT_DIR$/out/artifacts/todo_war_exploded/WEB-INF/data/UserList.xml" />
+        <option value="$PROJECT_DIR$/out/artifacts/todo_war_exploded/todolist.jsp" />
+        <option value="$PROJECT_DIR$/src/org/todo/TodoUser.java" />
         <option value="$PROJECT_DIR$/src/org/todo/auxiliary/LoginRoutine.java" />
       </list>
     </option>
@@ -283,16 +263,6 @@
               <item name="artifacts" type="462c0819:PsiDirectoryNode" />
               <item name="todo_war_exploded" type="462c0819:PsiDirectoryNode" />
               <item name="WEB-INF" type="462c0819:PsiDirectoryNode" />
-              <item name="classes" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="todo" type="b2602c69:ProjectViewProjectNode" />
-              <item name="Servlet_app" type="462c0819:PsiDirectoryNode" />
-              <item name="out" type="462c0819:PsiDirectoryNode" />
-              <item name="artifacts" type="462c0819:PsiDirectoryNode" />
-              <item name="todo_war_exploded" type="462c0819:PsiDirectoryNode" />
-              <item name="WEB-INF" type="462c0819:PsiDirectoryNode" />
-              <item name="classes" type="462c0819:PsiDirectoryNode" />
               <item name="data" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
@@ -302,17 +272,8 @@
               <item name="artifacts" type="462c0819:PsiDirectoryNode" />
               <item name="todo_war_exploded" type="462c0819:PsiDirectoryNode" />
               <item name="WEB-INF" type="462c0819:PsiDirectoryNode" />
-              <item name="classes" type="462c0819:PsiDirectoryNode" />
-              <item name="org" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="todo" type="b2602c69:ProjectViewProjectNode" />
-              <item name="Servlet_app" type="462c0819:PsiDirectoryNode" />
-              <item name="out" type="462c0819:PsiDirectoryNode" />
-              <item name="artifacts" type="462c0819:PsiDirectoryNode" />
-              <item name="todo_war_exploded" type="462c0819:PsiDirectoryNode" />
-              <item name="WEB-INF" type="462c0819:PsiDirectoryNode" />
               <item name="data" type="462c0819:PsiDirectoryNode" />
+              <item name="UserData" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="todo" type="b2602c69:ProjectViewProjectNode" />
@@ -370,15 +331,15 @@
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
       <pane id="PackagesPane" />
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="SearchEverywhereHistoryKey" value="objectfa&#9;FILE&#9;file://C:/Users/Gion/Dropbox/CAS/Software_Dev_BFH/03_WEBAPP/Servlet_app/src/data/ObjectFactory.java" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1547500163221" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1547502066438" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/../../06_TodoApp/todoApp" />
     <property name="project.structure.last.edited" value="Artifacts" />
     <property name="project.structure.proportion" value="0.15" />
@@ -565,7 +526,8 @@
       <workItem from="1547133404353" duration="7166000" />
       <workItem from="1547199558376" duration="12320000" />
       <workItem from="1547485923351" duration="3517000" />
-      <workItem from="1547490061923" duration="9993000" />
+      <workItem from="1547490061923" duration="12406000" />
+      <workItem from="1547537471802" duration="1706000" />
     </task>
     <task id="LOCAL-00001" summary="First Merge Version Nath &amp; Gion">
       <created>1546949163129</created>
@@ -595,17 +557,24 @@
       <option name="project" value="LOCAL" />
       <updated>1547289508026</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="User Persistence seems to be working">
+      <created>1547500209932</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1547500209932</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="81688000" />
+    <option name="totallyTimeSpent" value="85807000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-7" y="-7" width="1550" height="838" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.49943247" visible="true" weight="0.27046978" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.49943247" visible="true" weight="0.27449664" />
       <window_info id="Structure" order="1" sideWeight="0.50056756" side_tool="true" weight="0.24946997" />
       <window_info id="Designer" order="2" />
       <window_info id="UI Designer" order="3" />
@@ -708,7 +677,8 @@
     <MESSAGE value="//Done: create Classes for FSM functions, front controller paradigma" />
     <MESSAGE value="//Done: create Classes for FSM functions, front controller paradigma&#10;-&gt; started: category drop down menu, sort after function (not yet functional)" />
     <MESSAGE value="Fix, reading todoxml working" />
-    <option name="LAST_COMMIT_MESSAGE" value="Fix, reading todoxml working" />
+    <MESSAGE value="User Persistence seems to be working" />
+    <option name="LAST_COMMIT_MESSAGE" value="User Persistence seems to be working" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -721,27 +691,9 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/org/todo/auxiliary/LoginRoutine.java</url>
-          <line>148</line>
-          <properties />
-          <option name="timeStamp" value="26" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/org/todo/auxiliary/LoginRoutine.java</url>
-          <line>157</line>
-          <properties />
-          <option name="timeStamp" value="27" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/org/todo/auxiliary/LoginRoutine.java</url>
           <line>66</line>
           <properties />
           <option name="timeStamp" value="28" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/org/todo/auxiliary/NewTodo.java</url>
-          <line>38</line>
-          <properties />
-          <option name="timeStamp" value="29" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/org/todo/DueDate.java</url>
@@ -753,47 +705,6 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/todo.iml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="204">
-          <caret line="12" column="12" selection-start-line="12" selection-start-column="12" selection-end-line="12" selection-end-column="12" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/org/todo/AddToDo.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="85">
-          <caret line="10" column="13" selection-start-line="10" selection-start-column="13" selection-end-line="10" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/web/login.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="68">
-          <caret line="4" column="11" selection-start-line="4" selection-start-column="11" selection-end-line="4" selection-end-column="35" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/web/newtodo.jsp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="289">
-          <caret line="17" column="55" selection-start-line="17" selection-start-column="55" selection-end-line="17" selection-end-column="55" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/org/todo/auxiliary/DefaultRoutine.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="204">
-          <caret line="15" selection-start-line="15" selection-end-line="15" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/web/WEB-INF/data/UserData/ToDoTemplate.xml">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/org/todo/LoginNath.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="85">
@@ -805,21 +716,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="68">
           <caret line="4" column="27" selection-start-line="4" selection-start-column="27" selection-end-line="4" selection-end-column="27" />
-          <folding>
-            <element signature="method#setCompleted#1;class#TodoEntry#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/web/login.jsp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="670">
-          <caret line="61" column="129" selection-start-line="61" selection-start-column="129" selection-end-line="61" selection-end-column="129" />
-          <folding>
-            <element signature="n#style#0;n#img#0;n#div#1;n#div#1;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#a#0;n#div#1;n#div#0;n#form#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#a#0;n#div#0;n#footer#0;n#div#4;n#body#0;n#html#0;n#!!top" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -842,13 +738,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/out/artifacts/todo_war_exploded/WEB-INF/data/UserData/Gugus/ToDo_list_Gugus.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-34">
-          <caret line="1" column="11" selection-start-line="1" selection-start-column="11" selection-end-line="1" selection-end-column="11" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/out/artifacts/todo_war_exploded/WEB-INF/data/UserData/Gugus/ToDo_list_Gugus.xml" />
     <entry file="file://$PROJECT_DIR$/web/oopserror.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="225">
@@ -860,13 +750,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="359">
           <caret line="32" column="38" selection-start-line="32" selection-start-column="38" selection-end-line="32" selection-end-column="38" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/web/todolist.jsp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="463">
-          <caret line="165" column="69" selection-start-line="165" selection-start-column="69" selection-end-line="165" selection-end-column="69" />
         </state>
       </provider>
     </entry>
@@ -954,13 +837,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/users/src/data/UserList.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="142">
-          <caret line="57" column="7" selection-start-line="57" selection-start-column="7" selection-end-line="57" selection-end-column="7" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/src/users/src/data/UserList.java" />
     <entry file="file://$PROJECT_DIR$/web/WEB-INF/data/ToDo.xml">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
@@ -995,16 +872,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/org/todo/TodoUser.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="142">
-          <caret line="85" column="16" selection-start-line="85" selection-start-column="16" selection-end-line="85" selection-end-column="16" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/web/WEB-INF/data/UserList.xsd">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
@@ -1022,16 +889,6 @@
           <folding>
             <element signature="e#1741#1742#0" expanded="true" />
             <element signature="e#1784#1785#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/org/todo/auxiliary/NewTodo.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="164">
-          <caret line="31" column="78" lean-forward="true" selection-start-line="31" selection-start-column="78" selection-end-line="31" selection-end-column="78" />
-          <folding>
-            <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -1060,6 +917,60 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/org/todo/auxiliary/NewTodo.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="408">
+          <caret line="31" column="78" selection-start-line="31" selection-start-column="78" selection-end-line="31" selection-end-column="78" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/out/artifacts/todo_war_exploded/edittodo.jsp">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/out/artifacts/todo_war_exploded/newtodo.jsp">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/out/artifacts/todo_war_exploded/todolist.jsp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2720">
+          <caret line="160" column="37" selection-start-line="160" selection-start-column="37" selection-end-line="160" selection-end-column="37" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/web/login.jsp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1037">
+          <caret line="61" column="64" selection-start-line="61" selection-start-column="64" selection-end-line="61" selection-end-column="64" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/web/todolist.jsp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2805">
+          <caret line="165" column="69" selection-start-line="165" selection-start-column="69" selection-end-line="165" selection-end-column="69" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/web/newtodo.jsp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="289">
+          <caret line="17" column="44" selection-start-line="17" selection-start-column="44" selection-end-line="17" selection-end-column="44" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/web/edittodo.jsp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1581">
+          <caret line="93" column="51" selection-start-line="93" selection-start-column="51" selection-end-line="93" selection-end-column="51" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/out/artifacts/todo_war_exploded/WEB-INF/data/UserData/user2/ToDo_list_user2.xml">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
     <entry file="file://$PROJECT_DIR$/web/WEB-INF/data/UserList.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="85">
@@ -1067,10 +978,20 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/org/todo/TodoUser.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="657">
+          <caret line="240" column="4" selection-start-line="240" selection-start-column="4" selection-end-line="240" selection-end-column="4" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/out/artifacts/todo_war_exploded/WEB-INF/data/UserList.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="34">
-          <caret line="2" selection-start-line="2" selection-end-line="2" />
+        <state relative-caret-position="187">
+          <caret line="11" lean-forward="true" selection-start-line="11" selection-end-line="11" />
         </state>
       </provider>
     </entry>
@@ -1080,16 +1001,6 @@
           <caret line="155" column="45" lean-forward="true" selection-start-line="155" selection-start-column="45" selection-end-line="155" selection-end-column="45" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#8055#8056#0" expanded="true" />
-            <element signature="e#8093#8094#0" expanded="true" />
-            <element signature="e#8134#8135#0" expanded="true" />
-            <element signature="e#8172#8173#0" expanded="true" />
-            <element signature="e#8215#8216#0" expanded="true" />
-            <element signature="e#8249#8250#0" expanded="true" />
-            <element signature="e#8290#8291#0" expanded="true" />
-            <element signature="e#8327#8328#0" expanded="true" />
-            <element signature="e#8370#8371#0" expanded="true" />
-            <element signature="e#8407#8408#0" expanded="true" />
           </folding>
         </state>
       </provider>
