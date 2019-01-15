@@ -82,43 +82,43 @@
 <div class="w3-row w3-padding w3-container w3-orange">
     <h2>
         <b>Todo Overview</b>
-        <a href="newtodo.jsp"><i class="w3-btn fa fa-plus w3-xxlarge w3-right w3-margin-left"></i></a>
+        <a href="newtodo.jsp"><i class="w3-btn fa fa-plus w3-xxlarge w3-right w3-margin-right w3-margin-left"></i></a>
     </h2>
 </div>
 <div class="w3-row w3-padding-24 w3-container">
 
     <div class="w3-responsive">
-        <table class="w3-table-all w3-card-4 w3-hoverable w3-centered dofixed" style="width:100%;border-collapse: collapse;font-size:100%">
+        <table class="w3-table-all w3-card-4 w3-hoverable w3-centered" style="width:100%;">
             <tr class="w3-blue-gray" style="font-weight:bold">
-                <th width="10%">
+                <%--<th width="10%">
                     <form action="todoFSM.do" method="post">
                         ID
                         <input type="hidden" name="redirect" value="sortRoutine"/>
-                        <input type="hidden" name="sortAfter" value="title"/>
+                        <input type="hidden" name="sortAfter" value="id"/>
                         <button type="submit" class="w3-btn fa fa-caret-down w3-right w3-margin-left"></button>
-                    </form></th>
-                <th width="35%">
+                    </form></th>--%>
+                <th width="35%" style="text-align:left">
                     <form action="todoFSM.do" method="post">
                         Todo
                         <input type="hidden" name="redirect" value="sortRoutine"/>
                         <input type="hidden" name="sortAfter" value="title"/>
                         <button type="submit" class="w3-btn fa fa-caret-down w3-right w3-margin-left"></button>
                     </form></th>
-                <th width="15%">
+                <th width="20%">
                     <form action="todoFSM.do" method="post">
                         Category
                         <input type="hidden" name="redirect" value="sortRoutine"/>
                         <input type="hidden" name="sortAfter" value="category"/>
                         <button type="submit" class="w3-btn fa fa-caret-down w3-right w3-margin-left"></button>
                     </form></th>
-                <th width="10%">
+                <th width="13%">
                     <form action="todoFSM.do" method="post">
                         Due Date
                         <input type="hidden" name="redirect" value="sortRoutine"/>
                         <input type="hidden" name="sortAfter" value="dueDate"/>
                         <button type="submit" class="w3-btn fa fa-caret-down w3-right w3-margin-left"></button>
                     </form></th>
-                <th width="10%">
+                <th width="12%">
                     <form action="todoFSM.do" method="post">
                         Priority
                         <input type="hidden" name="redirect" value="sortRoutine"/>
@@ -138,35 +138,55 @@
 
             <c:forEach items="${todoList}" var="todoInstance" >
                 <tr>
-                    <td>${todoInstance.id}</td>
-                    <td>${todoInstance.title}</td>
-                    <td>${todoInstance.category}</td>
-                    <td>${todoInstance.dueDate}</td>
-                    <td>${todoInstance.important}</td>
-                    <td>${todoInstance.completed}<br>
-                        <form action="todoFSM.do" method="post">
-                            <input type="hidden" name="redirect" value="todoCompletedToggle"/>
-                            <input type="hidden" name="todoID" value=${todoInstance.id}>
-                            <input type="hidden" name="todoStatus" value=${todoInstance.completed}>
-                            <input type="submit" value="Change Status"/></form></td>
-                    <td>
-                        <form action="todoFSM.do" method="post">
+                    <%--<td>${todoInstance.id}</td>--%>
+                    <td style="vertical-align:middle;text-align: left;">${todoInstance.title}</td>
+                    <td style="vertical-align:middle">${todoInstance.category}</td>
+                    <td style="vertical-align:middle">${todoInstance.dueDate}</td>
+                    <td style="vertical-align:middle">${todoInstance.important}</td>
+                    <c:choose>
+                        <c:when test="${todoInstance.completed}">
+                            <td style="vertical-align:middle">${todoInstance.completed}<br>
+                                <form action="todoFSM.do" method="post">
+                                    <input type="hidden" name="redirect" value="todoCompletedToggle"/>
+                                    <input type="hidden" name="todoID" value=${todoInstance.id}>
+                                    <input type="hidden" name="todoStatus" value=${todoInstance.completed}>
+                                    <button type="submit" class="w3-btn w3-block w3-black"><b>DONE<b></b></b></button>
+                                </form>
+                            </td>
+                        </c:when>
+                        <c:otherwise>
+                            <td style="vertical-align:middle">${todoInstance.completed}<br>
+                                <form action="todoFSM.do" method="post">
+                                    <input type="hidden" name="redirect" value="todoCompletedToggle"/>
+                                    <input type="hidden" name="todoID" value=${todoInstance.id}>
+                                    <input type="hidden" name="todoStatus" value=${todoInstance.completed}>
+                                    <button type="submit" class="w3-btn w3-block w3-green"><b>OPEN<b></b></b></button>
+                                </form>
+                            </td>
+                        </c:otherwise>
+                    </c:choose>
+
+
+
+                        </form></td>
+                    <td style="vertical-align:middle">
+                        <form action="todoFSM.do" method="post" style="display:inline">
                             <input type="hidden" name="redirect" value="toUpdateTodo"/>
                             <input type="hidden" name="todoID" value=${todoInstance.id}>
-                            <button type="submit" class="w3-btn fa fa-pencil w3-margin-right w3-center w3-xlarge"></button>
+                            <button type="submit" class="w3-btn fa fa-pencil w3-center w3-xlarge"></button>
                         </form>
-                        <form action="todoFSM.do" method="post">
+                        <form action="todoFSM.do" method="post" style="display:inline">
                             <input type="hidden" name="redirect" value="discardTodo"/>
                             <input type="hidden" name="todoID" value=${todoInstance.id}>
-                            <button type="submit" class="w3-btn fa fa-trash w3-margin-left w3-center w3-xlarge"></button>
+                            <button type="submit" class="w3-btn fa fa-trash w3-center w3-xlarge"></button>
                         </form></td>
                 </tr>
             </c:forEach>
         </table>
     </div>
-
+</div>
     <div class="w3-row w3-padding-32"></div>
-    
+
     <form action="todoFSM.do" method="post" id="filterCategory">
         <input type="hidden" name="redirect" value="category">
         <input type="submit" value="filter category">
@@ -284,7 +304,6 @@
                 <div class="w3-right w3-display-bottomright w3-text-white w3-margin-right w3-padding-24 w3-hide-small">&copy Grunder, Herren, Plüss</div>
             </footer>
         </div>
-
     </body>
 </html>
 
