@@ -155,7 +155,7 @@
                             <input type="hidden" name="todoID" value=${todoInstance.id}>
                             <button type="submit" class="w3-btn fa fa-pencil w3-margin-right w3-center w3-xlarge"></button>
                         </form>
-                        <form>
+                        <form action="todoFSM.do" method="post">
                             <input type="hidden" name="redirect" value="discardTodo"/>
                             <input type="hidden" name="todoID" value=${todoInstance.id}>
                             <button type="submit" class="w3-btn fa fa-trash w3-margin-left w3-center w3-xlarge"></button>
