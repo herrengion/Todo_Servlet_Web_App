@@ -57,6 +57,7 @@ public class DueDate {
 
     public XMLGregorianCalendar getTransformedDateStringToXMLGregorian(String date)
     {
+        if(date.isEmpty()){return null;}
         String chopper;
         chopper = date.substring(0, 4);
         xmlGregorianCalendar.setYear(Integer.valueOf(chopper));
