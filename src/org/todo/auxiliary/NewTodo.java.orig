@@ -25,7 +25,12 @@ public class NewTodo {
     public NewTodo(HttpServletRequest request, HttpServletResponse response, TodoUser activeUser)
     {
         this.todoUser = activeUser;
+<<<<<<< HEAD
+
+        Long newId = Long.valueOf(1);
+=======
         Long newId = Long.valueOf(0);
+>>>>>>> fc75edf07bc61a5ae2a632c21be4f362a65b54f5
         String newTodoString = request.getParameter("newTodo");
         String dueDateString = request.getParameter("dueDate");
         String categoryString = request.getParameter("category");

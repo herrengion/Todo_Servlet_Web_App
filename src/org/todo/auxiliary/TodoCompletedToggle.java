@@ -24,6 +24,7 @@ public class TodoCompletedToggle {
         request.setAttribute("loginMessage", "Todo Item: '" + todoUser.getTodo(todoId).getTitle() + "' status changed!");
         //request.setAttribute("todoList", activeUser.getUserTodoList());
         request.setAttribute("todoList", todoUser.getUserTodoList());
+        todoUser.updateCategoryHashSet(todoUser.getUserTodoList());
         request.setAttribute("todoUserCategorySet", todoUser.getCategorySet());
 
         try {

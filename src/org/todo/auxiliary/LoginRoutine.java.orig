@@ -41,7 +41,11 @@ public class LoginRoutine {
 
 
     //Constructor
-    public LoginRoutine(HttpServletRequest request, HttpServletResponse response, UserList userDB, LinkedList<TodoUser> todoUserList, ServletContext servletContext){
+<<<<<<< HEAD
+    public LoginRoutine(HttpServletRequest request, HttpServletResponse response, ArrayList<TodoUser> todoUserList, ServletContext servletContext){
+=======
+    public LoginRoutine(HttpServletRequest request, HttpServletResponse response, UserList userDB, LinkedList<TodoUser> todoUserList, String servletContextPath){
+>>>>>>> fc75edf07bc61a5ae2a632c21be4f362a65b54f5
 
         //Load entered username and pw
         enteredUserName = request.getParameter("name");
@@ -110,7 +114,11 @@ public class LoginRoutine {
 
         if(firstTimeLogin){
             setGeneralXmlFileParameters();
-            activeTodoUser = initializeUser(todoUserList, userDB, request);
+<<<<<<< HEAD
+            activeTodoUser = initializeUser(todoUserList, request);
+=======
+            activeTodoUser = initializeUser(todoUserList, userDB);
+>>>>>>> fc75edf07bc61a5ae2a632c21be4f362a65b54f5
 
             request.setAttribute("loginMessage", "First Time Login!");
 
@@ -121,10 +129,16 @@ public class LoginRoutine {
 
 
     //Methods
-    private void loginSuccessful(UserList userList, LinkedList<TodoUser> todoUserList, int id, HttpServletRequest request){
+<<<<<<< HEAD
+    private void loginSuccessful(ArrayList<TodoUser> todoUserList, int id, HttpServletRequest request){
+        activeTodoUser.setUserName(todoUserList.get(id).getUserName());
+        activeTodoUser.setPassWord(todoUserList.get(id).getPassWord());
+        activeTodoUser.initializeUserSession(request);
+=======
+    private void loginSuccessful(UserList userList, LinkedList<TodoUser> todoUserList, int id){
         activeTodoUser.setUserName(userList.getUser().get(id).getUsername());
         activeTodoUser.setPassWord(userList.getUser().get(id).getPassword());
-        activeTodoUser.initializeUserSession(request);
+>>>>>>> fc75edf07bc61a5ae2a632c21be4f362a65b54f5
     }
     //Exception handling Todo
     private void loginFailed(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException{
@@ -136,10 +150,15 @@ public class LoginRoutine {
         templateUserToDoXml = new File(this.servletContextPath + DATA_PATH_WEB_INF_USER_DATA + "/ToDoTemplate.xml");
     }
 
-    private TodoUser initializeUser(LinkedList<TodoUser> todoUserList, UserList userDB, HttpServletRequest request){
+<<<<<<< HEAD
+    private TodoUser initializeUser(ArrayList<TodoUser> todoUserList, HttpServletRequest request){
+        TodoUser newUser = new TodoUser(servletContext, request);
+=======
+    private TodoUser initializeUser(LinkedList<TodoUser> todoUserList, UserList userDB){
         UserList.User newXMLUser = new UserList.User();
         newXMLUser.setUsername(enteredUserName);
         newXMLUser.setPassword(enteredPassWord);
+>>>>>>> fc75edf07bc61a5ae2a632c21be4f362a65b54f5
         File newUserToDoXml = null;
 
         //here new user xml persistence

@@ -1,23 +1,22 @@
-//
-// Diese Datei wurde mit der JavaTM Architecture for XML Binding(JAXB) Reference Implementation, v2.2.8-b130911.1802 generiert 
-// Siehe <a href="http://java.sun.com/xml/jaxb">http://java.sun.com/xml/jaxb</a> 
-// �nderungen an dieser Datei gehen bei einer Neukompilierung des Quellschemas verloren. 
-// Generiert: 2018.12.22 um 03:33:19 PM CET 
-//
-
 
 package data;
 
-import javax.xml.bind.annotation.*;
-import javax.xml.datatype.XMLGregorianCalendar;
 import java.util.ArrayList;
 import java.util.List;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlSchemaType;
+import javax.xml.bind.annotation.XmlType;
+import javax.xml.datatype.XMLGregorianCalendar;
 
 
 /**
- * <p>Java-Klasse f�r anonymous complex type.
+ * <p>Java class for anonymous complex type.
  * 
- * <p>Das folgende Schemafragment gibt den erwarteten Content an, der in dieser Klasse enthalten ist.
+ * <p>The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
  * &lt;complexType>
@@ -33,9 +32,9 @@ import java.util.List;
  *                   &lt;element name="important" type="{http://www.w3.org/2001/XMLSchema}boolean"/>
  *                   &lt;element name="completed" type="{http://www.w3.org/2001/XMLSchema}boolean"/>
  *                   &lt;element name="category" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
- *                   &lt;element name="due_date" type="{http://www.w3.org/2001/XMLSchema}date" minOccurs="0"/>
+ *                   &lt;element name="dueDate" type="{http://www.w3.org/2001/XMLSchema}date" minOccurs="0"/>
  *                 &lt;/sequence>
- *                 &lt;attribute name="id" type="{http://www.w3.org/2001/XMLSchema}unsignedInt" />
+ *                 &lt;attribute name="ID" use="required" type="{http://www.w3.org/2001/XMLSchema}int" />
  *               &lt;/restriction>
  *             &lt;/complexContent>
  *           &lt;/complexType>
@@ -52,46 +51,46 @@ import java.util.List;
 @XmlType(name = "", propOrder = {
     "todo"
 })
-@XmlRootElement(name = "todo_list")
-public class TodoList {
+@XmlRootElement(name = "todos")
+public class Todos {
 
     @XmlElement(required = true)
-    protected List<Todo> todo;
+    protected List<Todos.Todo> todo;
 
     /**
      * Gets the value of the todo property.
-     *
+     * 
      * <p>
      * This accessor method returns a reference to the live list,
      * not a snapshot. Therefore any modification you make to the
      * returned list will be present inside the JAXB object.
      * This is why there is not a <CODE>set</CODE> method for the todo property.
-     *
+     * 
      * <p>
      * For example, to add a new item, do as follows:
      * <pre>
      *    getTodo().add(newItem);
      * </pre>
-     *
-     *
+     * 
+     * 
      * <p>
      * Objects of the following type(s) are allowed in the list
-     * {@link TodoList.Todo }
-     *
-     *
+     * {@link Todos.Todo }
+     * 
+     * 
      */
-    public List<Todo> getTodo() {
+    public List<Todos.Todo> getTodo() {
         if (todo == null) {
-            todo = new ArrayList<Todo>();
+            todo = new ArrayList<Todos.Todo>();
         }
         return this.todo;
     }
 
 
     /**
-     * <p>Java-Klasse f�r anonymous complex type.
+     * <p>Java class for anonymous complex type.
      * 
-     * <p>Das folgende Schemafragment gibt den erwarteten Content an, der in dieser Klasse enthalten ist.
+     * <p>The following schema fragment specifies the expected content contained within this class.
      * 
      * <pre>
      * &lt;complexType>
@@ -102,9 +101,9 @@ public class TodoList {
      *         &lt;element name="important" type="{http://www.w3.org/2001/XMLSchema}boolean"/>
      *         &lt;element name="completed" type="{http://www.w3.org/2001/XMLSchema}boolean"/>
      *         &lt;element name="category" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
-     *         &lt;element name="due_date" type="{http://www.w3.org/2001/XMLSchema}date" minOccurs="0"/>
+     *         &lt;element name="dueDate" type="{http://www.w3.org/2001/XMLSchema}date" minOccurs="0"/>
      *       &lt;/sequence>
-     *       &lt;attribute name="id" type="{http://www.w3.org/2001/XMLSchema}unsignedInt" />
+     *       &lt;attribute name="ID" use="required" type="{http://www.w3.org/2001/XMLSchema}int" />
      *     &lt;/restriction>
      *   &lt;/complexContent>
      * &lt;/complexType>
@@ -127,15 +126,13 @@ public class TodoList {
         protected boolean important;
         protected boolean completed;
         protected String category;
-        @XmlElement(name = "due_date")
         @XmlSchemaType(name = "date")
         protected XMLGregorianCalendar dueDate;
-        @XmlAttribute(name = "id")
-        @XmlSchemaType(name = "unsignedInt")
-        protected Long id;
+        @XmlAttribute(name = "ID", required = true)
+        protected int id;
 
         /**
-         * Ruft den Wert der title-Eigenschaft ab.
+         * Gets the value of the title property.
          * 
          * @return
          *     possible object is
@@ -147,7 +144,7 @@ public class TodoList {
         }
 
         /**
-         * Legt den Wert der title-Eigenschaft fest.
+         * Sets the value of the title property.
          * 
          * @param value
          *     allowed object is
@@ -159,7 +156,7 @@ public class TodoList {
         }
 
         /**
-         * Ruft den Wert der important-Eigenschaft ab.
+         * Gets the value of the important property.
          * 
          */
         public boolean isImportant() {
@@ -167,7 +164,7 @@ public class TodoList {
         }
 
         /**
-         * Legt den Wert der important-Eigenschaft fest.
+         * Sets the value of the important property.
          * 
          */
         public void setImportant(boolean value) {
@@ -175,7 +172,7 @@ public class TodoList {
         }
 
         /**
-         * Ruft den Wert der completed-Eigenschaft ab.
+         * Gets the value of the completed property.
          * 
          */
         public boolean isCompleted() {
@@ -183,7 +180,7 @@ public class TodoList {
         }
 
         /**
-         * Legt den Wert der completed-Eigenschaft fest.
+         * Sets the value of the completed property.
          * 
          */
         public void setCompleted(boolean value) {
@@ -191,7 +188,7 @@ public class TodoList {
         }
 
         /**
-         * Ruft den Wert der category-Eigenschaft ab.
+         * Gets the value of the category property.
          * 
          * @return
          *     possible object is
@@ -203,7 +200,7 @@ public class TodoList {
         }
 
         /**
-         * Legt den Wert der category-Eigenschaft fest.
+         * Sets the value of the category property.
          * 
          * @param value
          *     allowed object is
@@ -215,7 +212,7 @@ public class TodoList {
         }
 
         /**
-         * Ruft den Wert der dueDate-Eigenschaft ab.
+         * Gets the value of the dueDate property.
          * 
          * @return
          *     possible object is
@@ -227,7 +224,7 @@ public class TodoList {
         }
 
         /**
-         * Legt den Wert der dueDate-Eigenschaft fest.
+         * Sets the value of the dueDate property.
          * 
          * @param value
          *     allowed object is
@@ -239,26 +236,18 @@ public class TodoList {
         }
 
         /**
-         * Ruft den Wert der id-Eigenschaft ab.
+         * Gets the value of the id property.
          * 
-         * @return
-         *     possible object is
-         *     {@link Long }
-         *     
          */
-        public Long getId() {
+        public int getID() {
             return id;
         }
 
         /**
-         * Legt den Wert der id-Eigenschaft fest.
+         * Sets the value of the id property.
          * 
-         * @param value
-         *     allowed object is
-         *     {@link Long }
-         *     
          */
-        public void setId(Long value) {
+        public void setID(int value) {
             this.id = value;
         }
 

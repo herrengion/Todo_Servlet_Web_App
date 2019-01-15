@@ -55,6 +55,19 @@ public class DueDate {
         return xmlGregorianCalendar;
     }
 
+    public XMLGregorianCalendar getTransformedDateStringToXMLGregorian(String date)
+    {
+        if(date.isEmpty()){return null;}
+        String chopper;
+        chopper = date.substring(0, 4);
+        xmlGregorianCalendar.setYear(Integer.valueOf(chopper));
+        chopper = date.substring(5, 7);
+        xmlGregorianCalendar.setMonth(Integer.valueOf(chopper));
+        chopper = date.substring(8 , 10);
+        xmlGregorianCalendar.setDay(Integer.valueOf(chopper));
+        return xmlGregorianCalendar;
+    }
+
     public LocalDate getLocalDate()
     {
         return date;

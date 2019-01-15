@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+	<xs:element name="user_list">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="user" maxOccurs="unbounded">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="username" type="xs:string" maxOccurs="1"/>
+							<xs:element name="password" type="xs:string" maxOccurs="1"/>
+						</xs:sequence>
+						<xs:attribute name="id" type="xs:unsignedInt"/>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

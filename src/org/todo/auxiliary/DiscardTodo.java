@@ -17,6 +17,8 @@ public class DiscardTodo {
         todoUser.updateTodo();
         request.setAttribute("loginMessage", "Todo Item: '" + discardedTodoTitle + "' discarded!");
         request.setAttribute("todoList", todoUser.getUserTodoList());
+        todoUser.updateCategoryHashSet(todoUser.getUserTodoList());
+        request.setAttribute("todoUserCategorySet", activeUser.getCategorySet());
         try {
             request.getRequestDispatcher("/todolist.jsp").forward(request, response);
         }
