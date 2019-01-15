@@ -253,9 +253,20 @@ public class TodoUser {
         }
     }
 
-    /*public TodoList sortListAfterDueDate(TodoList inputList){
+    public TodoList insertionSortListAfterDueDate(TodoList inputList){
         TodoList outputList = new TodoList();
-        outputList.getTodo().add(inputList.getTodo().get(0));
+        //int pivot = inputList.getTodo().size()/2;
+        XMLGregorianCalendar xmlGregorianCalendar1 = inputList.getTodo().get(0).getDueDate();
+        XMLGregorianCalendar xmlGregorianCalendar2 = inputList.getTodo().get(1).getDueDate();
+        xmlGregorianCalendar1.compare(xmlGregorianCalendar2);
+        for(int i = inputList.getTodo().size()-1; i<=0; i--){
+            int step = i;
+            while(0>=inputList.getTodo().get(i).getDueDate().compare(inputList.getTodo().get(step-1).getDueDate())){
+                step--;
+            }
+            outputList.getTodo().add(step, inputList.getTodo().get(i));
+        }
+        return outputList;
+    }
 
-    }*/
 }
