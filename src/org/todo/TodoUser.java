@@ -1,12 +1,13 @@
 package org.todo;
-
+import com.sun.media.sound.InvalidDataException;
+import org.xml.sax.SAXException;
+import com.sun.xml.internal.ws.server.ServerRtException;
 import data.ObjectFactory;
 import data.TodoList;
-import org.xml.sax.SAXException;
+
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.xml.XMLConstants;
 import javax.xml.bind.JAXBContext;
@@ -16,12 +17,9 @@ import javax.xml.bind.Unmarshaller;
 import javax.xml.datatype.XMLGregorianCalendar;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
+
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.OutputStream;
 import java.text.ParseException;
-import java.time.LocalDate;
 import java.util.*;
 
 public class TodoUser {
@@ -46,7 +44,6 @@ public class TodoUser {
     //Constructor
     public TodoUser()
     {
-
     }
     public TodoUser(ServletContext context, HttpServletRequest request)
     {
@@ -54,14 +51,16 @@ public class TodoUser {
         this.passWord=request.getParameter("pw");
         initializeUserSession(request);
     }
+
+    // Methodes
     public void initializeUserSession(HttpServletRequest request){
         //Lock active user in HttpSession attributes
         userSession = request.getSession();
         userSession.setAttribute("name", userName);
         userSession.setAttribute("pw", passWord);
     }
-    //Get Methods
 
+    //Get Methods
     public String getUserName()
     {
         return userName;
@@ -81,42 +80,35 @@ public class TodoUser {
     {
         userTodoList.clear();
         //userTodoList.add(todosObj.getTodo().get(0));
-        for(int i = 0; i<todosObj.getTodo().size(); i++) {
-            //int comparator = todosObj.getTodo().get(i-1).getDueDate(), todosObj.getTodo().get(i-1).getDueDate());
+        for(int i = 0; i<todosObj.getTodo().size(); i++)
+        {
             userTodoList.add(todosObj.getTodo().get(i));
         }
-        //LinkedList<TodoList.Todo> dueDateSortedTodolist = new LinkedList<>();
-        //dueDateSortedTodolist.add(userTodoList.get(0));
-
         return userTodoList;
     }
 
     //Set Methods
-
     public void setUserName(String userName)
     {
         this.userName = userName;
     }
-
     public void setPassWord(String passWord)
     {
         this.passWord = passWord;
     }
-    public void addTodo(TodoList.Todo newTodo)
-    {
-
-        this.todosObj.getTodo().add(newTodo);
-    }
     public void setUserTodoList(File userToDoFile, File schemaFile)
     {
-        this.userTodoXmlFile = userToDoFile;
-        this.xmlSchemaTodoFile =  schemaFile;
-        convertTodoXmlToLinkedList();
+        if( userToDoFile.isFile() && schemaFile.isFile()) {
+            this.userTodoXmlFile = userToDoFile;
+            this.xmlSchemaTodoFile = schemaFile;
+            convertTodoXmlToLinkedList();
+        }
+        else
+        {
+            throw new ServerRtException("Invalid file with the user data of the todos.");
+        }
     }
-
-    //Generic Get Method for User Todos
-    public TodoList.Todo getTodo(Long todoId)
-    {
+    public TodoList.Todo getTodo(Long todoId) throws InvalidDataException {
         userTodoList  = getUserTodoList();
         Iterator<TodoList.Todo> iterator = userTodoList.iterator();
         while (iterator.hasNext()) {
@@ -128,9 +120,13 @@ public class TodoUser {
             }
         }
         //Throw exception with message: Invalid todo index
-        return null;
+        throw new InvalidDataException("Invalid todo ID please reload the pabe");
     }
 
+    public void addTodo(TodoList.Todo newTodo)
+    {
+        this.todosObj.getTodo().add(newTodo);
+    }
     public void deleteTodoEntry(Long todoId)
     {
         for (final ListIterator<TodoList.Todo> iterator = this.todosObj.getTodo().listIterator(); iterator.hasNext();) {
@@ -156,10 +152,9 @@ public class TodoUser {
             todosObj = (TodoList) unmarshaller.unmarshal( userTodoXmlFile );
         }
         catch(JAXBException | SAXException e)
-        //catch(JAXBException e)
         {
             e.printStackTrace();
-            System.err.println(" ToDo list is not possible to read!");
+            throw new ServerRtException("User todo list is not possible to extract the data: "+e.getMessage());
         }
 
     }
@@ -189,12 +184,10 @@ public class TodoUser {
     }
 
     //Specific Update Methods for User Todos
-    public void updateTodoTitle(Long todoId, String newTitle)
-    {
+    public void updateTodoTitle(Long todoId, String newTitle) throws InvalidDataException {
         getTodo(todoId).setTitle(newTitle);
     }
-    public void updateTodoCategory(Long todoId, String newCategory)
-    {
+    public void updateTodoCategory(Long todoId, String newCategory) throws InvalidDataException {
         getTodo(todoId).setCategory(newCategory);
     }
     public void updateTodoCompleted(Long todoId, boolean newStatus)
@@ -213,13 +206,12 @@ public class TodoUser {
 
         }
     }
-    public void updateTodoDueDate(Long todoId, String dueDate) throws ParseException {
+    public void updateTodoDueDate(Long todoId, String dueDate) throws ParseException, InvalidDataException {
         DueDate dueDateObj = new DueDate(null);
         dueDateObj.setDateByString(dueDate);
        getTodo(todoId).setDueDate(dueDateObj.getXmlGregorianCalendar());
     }
-    public void updateTodoImportant(Long todoId, boolean newStatus)
-    {
+    public void updateTodoImportant(Long todoId, boolean newStatus) throws InvalidDataException {
         getTodo(todoId).setImportant(newStatus);
     }
 

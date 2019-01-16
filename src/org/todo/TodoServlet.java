@@ -1,9 +1,7 @@
 package org.todo;
-import data.TodoList;
+import com.sun.media.sound.InvalidDataException;
 import org.todo.auxiliary.*;
-import org.xml.sax.SAXException;
 import users.UserList;
-
 
 //Done: create Classes for FSM functions, front controller paradigma (bis samstag)
 //Todo: Sort after Category, sorted by default after due Date. Mark overdue Tasks in red, completed tasks in green. additional: implement sort after column
@@ -12,16 +10,11 @@ import users.UserList;
 //Todo: Change UserList to LinkedList, possibility of deleting account
 //Todo: Implement "forgot password" functionality
 
+import javax.security.auth.login.LoginException;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
-import javax.xml.XMLConstants;
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Unmarshaller;
-import javax.xml.validation.Schema;
-import javax.xml.validation.SchemaFactory;
 import java.io.File;
 import java.io.IOException;
 import java.text.ParseException;
@@ -63,144 +56,140 @@ public class TodoServlet extends HttpServlet {
 
 
         Enumeration<String> contextAttributeNames = context.getAttributeNames();
-        while(contextAttributeNames.hasMoreElements()){
-            System.out.println("Context: "+contextAttributeNames.nextElement());
+        while (contextAttributeNames.hasMoreElements()) {
+            System.out.println("Context: " + contextAttributeNames.nextElement());
         }
 
-        if(context.getAttribute("userSessionMap") != null){
+        if (context.getAttribute("userSessionMap") != null) {
             userSessionMap = (Map) context.getAttribute("userSessionMap");
         }
         File xmlSchemaFile;
         File userToDoXmlFile;
-        if(!activeRedirectPath.equals("login"))
-        {
 
-            activeUser.initializeUserSession(request);
-            userSession = activeUser.getUserSession();
-            if(null != context.getAttribute("userSessionMap"))
-            {
+        try {
+            if (!activeRedirectPath.equals("login")) {
 
-                if(userSessionMap.containsKey(userSession.getId()))
-                {
-                    activeUser.setUserName((String) userSessionMap.get(userSession.getId()));
+                activeUser.initializeUserSession(request);
+                userSession = activeUser.getUserSession();
+                if (null != context.getAttribute("userSessionMap")) {
+
+                    if (userSessionMap.containsKey(userSession.getId())) {
+                        activeUser.setUserName((String) userSessionMap.get(userSession.getId()));
+                        userToDoXmlFile = new File(contextPath +
+                                DATA_PATH_WEB_INF_USER_DATA +
+                                "/" + activeUser.getUserName() + "/ToDo_list_" + activeUser.getUserName() + ".xml");
+                        xmlSchemaFile = new File(contextPath + DATA_PATH_WEB_INF_DATA + "/ToDo.xsd");
+                        activeUser.setUserTodoList(userToDoXmlFile, xmlSchemaFile);
+                        System.out.println("Got valid session from user: " + userSessionMap.get(userSession.getId()));
+                    }
+                    else
+                    {
+                        throw new ServletException("Request is not login and no session is existing!");
+                    }
+                } else {
+                    activeRedirectPath = "login";
+                }
+
+            }
+
+            switch (activeRedirectPath) {
+
+                case "login":
+                    LoginRoutine loginRoutine = new LoginRoutine(request, response, userDB, todoUserList, context);
+                    activeUser = loginRoutine.getActiveTodoUser();
+
                     userToDoXmlFile = new File(contextPath +
                             DATA_PATH_WEB_INF_USER_DATA +
-                            "/" + activeUser.getUserName() + "/ToDo_list_" + activeUser.getUserName()+".xml");
+                            "/" + activeUser.getUserName() + "/ToDo_list_" + activeUser.getUserName() + ".xml");
                     xmlSchemaFile = new File(contextPath + DATA_PATH_WEB_INF_DATA + "/ToDo.xsd");
                     activeUser.setUserTodoList(userToDoXmlFile, xmlSchemaFile);
-                    System.out.println("Got valid session from user: "+userSessionMap.get(userSession.getId()));
-                }
-//                else
-//                {
-//                    TODO: Throw exception as it shall not be possible to be make a request without existing
-//                            session ID in the userSessionMap
-//                }
-            }
-            else
-            {
-                activeRedirectPath = "login";
-            }
+                    activeUser.updateCategoryHashSet(activeUser.getUserTodoList());
+                    userSession = activeUser.getUserSession();
+                    if (!userSessionMap.containsKey(userSession.getId())) {
+                        userSessionMap.put(userSession.getId(), activeUser.getUserName());
+                        context.setAttribute("userSessionMap", userSessionMap);
+                        System.out.println("Session would exist already");
+                    }
+                    request.setAttribute("todoUserCategorySet", activeUser.getCategorySet());
+                    request.setAttribute("todoList", activeUser.getUserTodoList());
+                    context.setAttribute("name", activeUser.getUserName());
+                    request.getRequestDispatcher("/todolist.jsp").forward(request, response);
 
+                    break;
+
+                case "showTodos":
+                    request.setAttribute("todoUserCategorySet", activeUser.getCategorySet());
+                    request.setAttribute("todoList", activeUser.getUserTodoList());
+                    context.setAttribute("name", activeUser.getUserName());
+                    request.getRequestDispatcher("/todolist.jsp").forward(request, response);
+
+                case "newTodo":
+                    NewTodo newTodo = new NewTodo(request, response, activeUser);
+
+                    break;
+
+                case "toUpdateTodo":
+                    ToUpdateTodo toUpdateTodo = new ToUpdateTodo(request, response, activeUser);
+                    break;
+
+                case "fromUpdateTodo":
+                    try {
+                        FromUpdateTodo fromUpdateTodo = new FromUpdateTodo(request, response, activeUser);
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+                    break;
+
+                case "discardTodo":
+                    DiscardTodo discardTodo = new DiscardTodo(request, response, activeUser);
+                    break;
+
+                case "todoCompletedToggle":
+                    TodoCompletedToggle todoCompletedToggle = new TodoCompletedToggle(request, response, activeUser);
+                    break;
+
+                case "sortRoutine":
+                    System.out.println("sort routine entered");
+                    break;
+
+                case "category":
+                    String categoryName = request.getParameter("categoryList");
+                    System.out.println("category sort routine entered. Value: " + categoryName);
+                    activeUser.updateCategoryHashSet(activeUser.getUserTodoList());
+                    activeUser.setSortedUserTodoList(categoryName);
+                    request.setAttribute("todoList", activeUser.getSortedUserTodoList());
+                    request.setAttribute("todoUserCategorySet", activeUser.getCategorySet());
+                    request.getRequestDispatcher("/todolist.jsp").forward(request, response);
+                    break;
+
+                default:
+                    DefaultRoutine defaultRoutine = new DefaultRoutine(request, response, activeUser);
+                    break;
+
+            }
         }
-
-        switch (activeRedirectPath) {
-
-            case "login":
-
-                File xmlUserFile = new File(contextPath+DATA_PATH_WEB_INF_DATA+"/UserList.xml");
-                File xmlUserFileSchema = new File(contextPath + DATA_PATH_WEB_INF_DATA + "/UserList.xsd");
-
-                /*try{
-                    JAXBContext jc = JAXBContext.newInstance(xmlUserFile.toString());
-                    Unmarshaller unmarshaller = jc.createUnmarshaller();
-                    SchemaFactory schemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
-                    Schema schema = schemaFactory.newSchema(xmlUserFileSchema);
-                    unmarshaller.setSchema(schema);
-                    //todoUserList = (LinkedList<TodoUser>) unmarshaller.unmarshal(xmlUserFile);
-                    userDB = (UserList) unmarshaller.unmarshal(xmlUserFile);
-
-                }
-                catch(JAXBException | SAXException e)
-                //catch(JAXBException e)
-                {
-                    e.printStackTrace();
-                    System.err.println(" User list is not possible to read!");
-                }*/
-
-                LoginRoutine loginRoutine = new LoginRoutine(request, response, userDB, todoUserList, context);
-                activeUser = loginRoutine.getActiveTodoUser();
-
-                userToDoXmlFile = new File(contextPath +
-                        DATA_PATH_WEB_INF_USER_DATA +
-                        "/" + activeUser.getUserName() + "/ToDo_list_" + activeUser.getUserName()+".xml");
-                xmlSchemaFile = new File(contextPath + DATA_PATH_WEB_INF_DATA + "/ToDo.xsd");
-                activeUser.setUserTodoList(userToDoXmlFile, xmlSchemaFile);
-                activeUser.updateCategoryHashSet(activeUser.getUserTodoList());
-                userSession = activeUser.getUserSession();
-                if(!userSessionMap.containsKey(userSession.getId()))
-                {
-                    userSessionMap.put(userSession.getId(), activeUser.getUserName());
-                    context.setAttribute("userSessionMap",userSessionMap);
-                    System.out.println("Session would exist already");
-                }
-                request.setAttribute("todoUserCategorySet", activeUser.getCategorySet());
-                request.setAttribute("todoList", activeUser.getUserTodoList());
-                context.setAttribute("name", activeUser.getUserName());
-                request.getRequestDispatcher("/todolist.jsp").forward(request, response);
-
-                break;
-
-            case "showTodos":
-                request.setAttribute("todoUserCategorySet", activeUser.getCategorySet());
-                request.setAttribute("todoList", activeUser.getUserTodoList());
-                context.setAttribute("name", activeUser.getUserName());
-                request.getRequestDispatcher("/todolist.jsp").forward(request, response);
-
-            case "newTodo":
-                NewTodo newTodo = new NewTodo(request, response, activeUser);
-
-                break;
-
-            case "toUpdateTodo":
-                ToUpdateTodo toUpdateTodo = new ToUpdateTodo(request, response, activeUser);
-                break;
-
-            case "fromUpdateTodo":
-                try {
-                    FromUpdateTodo fromUpdateTodo = new FromUpdateTodo(request, response, activeUser);
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
-                break;
-
-            case "discardTodo":
-                DiscardTodo discardTodo = new DiscardTodo(request, response, activeUser);
-                break;
-
-            case "todoCompletedToggle":
-                TodoCompletedToggle todoCompletedToggle = new TodoCompletedToggle(request, response, activeUser);
-                break;
-
-            case "sortRoutine":
-                System.out.println("sort routine entered");
-                break;
-
-            case "category":
-                String categoryName = request.getParameter("categoryList");
-                System.out.println("category sort routine entered. Value: "+categoryName);
-                activeUser.updateCategoryHashSet(activeUser.getUserTodoList());
-                activeUser.setSortedUserTodoList(categoryName);
-                request.setAttribute("todoList", activeUser.getSortedUserTodoList());
-                request.setAttribute("todoUserCategorySet", activeUser.getCategorySet());
-                request.getRequestDispatcher("/todolist.jsp").forward(request, response);
-                break;
-
-            default:
-                DefaultRoutine defaultRoutine = new DefaultRoutine(request, response, activeUser);
-                break;
-
+        catch(LoginException e)
+        {
+            System.err.println("Login Error:"+e.getMessage());
+            System.err.println(e.getStackTrace());
+        }
+        catch (ServletException e)
+        {
+            System.err.println("Servlet Error:"+e.getMessage());
+            System.err.println(e.getStackTrace());
+        }
+        catch (InvalidDataException e)
+        {
+            System.err.println("Invalid Data Error:"+e.getMessage());
+            System.err.println(e.getStackTrace());
+        }
+        catch (Exception e)
+        {
+            System.err.println("Got exception:"+e.getMessage());
+            System.err.println(e.getStackTrace());
         }
     }
+
     //------------------------------------------------------------------------------------------------------------------
 }
 

@@ -1,14 +1,12 @@
 package org.todo.auxiliary;
 
+import com.sun.media.sound.InvalidDataException;
 import org.todo.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.xml.datatype.XMLGregorianCalendar;
 import java.nio.charset.StandardCharsets;
 import java.text.ParseException;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 
 public class FromUpdateTodo {
     private TodoUser todoUser;
@@ -19,7 +17,7 @@ public class FromUpdateTodo {
         return new String(bytes, StandardCharsets.UTF_8);
     }
 
-    public FromUpdateTodo(HttpServletRequest request, HttpServletResponse response, TodoUser activeUser) throws ParseException {
+    public FromUpdateTodo(HttpServletRequest request, HttpServletResponse response, TodoUser activeUser) throws ParseException, InvalidDataException {
         this.todoUser = activeUser;
         String updatedTodoId = request.getParameter("todoId");
         Long updatedTodoIdLong = Long.parseLong(updatedTodoId);
@@ -27,10 +25,9 @@ public class FromUpdateTodo {
         String updatedDueDateString = request.getParameter("dueDate");
         String updatedCategoryString = request.getParameter("category");
         String updatedHighPriority = request.getParameter("priority");
-        // Fix this as I did for the dueDate
+        //TODO: Fix this as I did for the dueDate
         updatedTodoTitle = convertStringToUtf8(updatedTodoTitle);
         updatedCategoryString = convertStringToUtf8(updatedCategoryString);
-
 
         todoUser.updateTodoTitle(updatedTodoIdLong,updatedTodoTitle);
         todoUser.updateTodoDueDate(updatedTodoIdLong,updatedDueDateString);

@@ -1,5 +1,6 @@
 package org.todo.auxiliary;
 
+import com.sun.media.sound.InvalidDataException;
 import org.todo.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -8,7 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 public class ToUpdateTodo {
     private TodoUser todoUser;
 
-    public ToUpdateTodo(HttpServletRequest request, HttpServletResponse response, TodoUser activeUser){
+    public ToUpdateTodo(HttpServletRequest request, HttpServletResponse response, TodoUser activeUser) throws InvalidDataException {
         this.todoUser = activeUser;
         String updateTodoId = request.getParameter("todoID");
         Long updateTodoIdLong = Long.parseLong(updateTodoId);

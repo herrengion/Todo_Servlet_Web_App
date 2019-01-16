@@ -1,5 +1,6 @@
 package org.todo.auxiliary;
 
+import com.sun.media.sound.InvalidDataException;
 import org.todo.TodoUser;
 
 import javax.servlet.http.HttpServletRequest;
@@ -8,7 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 public class DiscardTodo {
     private TodoUser todoUser;
 
-    public DiscardTodo(HttpServletRequest request, HttpServletResponse response, TodoUser activeUser){
+    public DiscardTodo(HttpServletRequest request, HttpServletResponse response, TodoUser activeUser) throws InvalidDataException {
         this.todoUser = activeUser;
         String discardTodoId = request.getParameter("todoID");
         Long discardTodoIdInt = Long.parseLong(discardTodoId);
