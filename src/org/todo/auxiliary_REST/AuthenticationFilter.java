@@ -12,7 +12,7 @@ import java.io.IOException;
 import static java.nio.charset.StandardCharsets.ISO_8859_1;
 import static javax.servlet.http.HttpServletResponse.SC_UNAUTHORIZED;
 
-@WebFilter(urlPatterns = "/restAPI.do")
+@WebFilter(urlPatterns = {"/todos", "/categories"})
 public class AuthenticationFilter extends HttpFilter {
 
 	@Override
