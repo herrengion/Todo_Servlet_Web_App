@@ -27,8 +27,8 @@ public class TodoServlet extends HttpServlet {
     //Fields:
     //------------------------------------------------------------------------------------------------------------------
     public static final String DATA_PATH_WEB_INF = "/WEB-INF";
-    public static final String DATA_PATH_WEB_INF_DATA = DATA_PATH_WEB_INF+"/data";
-    public static final String DATA_PATH_WEB_INF_USER_DATA = DATA_PATH_WEB_INF_DATA+"/UserData";
+    public static final String DATA_PATH_WEB_INF_DATA = DATA_PATH_WEB_INF + "/data";
+    public static final String DATA_PATH_WEB_INF_USER_DATA = DATA_PATH_WEB_INF_DATA + "/UserData";
     //Active Session
 
     //All User Data
@@ -47,6 +47,7 @@ public class TodoServlet extends HttpServlet {
 
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         TodoUser activeUser = new TodoUser();
+        String errorMessge = "No error";
         HttpSession userSession;
 
         String activeRedirectPath = request.getParameter("redirect");
@@ -81,9 +82,7 @@ public class TodoServlet extends HttpServlet {
                         xmlSchemaFile = new File(contextPath + DATA_PATH_WEB_INF_DATA + "/ToDo.xsd");
                         activeUser.setUserTodoList(userToDoXmlFile, xmlSchemaFile);
                         System.out.println("Got valid session from user: " + userSessionMap.get(userSession.getId()));
-                    }
-                    else
-                    {
+                    } else {
                         throw new ServletException("Request is not login and no session is existing!");
                     }
                 } else {
@@ -163,33 +162,35 @@ public class TodoServlet extends HttpServlet {
                     break;
 
                 default:
-                    DefaultRoutine defaultRoutine = new DefaultRoutine(request, response, activeUser);
+                    errorMessge = "Switch passes default and no exception occurred!";
+                    DefaultRoutine defaultRoutine = new DefaultRoutine(request, response, errorMessge);
                     break;
 
             }
-        }
-        catch(LoginException e)
-        {
-            System.err.println("Login Error:"+e.getMessage());
+        } catch (LoginException e) {
+            System.err.println("Login Error:" + e.getMessage());
             System.err.println(e.getStackTrace());
-        }
-        catch (ServletException e)
-        {
-            System.err.println("Servlet Error:"+e.getMessage());
+            errorMessge = "Servlet Error:" + e.getMessage();
+            DefaultRoutine defaultRoutine = new DefaultRoutine(request, response, errorMessge);
+        } catch (ServletException e) {
+            System.err.println("Servlet Error:" + e.getMessage());
             System.err.println(e.getStackTrace());
-        }
-        catch (InvalidDataException e)
-        {
-            System.err.println("Invalid Data Error:"+e.getMessage());
+            errorMessge = "Servlet Error:" + e.getMessage();
+            DefaultRoutine defaultRoutine = new DefaultRoutine(request, response, errorMessge);
+        } catch (InvalidDataException e) {
+            System.err.println("Invalid Data Error:" + e.getMessage());
             System.err.println(e.getStackTrace());
-        }
-        catch (Exception e)
-        {
-            System.err.println("Got exception:"+e.getMessage());
+            errorMessge = "Servlet Error:" + e.getMessage();
+            DefaultRoutine defaultRoutine = new DefaultRoutine(request, response, errorMessge);
+        } catch (Exception e) {
+            System.err.println("Got exception:" + e.getMessage());
             System.err.println(e.getStackTrace());
+            errorMessge = "Servlet Error:" + e.getMessage();
+            DefaultRoutine defaultRoutine = new DefaultRoutine(request, response,errorMessge);
         }
     }
 
     //------------------------------------------------------------------------------------------------------------------
 }
+
 

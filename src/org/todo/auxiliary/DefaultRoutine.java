@@ -6,12 +6,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 public class DefaultRoutine {
-    public DefaultRoutine(HttpServletRequest request, HttpServletResponse response, TodoUser activeUser){
+    public DefaultRoutine(HttpServletRequest request, HttpServletResponse response, String errorMessage){
         try {
-            request.getRequestDispatcher("/oopserror.html").forward(request, response);
+            System.out.println("DefaultRoutine: " + errorMessage);
+            request.setAttribute("errorMsg", errorMessage);
+            request.getRequestDispatcher("/oopserror.jsp").forward(request, response);
         }
         catch(Exception e){
-            System.out.println("Exception handling DefaultRoutine()");
+            System.err.println("Exception handling DefaultRoutine Error messag: " + errorMessage);
         }
     }
 }
