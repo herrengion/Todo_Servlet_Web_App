@@ -33,13 +33,14 @@ public class LoginRoutine {
     private String servletContextPath;
     private ServletContext servletContext;
     private File userToDoXmlFile;
+    private File userList;
+    private File userListSchema;
 
 
     public LoginRoutine(HttpServletRequest request, HttpServletResponse response,
-                        UserList userDB, LinkedList<TodoUser> todoUserList,
+                        UserList userDB,
                         ServletContext servletContext)
-    throws LoginException
-    {
+            throws LoginException, IOException {
 
         //Load entered username and pw
         enteredUserName = request.getParameter("name");
@@ -67,7 +68,7 @@ public class LoginRoutine {
         for (int i = 0; i<userDB.getUser().size(); i++){
             if(userDB.getUser().get(i).getUsername().equals(enteredUserName)){
                 if(userDB.getUser().get(i).getPassword().equals(enteredPassWord)){
-                    loginSuccessful(userDB, todoUserList, i,request);
+                    loginSuccessful(userDB, i,request);
                     activeTodoUser.initializeUserSession(request);
                     invalidLogin = false;
                     firstTimeLogin = false;
@@ -113,14 +114,26 @@ public class LoginRoutine {
         }
         if(firstTimeLogin){
             setGeneralXmlFileParameters();
-            activeTodoUser = initializeUser(todoUserList, userDB, request);
+            activeTodoUser = initializeUser(userDB, request);
             request.setAttribute("loginMessage", "First Time Login!");
         }
     }
 
+    public LoginRoutine(HttpServletRequest request, HttpServletResponse response, ServletContext servletContext)
+            throws LoginException
+    {
+        userList = new File(servletContextPath+DATA_PATH_WEB_INF_DATA+"/UserList.xml");
+        userListSchema = new File(servletContextPath+DATA_PATH_WEB_INF_DATA+"/UserList.xsd");
+    }
+    public boolean checkUserCredential(String userName, String password)
+    {
+
+        return true;
+    }
+
 
     //Methods
-    private void loginSuccessful(UserList userList, LinkedList<TodoUser> todoUserList, int id, HttpServletRequest request){
+    private void loginSuccessful(UserList userList, int id, HttpServletRequest request){
         activeTodoUser.setUserName(userList.getUser().get(id).getUsername());
         activeTodoUser.setPassWord(userList.getUser().get(id).getPassword());
         activeTodoUser.initializeUserSession(request);
@@ -137,20 +150,7 @@ public class LoginRoutine {
             throw new LoginException("Default template for new user does not exist!");
         }
     }
-
-    private TodoUser initializeUser(LinkedList<TodoUser> todoUserList, UserList userDB, HttpServletRequest request) throws LoginException {
-        UserList.User newXMLUser = new UserList.User();
-        newXMLUser.setUsername(enteredUserName);
-        newXMLUser.setPassword(enteredPassWord);
-        File newUserToDoXml = null;
-
-        //here new user xml persistence
-        File userList = new File(servletContextPath+DATA_PATH_WEB_INF_DATA+"/UserList.xml");
-        File userListSchema = new File(servletContextPath+DATA_PATH_WEB_INF_DATA+"/UserList.xsd");
-        if(!(userList.isFile() || !userListSchema.isFile()))
-        {
-            throw new LoginException("User data are not available or the corresponding schema to check the data!");
-        }
+    public void addUserToXml(UserList.User newXmlUserObj, UserList userDB) throws IOException {
         try{
             JAXBContext jaxbContext = JAXBContext.newInstance(UserList.class);
             Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
@@ -158,8 +158,8 @@ public class LoginRoutine {
             Schema schema = schemaFactory.newSchema(userListSchema);
             unmarshaller.setSchema(schema);
             userDB = (UserList) unmarshaller.unmarshal(userList);
-            newXMLUser.setId((long) userDB.getUser().size());
-            userDB.getUser().add(newXMLUser);
+            newXmlUserObj.setId((long) userDB.getUser().size());
+            userDB.getUser().add(newXmlUserObj);
 
             Marshaller marshaller = jaxbContext.createMarshaller();
             marshaller.setSchema(schema);
@@ -167,11 +167,26 @@ public class LoginRoutine {
             marshaller.marshal(userDB, userList);
         }
         catch (Exception e){
-            throw new LoginException("Extract and store new user data from DB not possible: "+e.getMessage());
+            throw new IOException("Extract and store new user data from DB not possible: "+e.getMessage());
         }
+    }
+
+    private TodoUser initializeUser(UserList userDB, HttpServletRequest request) throws LoginException, IOException {
+        UserList.User newXMLUser = new UserList.User();
+        newXMLUser.setUsername(enteredUserName);
+        newXMLUser.setPassword(enteredPassWord);
+        File newUserToDoXml = null;
+
+        //here new user xml persistence
+        userList = new File(servletContextPath+DATA_PATH_WEB_INF_DATA+"/UserList.xml");
+        userListSchema = new File(servletContextPath+DATA_PATH_WEB_INF_DATA+"/UserList.xsd");
+        if(!(userList.isFile() || !userListSchema.isFile()))
+        {
+            throw new LoginException("User data are not available or the corresponding schema to check the data!");
+        }
+        addUserToXml(newXMLUser, userDB);
 
         TodoUser newUser = new TodoUser(servletContext, request);
-        todoUserList.add(newUser);
         // Create new empty template to persist his todos
         System.out.println("New User is: "+enteredUserName);
         System.out.println("Initial context path: "+ servletContextPath);

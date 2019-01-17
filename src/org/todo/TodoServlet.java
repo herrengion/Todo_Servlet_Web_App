@@ -94,7 +94,7 @@ public class TodoServlet extends HttpServlet {
             switch (activeRedirectPath) {
 
                 case "login":
-                    LoginRoutine loginRoutine = new LoginRoutine(request, response, userDB, todoUserList, context);
+                    LoginRoutine loginRoutine = new LoginRoutine(request, response, userDB, context);
                     activeUser = loginRoutine.getActiveTodoUser();
 
                     userToDoXmlFile = new File(contextPath +
@@ -121,6 +121,7 @@ public class TodoServlet extends HttpServlet {
                     request.setAttribute("todoList", activeUser.getUserTodoList());
                     context.setAttribute("name", activeUser.getUserName());
                     request.getRequestDispatcher("/todolist.jsp").forward(request, response);
+                    break;
 
                 case "newTodo":
                     NewTodo newTodo = new NewTodo(request, response, activeUser);
@@ -170,7 +171,7 @@ public class TodoServlet extends HttpServlet {
         } catch (LoginException e) {
             System.err.println("Login Error:" + e.getMessage());
             System.err.println(e.getStackTrace());
-            errorMessge = "Servlet Error:" + e.getMessage();
+            errorMessge = "Login Error:" + e.getMessage();
             DefaultRoutine defaultRoutine = new DefaultRoutine(request, response, errorMessge);
         } catch (ServletException e) {
             System.err.println("Servlet Error:" + e.getMessage());
@@ -180,12 +181,12 @@ public class TodoServlet extends HttpServlet {
         } catch (InvalidDataException e) {
             System.err.println("Invalid Data Error:" + e.getMessage());
             System.err.println(e.getStackTrace());
-            errorMessge = "Servlet Error:" + e.getMessage();
+            errorMessge = "Invalid Data Error:" + e.getMessage();
             DefaultRoutine defaultRoutine = new DefaultRoutine(request, response, errorMessge);
         } catch (Exception e) {
             System.err.println("Got exception:" + e.getMessage());
             System.err.println(e.getStackTrace());
-            errorMessge = "Servlet Error:" + e.getMessage();
+            errorMessge = "General Error:" + e.getMessage();
             DefaultRoutine defaultRoutine = new DefaultRoutine(request, response,errorMessge);
         }
     }
