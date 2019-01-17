@@ -49,32 +49,6 @@
         </div>
     </div>
 
-    <%-- Dropdown Click
-
-    <div class="w3-col w3-container m6 w3-black w3-padding w3-text-white w3-hide-small">
-        <div class="w3-dropdown-click w3-right">
-            <button onclick="myFunction()" class="w3-button w3-black w3-border-black w3-hover-green w3-hide-small">
-                <h3 class="w3-right">${name} <i class="fa fa-user-circle-o w3-xxxlarge w3-margin-left"></i></h3>
-            </button>
-            <div id="UserMenu" class="w3-dropdown-content w3-bar-block w3-border w3-hide-small">
-                <a href="login.jsp" class="w3-bar-item w3-button w3-black w3-text-white w3-hover-red" style='text-decoration:none;'>
-                    <i class="fa fa-sign-out w3-xlarge w3-margin-right"></i><b> log out</b>
-                </a>
-            </div>
-        </div>
-    </div>
-
-    <script>
-        function myFunction() {
-            var x = document.getElementById("UserMenu");
-            if (x.className.indexOf("w3-show") == -1) {
-                x.className += " w3-show";
-            } else {
-                x.className = x.className.replace(" w3-show", "");
-            }
-        }
-    </script>
-    --%>
 </div>
 
 <%--small--%>
@@ -106,11 +80,11 @@
             <form action="todoFSM.do" method="post" class="w3-container  w3-text-indigo w3-margin">
                 <div>
                     <label><b>Todo:</b></label>
-                    <textarea class="w3-hover-grey" name="newTodo" rows="2" cols="20" required>${todoTitle}</textarea>
+                    <textarea maxlength="120" class="w3-hover-grey" name="newTodo" rows="2" cols="20" required>${todoTitle}</textarea>
                 </div>
                 <div class="w3-padding-16">
                     <label><b>Category:</b></label>
-                    <input class="w3-hover-grey" type="text"  name="category" value="${category}" required/>
+                    <input maxlength="50" class="w3-hover-grey" type="text"  name="category" value="${category}" required/>
                 </div>
                 <div class="w3-padding-16">
                     <label><b>Due Date:</b></label>
@@ -136,25 +110,6 @@
     </div>
     <div class="w3-col m2 l3 w3-padding"></div>
 </div>
-
-
-
-
-<%--<h1>Update Todo '${todoTitle}'</h1>--%>
-<%--<h2>hello ${name}</h2>--%>
-<%--<form action="todoFSM.do" method="post">
-    Todo Title: <input type="text" name="newTodo" value="${todoTitle}"/><br/>
-    Due Date: <input type= "date" name="dueDate" value="${todoDate}"/><br/>
-    <input type="radio" name="priority" value="normal" ${normalPriority}> Normal Priority<br/>
-    <input type="radio" name="priority" value="high" ${highPriority}> High Priority<br/>
-    Category: <input type="text"  name="category" value="${category}"/><br/>
-    <br/><br/>
-    <input type="submit" value="Apply changes"/>
-    <input type="hidden" name="todoId" value="${todoId}">
-    <input type="hidden" name="redirect" value="fromUpdateTodo"/>
-</form>
---%>
-
 
 <%--________________Footer_________________________--%>
 <div class="w3-row w3-padding-64"></div>
