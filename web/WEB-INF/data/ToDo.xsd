@@ -3,7 +3,7 @@
 	<xs:element name="todo_list">
 		<xs:complexType>
 			<xs:sequence>
-				<xs:element name="todo" maxOccurs="unbounded">
+				<xs:element name="todo" maxOccurs="unbounded" minOccurs="0">
 					<xs:complexType>
 						<xs:sequence>
 							<xs:element name="title" type="xs:string"/>
