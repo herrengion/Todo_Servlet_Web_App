@@ -77,11 +77,11 @@
             <form action="todoFSM.do" method="post" class="w3-container  w3-text-indigo w3-margin">
                 <div>
                     <label><b>Todo:</b></label>
-                    <textarea maxlength="120" class="w3-hover-grey" placeholder="Write your Todo here!" name="newTodo" rows="2" cols="20" required></textarea>
+                    <textarea maxlength="50" class="w3-hover-grey" placeholder="Write your Todo here!" name="newTodo" rows="2" cols="10" required></textarea>
                 </div>
                 <div class="w3-padding-16">
                     <label><b>Category:</b></label>
-                    <input maxlength="50" class="w3-hover-grey" type="text"  name="category" required/>
+                    <input maxlength="20" class="w3-hover-grey" type="text"  name="category" required/>
                 </div>
                 <div class="w3-padding-16">
                     <label><b>Due Date:</b></label>
