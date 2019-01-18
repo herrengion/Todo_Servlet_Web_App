@@ -69,7 +69,9 @@
         <header class="w3-container w3-indigo">
             <h3 class="w3-margin-top">
                 <b>New Todo</b>
-                <a href="todolist.jsp"><i class="w3-btn fa fa-arrow-left w3-xlarge w3-right w3-margin-bottom w3-margin-left w3-text-white"></i></a>
+                <form action="todoFSM.do" method="post">
+                    <button class="w3-btn fa fa-arrow-left w3-xlarge w3-right w3-margin-bottom w3-margin-left w3-text-white" type="submit"  name="redirect" value="showTodos"></button>
+                </form>
             </h3>
         </header>
 
