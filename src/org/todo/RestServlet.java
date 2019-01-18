@@ -1,5 +1,7 @@
 package org.todo;
 
+import jsonData.Users;
+import org.eclipse.persistence.jaxb.UnmarshallerProperties;
 import org.todo.auxiliary.*;
 import users.UserList;
 
@@ -10,9 +12,13 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.xml.bind.DatatypeConverter;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Unmarshaller;
 import java.io.IOException;
 import java.io.PrintWriter;
 
+import java.io.StringReader;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -106,8 +112,10 @@ public class RestServlet extends HttpServlet{
         initialParameterMap.put("acceptTypeReq",request.getHeader("Accept"));
         initialParameterMap.put("acceptEncodingReq",response.getHeader("Accept-Encoding"));
         //Extract user name
-        if(initialParameterMap.get("switchCase") == "/users")
+        if(initialParameterMap.get("switchCase").equals("/users"))
         {
+            String jsonString = "{\"name\":1,\"password\":\"Gupta\"}}";
+            jaxbJsonStringToObject(jsonString);
             initialParameterMap.put("userName", request.getParameter("name"));
             initialParameterMap.put("pw", request.getParameter("pw"));
         }
@@ -124,6 +132,27 @@ public class RestServlet extends HttpServlet{
             initialParameterMap.put("pw", "");
         }
         return initialParameterMap;
+    }
+    private static void jaxbJsonStringToObject(String jsonString)
+    {
+        JAXBContext jaxbContext;
+        try
+        {
+            jaxbContext = JAXBContext.newInstance(Users.class);
+            Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
+
+            //Set JSON type
+            jaxbUnmarshaller.setProperty(UnmarshallerProperties.MEDIA_TYPE, "application/json");
+            jaxbUnmarshaller.setProperty(UnmarshallerProperties.JSON_INCLUDE_ROOT, true);
+
+            Users employee = (Users) jaxbUnmarshaller.unmarshal(new StringReader(jsonString));
+
+            System.out.println(employee);
+        }
+        catch (JAXBException e)
+        {
+            e.printStackTrace();
+        }
     }
 
 }
