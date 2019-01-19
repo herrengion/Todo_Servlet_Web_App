@@ -11,12 +11,31 @@ public class JsonUser {
     private String password;
     private JSONArray jsonArr;
 
-    public JsonUser(String jsonString) throws ParseException {
+    public JsonUser(String jsonString) {
         JSONParser parser = new JSONParser();
-        JSONObject jsonObj = (JSONObject) parser.parse(jsonString);
+        JSONObject jsonObj = null;
+        String userName;
+        String pwStr;
+        try {
+            jsonObj = (JSONObject) parser.parse(jsonString);
+            userName = (String) jsonObj.get("name");
+            pwStr = (String) jsonObj.get("password");
+        } catch (ParseException e) {
+            throw new VerifyError("User credential invalid");
+        }
+        catch (Exception e)
+        {
+            throw new IllegalArgumentException("User data type is invalid");
+        }
 
-        setName((String) jsonObj.get("name"));
-        setPassword((String) jsonObj.get("password"));
+        if(userName == null || userName.isEmpty() ||
+            pwStr == null || pwStr.isEmpty())
+        {
+            throw new IllegalArgumentException("User credential are empty or null");
+        }
+        setName(userName);
+        setPassword(pwStr);
+
     }
 
     public String getName() {

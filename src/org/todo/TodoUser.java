@@ -51,6 +51,11 @@ public class TodoUser {
         this.passWord=request.getParameter("pw");
         initializeUserSession(request);
     }
+    public TodoUser(String userName, String passWord)
+    {
+        this.userName=userName;
+        this.passWord=passWord;
+    }
 
     // Methodes
     public void initializeUserSession(HttpServletRequest request){
