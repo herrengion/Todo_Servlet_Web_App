@@ -1,8 +1,11 @@
 package org.todo;
 
-import jsonData.Users;
-import org.eclipse.persistence.jaxb.UnmarshallerProperties;
-import org.todo.auxiliary.*;
+import jsonData.JsonUser;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
+import org.todo.auxiliary.LoginRoutine;
 import users.UserList;
 
 import javax.security.auth.login.LoginException;
@@ -12,18 +15,17 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.xml.bind.DatatypeConverter;
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Unmarshaller;
+
 import java.io.IOException;
 import java.io.PrintWriter;
-
-import java.io.StringReader;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import static java.nio.charset.StandardCharsets.ISO_8859_1;
+import static javax.servlet.http.HttpServletResponse.SC_CREATED;
 import static javax.servlet.http.HttpServletResponse.SC_UNAUTHORIZED;
+import static javax.servlet.http.HttpServletResponse.SC_UNSUPPORTED_MEDIA_TYPE;
 
 @WebServlet({"/users","/todos","/todos/*","/categories"})
 public class RestServlet extends HttpServlet{
@@ -41,6 +43,7 @@ public class RestServlet extends HttpServlet{
         }
         catch (Exception e)
         {
+            e.getStackTrace();
             response.setStatus(SC_UNAUTHORIZED);
             return;
         }
@@ -58,14 +61,22 @@ public class RestServlet extends HttpServlet{
             switch ((String)servletInitMap.get("switchCase")) {
 
                 case "/users":
-                    UserList userDB = new UserList();
-                    UserList.User newXMLUser = new UserList.User();
-                    LoginRoutine loginRoutine = new LoginRoutine(request, response, getServletContext());
-                    newXMLUser.setUsername((String) servletInitMap.get("userName"));
-                    newXMLUser.setPassword((String) servletInitMap.get("pw"));
-                    loginRoutine.addUserToXml(newXMLUser ,userDB);
-                    System.out.println("users get");
-
+                    if( servletInitMap.get("contentTypeReq").equals("application/json")) {
+                        UserList userDB = new UserList();
+                        UserList.User newXMLUser = new UserList.User();
+                        LoginRoutine loginRoutine = new LoginRoutine(request, response, getServletContext());
+                        newXMLUser.setUsername((String) servletInitMap.get("userName"));
+                        newXMLUser.setPassword((String) servletInitMap.get("pw"));
+                        loginRoutine.addUserToXml(newXMLUser, userDB);
+                        PrintWriter out = response.getWriter();
+                        response.setContentType("application/json");
+                        response.setCharacterEncoding("UTF-8");
+                        response.setStatus(SC_CREATED);
+                    }
+                    else
+                    {
+                        response.setStatus(SC_UNSUPPORTED_MEDIA_TYPE);
+                    }
                     break;
 
                 case "/todos":
@@ -84,10 +95,7 @@ public class RestServlet extends HttpServlet{
             response.setStatus(SC_UNAUTHORIZED);
             return;
         }
-        PrintWriter out = response.getWriter();
-        response.setContentType("application/text");
-        response.setCharacterEncoding("UTF-8");
-        out.print(" test for REST API");
+
 
     }
     //------------------------------------------------------------------------------------------------------------------
@@ -109,15 +117,17 @@ public class RestServlet extends HttpServlet{
         initialParameterMap.put("switchCase",request.getServletPath());
         initialParameterMap.put("servletContext",getServletContext().getContextPath());
         initialParameterMap.put("contentTypeResp",response.getHeader("Content-Type"));
+        initialParameterMap.put("contentTypeReq",request.getHeader("Content-Type"));
         initialParameterMap.put("acceptTypeReq",request.getHeader("Accept"));
         initialParameterMap.put("acceptEncodingReq",response.getHeader("Accept-Encoding"));
         //Extract user name
         if(initialParameterMap.get("switchCase").equals("/users"))
         {
-            String jsonString = "{\"name\":1,\"password\":\"Gupta\"}}";
-            jaxbJsonStringToObject(jsonString);
-            initialParameterMap.put("userName", request.getParameter("name"));
-            initialParameterMap.put("pw", request.getParameter("pw"));
+            String body = request.getReader().lines().collect(Collectors.joining());
+            JsonUser requestUser = new JsonUser(body);
+            System.out.println("Name: "+ requestUser.getName() + "PW: " + requestUser.getPassword());
+            initialParameterMap.put("userName", requestUser.getName());
+            initialParameterMap.put("pw", requestUser.getPassword());
         }
         else
         {
@@ -133,26 +143,4 @@ public class RestServlet extends HttpServlet{
         }
         return initialParameterMap;
     }
-    private static void jaxbJsonStringToObject(String jsonString)
-    {
-        JAXBContext jaxbContext;
-        try
-        {
-            jaxbContext = JAXBContext.newInstance(Users.class);
-            Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
-
-            //Set JSON type
-            jaxbUnmarshaller.setProperty(UnmarshallerProperties.MEDIA_TYPE, "application/json");
-            jaxbUnmarshaller.setProperty(UnmarshallerProperties.JSON_INCLUDE_ROOT, true);
-
-            Users employee = (Users) jaxbUnmarshaller.unmarshal(new StringReader(jsonString));
-
-            System.out.println(employee);
-        }
-        catch (JAXBException e)
-        {
-            e.printStackTrace();
-        }
-    }
-
 }
