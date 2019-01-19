@@ -47,7 +47,8 @@ public class LoginRoutine {
         enteredPassWord = request.getParameter("pw");
         this.servletContext  = servletContext;
         this.servletContextPath = servletContext.getRealPath("/");
-
+        userList = new File(servletContextPath+DATA_PATH_WEB_INF_DATA+"/UserList.xml");
+        userListSchema = new File(servletContextPath+DATA_PATH_WEB_INF_DATA+"/UserList.xsd");
         //if username is empty or not valid
         if ((enteredUserName == null || enteredUserName.isEmpty())) {
             try {
@@ -122,6 +123,7 @@ public class LoginRoutine {
     public LoginRoutine(HttpServletRequest request, HttpServletResponse response, ServletContext servletContext)
             throws LoginException
     {
+        this.servletContextPath = servletContext.getRealPath("/");
         userList = new File(servletContextPath+DATA_PATH_WEB_INF_DATA+"/UserList.xml");
         userListSchema = new File(servletContextPath+DATA_PATH_WEB_INF_DATA+"/UserList.xsd");
     }
@@ -158,12 +160,13 @@ public class LoginRoutine {
             Schema schema = schemaFactory.newSchema(userListSchema);
             unmarshaller.setSchema(schema);
             userDB = (UserList) unmarshaller.unmarshal(userList);
-            newXmlUserObj.setId((long) userDB.getUser().size());
+            newXmlUserObj.setId((long) userDB.getUser().size()+1);
             userDB.getUser().add(newXmlUserObj);
 
             Marshaller marshaller = jaxbContext.createMarshaller();
             marshaller.setSchema(schema);
             marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+            marshaller.setProperty(Marshaller.JAXB_ENCODING, "UTF-8");
             marshaller.marshal(userDB, userList);
         }
         catch (Exception e){
@@ -177,9 +180,6 @@ public class LoginRoutine {
         newXMLUser.setPassword(enteredPassWord);
         File newUserToDoXml = null;
 
-        //here new user xml persistence
-        userList = new File(servletContextPath+DATA_PATH_WEB_INF_DATA+"/UserList.xml");
-        userListSchema = new File(servletContextPath+DATA_PATH_WEB_INF_DATA+"/UserList.xsd");
         if(!(userList.isFile() || !userListSchema.isFile()))
         {
             throw new LoginException("User data are not available or the corresponding schema to check the data!");

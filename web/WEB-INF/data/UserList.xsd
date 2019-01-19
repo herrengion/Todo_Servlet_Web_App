@@ -3,7 +3,7 @@
 	<xs:element name="user_list">
 		<xs:complexType>
 			<xs:sequence>
-				<xs:element name="user" maxOccurs="unbounded">
+				<xs:element name="user" minOccurs="0" maxOccurs="unbounded">
 					<xs:complexType>
 						<xs:sequence>
 							<xs:element name="username" type="xs:string" maxOccurs="1"/>
