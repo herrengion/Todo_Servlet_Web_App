@@ -63,31 +63,13 @@
 <div class="w3-row w3-padding-24 w3-container w3-hide-small">
 
     <div class="w3-responsive">
-        <table class="w3-table-all w3-card-4 w3-hoverable w3-centered" id="myTable" style="width:100%;">
+        <table class="w3-table-all w3-card-4 w3-hoverable w3-centered" id="myTable" style="table-layout:fixed;max-width: 100%">
             <tr class="w3-blue-gray" style="font-weight:bold">
-                <th width="10%" style="text-align: center;" class="w3-large">
-                        Status</th>
-                <th width="10%" style="text-align: center;" class="w3-large">
-                        Priority</th>
-                <th width="35%" style="text-align: left;" class="w3-large">
-                        Todo
-                        <div class="w3-dropdown-click">
-                            <button onclick="clickFunction()" class="w3-btn w3-small w3-blue-gray w3-border-blue-gray"><i class="w3-text-white fa fa-caret-right"></i></button>
-                            <div id="Search" class="w3-dropdown-content 3-card-4" style="min-width: 800%;">
-                                <input class="w3-input w3-border w3-padding" type="text" placeholder="Search for Todos.." id="myInput" onkeyup="searchFunction()">
+                <th width="10%" style="min-width: 7%"></th>
+                <th width="56%" style="min-width:45%;vertical-align: middle;text-align: left;">
+                            <div>
+                                <input class="w3-input w3-border w3-padding" type="text" placeholder="Search Todos.." id="myInput" onkeyup="searchFunction()" style="max-width: 90%;">
                             </div>
-                        </div>
-
-                    <script>
-                        function clickFunction() {
-                            var x = document.getElementById("Search");
-                            if (x.className.indexOf("w3-show") == -1) {
-                                x.className += " w3-show";
-                            } else {
-                                x.className = x.className.replace(" w3-show", "");
-                            }
-                        }
-                    </script>
 
                     <script>
                         function searchFunction() {
@@ -110,67 +92,57 @@
                         }
                     </script>
                 </th>
-                <th width="20%" style="text-align: left;" class="w3-large">
-                    <div>
-                        Category
-                        <form action="todoFSM.do" method="post" id="filterCategory" style="display: inline" class="margin-left">
+                <th width="14%" style="min-width: 12%;">
+                    <select name="categoryList" id= "categoryList" form="filterCategory" class="s3-select w3-left" style="margin-top:4pt;vertical-align: middle;max-width: 90%">
+                        <option value="" disabled selected>Groups</option>
+                        <option value="all">all</option>
+                        <c:forEach items="${todoUserCategorySet}" var="todoUserCategorySet" >
+                            <option value="${todoUserCategorySet}">${todoUserCategorySet}</option>
+                        </c:forEach>
+                        <form action="todoFSM.do" method="post" id="filterCategory" style="display: inline">
                             <input type="hidden" name="redirect" value="category">
-                            <button type="submit" value="filter category" class="w3-btn w3-small fa fa-refresh w3-margin-left"></button>
+                            <button type="submit" value="filter category" class="w3-btn w3-center fa fa-refresh" style="margin-top:2pt;display: inline"></button>
                         </form>
-                    </div>
-                    <div style="margin-top: 5pt">
-                        <select name="categoryList" id= "categoryList" form="filterCategory" class="w3-medium w3-center s3-select">
-                            <option value="" disabled selected>Choose your Category</option>
-                            <option value="all">all</option>
-                            <c:forEach items="${todoUserCategorySet}" var="todoUserCategorySet" >
-                                <option value="${todoUserCategorySet}">${todoUserCategorySet}</option>
-                            </c:forEach>
-                        </select>
-                    </div>
+                    </select>
                 </th>
-                <th width="15%" style="text-align: center;" class="w3-large">
-                        Due Date</th>
+                <th width="10%" style="vertical-align:middle;text-align: center;">
+                        till</th>
                 <th width="10%"></th></tr>
 
             <c:forEach items="${todoList}" var="todoInstance" >
                 <tr>
-                    <c:choose>
-                        <c:when test="${todoInstance.completed}">
-                            <td style="vertical-align:middle;text-align: center;">
+                    <td width="10%" style="min-width: 7%;vertical-align:middle;text-align: left;">
+                        <c:choose>
+                            <c:when test="${todoInstance.completed}">
                                 <form action="todoFSM.do" method="post" style="display: inline">
                                     <input type="hidden" name="redirect" value="todoCompletedToggle"/>
                                     <input type="hidden" name="todoID" value=${todoInstance.id}>
                                     <input type="hidden" name="todoStatus" value=${todoInstance.completed}>
                                     <button type="submit" class="w3-btn"><i class="w3-text-black w3-xlarge fa fa-check-square-o"></i></button>
                                 </form>
-                            </td>
-                        </c:when>
-                        <c:otherwise>
-                            <td style="vertical-align:middle;text-align: center;">
+                            </c:when>
+                            <c:otherwise>
                                 <form action="todoFSM.do" method="post" style="display: inline">
                                     <input type="hidden" name="redirect" value="todoCompletedToggle"/>
                                     <input type="hidden" name="todoID" value=${todoInstance.id}>
                                     <input type="hidden" name="todoStatus" value=${todoInstance.completed}>
-                                    <button type="submit" class="w3-btn" style="vertical-align:middle;display: inline;"><i class="w3-xlarge w3-text-green fa fa-square-o"></i></button>
+                                    <button type="submit" class="w3-btn"><i class="w3-xlarge w3-text-green fa fa-square-o"></i></button>
                                 </form>
-                            </td>
-                        </c:otherwise>
-                    </c:choose>
-                    <c:choose>
-                        <c:when test="${todoInstance.important}">
-                            <td style="vertical-align:middle">
-                                <i class="w3-text-yellow w3-xlarge fa fa-exclamation-triangle"></i>
-                            </td>
-                        </c:when>
-                        <c:otherwise>
-                            <td style="vertical-align:middle">
-                            </td>
-                        </c:otherwise>
-                    </c:choose>
-                    <td style="vertical-align:middle;text-align: left;">${todoInstance.title}</td>
-                    <td style="vertical-align:middle;text-align: left;">${todoInstance.category}</td>
-                    <td style="vertical-align:middle;text-align: center;">${todoInstance.dueDate}</td>
-                    <td style="vertical-align:middle;text-align: center;">
+                            </c:otherwise>
+                         </c:choose>
+                        <c:choose>
+                            <c:when test="${todoInstance.important}">
+                                <button style="vertical-align:middle;display: inline;" class="w3-btn w3-text-yellow w3-xlarge fa fa-exclamation-triangle"></button>
+                            </c:when>
+                            <c:otherwise>
+                                <%--leer--%>
+                            </c:otherwise>
+                        </c:choose>
+                    </td>
+                    <td width="56%" style="min-width:45%;word-wrap: break-word;vertical-align:middle;text-align: left;">${todoInstance.title}</td>
+                    <td width="14%" style="word-wrap: break-word;vertical-align:middle;text-align: left;">${todoInstance.category}</td>
+                    <td width="10%" style="max-width:10%; vertical-align:middle;text-align: center;">${todoInstance.dueDate}</td>
+                    <td width="10%" style="max-width:7%;vertical-align:middle;text-align: center;">
                         <form action="todoFSM.do" method="post" style="display:inline">
                             <input type="hidden" name="redirect" value="toUpdateTodo"/>
                             <input type="hidden" name="todoID" value=${todoInstance.id}>
@@ -192,15 +164,19 @@
 <c:forEach items="${todoList}" var="todoInstance">
     <div class="w3-row">
         <div class="w3-col m2 w3-padding"></div>
-        <c:choose>
-            <c:when test="${todoInstance.important}">
-                <div class="w3-col m8 w3-light-blue" style="border:10px solid yellow">
-            </c:when>
-            <c:otherwise>
-                <div class="w3-col m8 w3-light-blue">
-            </c:otherwise>
-        </c:choose>
 
+            <%--Importatn Toggle--%>
+            <%--
+            <c:choose>
+                <c:when test="${todoInstance.important}">
+                    <div class="w3-col m8 w3-red">
+                </c:when>
+                <c:otherwise>
+                    <div class="w3-col m8 w3-light-blue">
+                </c:otherwise>
+            </c:choose>
+                    --%>
+        <div class="w3-col m8 w3-light-blue">
     <c:choose>
         <c:when test="${todoInstance.completed}">
             <form action="todoFSM.do" method="post" style="display: inline">
@@ -215,37 +191,46 @@
                 <input type="hidden" name="redirect" value="todoCompletedToggle"/>
                 <input type="hidden" name="todoID" value=${todoInstance.id}>
                 <input type="hidden" name="todoStatus" value=${todoInstance.completed}>
-                <button type="submit" class="w3-btn w3-left w3-xlarge w3-text-green fa fa-square-o "></button>
+                <button type="submit" class="w3-btn w3-left w3-xlarge w3-text-green fa fa-square-o"></button>
             </form>
         </c:otherwise>
     </c:choose>
-                <h6 style="margin-left: 17%;"><b>${todoInstance.title}</b>
-        </h6> <b></b>
-        <h6><i class="w3-left w3-margin-left w3-margin-right">${todoInstance.dueDate}</i>
-            <form action="todoFSM.do" method="post" style="display: inline">
+            <h6 style="word-wrap: break-word;margin-left: 17%;"><b>${todoInstance.title}</b>
+            </h6> <b></b>
+
+                <c:choose>
+                    <c:when test="${todoInstance.important}">
+                        <form style="display: inline;">
+                        <button class="w3-btn w3-text-yellow w3-xlarge w3-left fa fa-exclamation-triangle"></button></form>
+                    </c:when>
+                    <c:otherwise>
+
+                    </c:otherwise>
+                </c:choose>
+            <form action="todoFSM.do" method="post" style="display: inline;">
                 <input type="hidden" name="redirect" value="discardTodo"/>
                 <input type="hidden" name="todoID" value=${todoInstance.id}>
-                <button type="submit" class="w3-right w3-btn">
-                    <i class="fa fa-trash w3-right w3-large"></i>
+                <button type="submit" class="w3-right w3-btn fa fa-trash w3-right w3-xlarge">
                 </button>
             </form>
             <form action="todoFSM.do" method="post" style="display: inline">
                 <input type="hidden" name="redirect" value="toUpdateTodo"/>
                 <input type="hidden" name="todoID" value=${todoInstance.id}>
-                <button type="submit" class="w3-right w3-btn">
-                    <i class="fa fa-pencil w3-right w3-large"></i>
+                <button type="submit" class="w3-right w3-btn fa fa-pencil w3-right w3-xlarge" >
                 </button>
             </form>
-            <i class="w3-right  w3-margin-right">${todoInstance.category}</i>
-        </h6>
-                <c:choose>
-                    <c:when test="${todoInstance.important}">
-                        </div>
-                    </c:when>
-                    <c:otherwise>
-                        </div>
-                    </c:otherwise>
-                </c:choose>
+            <h6 style="margin-left: 17%;margin-top: 15pt;">
+                ${todoInstance.dueDate}
+                <i style="word-wrap: break-word;" class="w3-right w3-margin-right">${todoInstance.category}</i>
+            </h6>
+            <%--<c:choose>
+                <c:when test="${todoInstance.important}">
+                    </div>
+                </c:when>
+                <c:otherwise>
+                    </div>
+                </c:otherwise>
+                </c:choose>--%>
         <div class="w3-col w3-container m2 w3-padding w3-hide-small"></div>
     </div>
 </c:forEach>

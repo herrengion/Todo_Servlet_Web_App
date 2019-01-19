@@ -70,12 +70,12 @@
     <div class="w3-col m2 l3 w3-padding w3-hide-small"></div>
     <div class="w3-col m8 l6 w3-card-4 w3-light-grey">
         <header class="w3-container w3-indigo">
+            <form action="todoFSM.do" method="post">
+                <button class="w3-btn fa fa-arrow-left w3-xlarge w3-margin-top w3-right w3-margin-left w3-text-white" type="submit"  name="redirect" value="showTodos"></button>
+            </form>
             <h3 class="w3-margin-top">
             <div>
-                    <b>Edit Todo number ${todoId}</b>
-                    <form action="todoFSM.do" method="post">
-                        <button class="w3-btn fa fa-arrow-left w3-xlarge w3-right w3-margin-bottom w3-margin-left w3-text-white" type="submit"  name="redirect" value="showTodos"></button>
-                    </form>
+                <b>Edit Todo number ${todoId}</b>
             </div>
             </h3>
         </header>
@@ -84,11 +84,11 @@
             <form action="todoFSM.do" method="post" class="w3-container  w3-text-indigo w3-margin">
                 <div>
                     <label><b>Todo:</b></label>
-                    <textarea maxlength="50" class="w3-hover-grey" name="newTodo" rows="2" cols="10" required>${todoTitle}</textarea>
+                    <textarea maxlength="200" class="w3-hover-grey" name="newTodo" rows="2" cols="10" required>${todoTitle}</textarea>
                 </div>
                 <div class="w3-padding-16">
                     <label><b>Category:</b></label>
-                    <input maxlength="20" class="w3-hover-grey" type="text"  name="category" value="${category}" required/>
+                    <input maxlength="40" class="w3-hover-grey" type="text"  name="category" value="${category}" required/>
                 </div>
                 <div class="w3-padding-16">
                     <label><b>Due Date:</b></label>
