@@ -121,6 +121,7 @@ public class TodoServlet extends HttpServlet {
                     response.addCookie(cookie);
                     request.setAttribute("todoUserCategorySet", activeUser.getCategorySet());
                     request.setAttribute("todoList", activeUser.getUserTodoList());
+                    request.setAttribute("isOverdue", activeUser.getOverdue());
                     context.setAttribute("name", activeUser.getUserName());
                     request.getRequestDispatcher("/todolist.jsp").forward(request, response);
 
@@ -129,6 +130,7 @@ public class TodoServlet extends HttpServlet {
                 case "showTodos":
                     request.setAttribute("todoUserCategorySet", activeUser.getCategorySet());
                     request.setAttribute("todoList", activeUser.getUserTodoList());
+                    request.setAttribute("isOverdue", activeUser.getOverdue());
                     context.setAttribute("name", activeUser.getUserName());
                     request.getRequestDispatcher("/todolist.jsp").forward(request, response);
                     break;

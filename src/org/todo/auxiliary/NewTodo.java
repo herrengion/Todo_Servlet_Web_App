@@ -61,8 +61,9 @@ public class NewTodo {
         todoUser.updateTodo();
         request.setAttribute("loginMessage", "Todo added!");
         todoUser.updateCategoryHashSet(todoUser.getUserTodoList());
-        request.setAttribute("todoUserCategorySet", activeUser.getCategorySet());
+        request.setAttribute("todoUserCategorySet", todoUser.getCategorySet());
         request.setAttribute("todoList", todoUser.getUserTodoList());
+        request.setAttribute("isOverdue", todoUser.getOverdue());
         request.setAttribute("name", todoUser.getUserName());
         try {
             request.getRequestDispatcher("/todolist.jsp").forward(request, response);

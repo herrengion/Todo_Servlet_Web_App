@@ -29,6 +29,7 @@ public class TodoCompletedToggle {
                 "' status changed!");
         request.setAttribute("todoList", todoUser.getUserTodoList());
         todoUser.updateCategoryHashSet(todoUser.getUserTodoList());
+        request.setAttribute("isOverdue", todoUser.getOverdue());
         request.setAttribute("todoUserCategorySet", todoUser.getCategorySet());
         try {
             request.getRequestDispatcher("/todolist.jsp").forward(request, response);

@@ -10,7 +10,11 @@ package data;
 
 import javax.xml.bind.annotation.*;
 import javax.xml.datatype.XMLGregorianCalendar;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 
@@ -133,6 +137,7 @@ public class TodoList {
         @XmlAttribute(name = "id")
         @XmlSchemaType(name = "unsignedInt")
         protected Long id;
+
 
         /**
          * Ruft den Wert der title-Eigenschaft ab.
@@ -260,6 +265,28 @@ public class TodoList {
          */
         public void setId(Long value) {
             this.id = value;
+        }
+
+        public boolean isOverdue(){
+            if(dueDate==null){
+                return false;
+            }
+            else{
+                SimpleDateFormat formatter= new SimpleDateFormat("yyyy-MM-dd");
+                Date date = new Date(System.currentTimeMillis());
+                formatter.format(date);
+                GregorianCalendar now = new GregorianCalendar();
+                now.setTime(date);
+                int overdue = now.compareTo(this.dueDate.toGregorianCalendar());
+                if(overdue >= 0){
+                    return false;
+                }
+                else{
+                    return true;
+                }
+            }
+
+
         }
 
     }

@@ -40,7 +40,8 @@ public class FromUpdateTodo {
         todoUser.updateTodo();
         request.setAttribute("loginMessage", "Todo : '" + updatedTodoTitle + "' updated!");
         request.setAttribute("name", todoUser.getUserName());
-        request.setAttribute("todoList", activeUser.getUserTodoList());
+        request.setAttribute("todoList", todoUser.getUserTodoList());
+        request.setAttribute("isOverdue", todoUser.getOverdue());
         todoUser.updateCategoryHashSet(todoUser.getUserTodoList());
         request.setAttribute("todoUserCategorySet", activeUser.getCategorySet());
         try {

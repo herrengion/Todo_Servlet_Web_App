@@ -67,6 +67,7 @@
             <tr class="w3-blue-gray" style="font-weight:bold">
                 <th width="10%" style="min-width: 7%"></th>
                 <th width="56%" style="min-width:45%;vertical-align: middle;text-align: left;">
+                    <%--Possible script to search for entries
                             <div>
                                 <input class="w3-input w3-border w3-padding" type="text" placeholder="Search Todos.." id="myInput" onkeyup="searchFunction()" style="max-width: 90%;">
                             </div>
@@ -90,7 +91,7 @@
                                 }
                             }
                         }
-                    </script>
+                    </script>--%>
                 </th>
                 <th width="14%" style="min-width: 12%;">
                     <select name="categoryList" id= "categoryList" form="filterCategory" class="s3-select w3-left" style="margin-top:4pt;vertical-align: middle;max-width: 90%">
@@ -110,7 +111,7 @@
                 <th width="10%"></th></tr>
 
             <c:forEach items="${todoList}" var="todoInstance" >
-                <tr>
+                    <tr>
                     <td width="10%" style="min-width: 7%;vertical-align:middle;text-align: left;">
                         <c:choose>
                             <c:when test="${todoInstance.completed}">

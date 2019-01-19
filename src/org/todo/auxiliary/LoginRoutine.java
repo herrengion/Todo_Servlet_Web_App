@@ -141,7 +141,7 @@ public class LoginRoutine {
                         ": "+e.getMessage());
             }
         }
-        if(firstTimeLogin){
+        if(firstTimeLogin && (!invalidLogin)){
             setGeneralXmlFileParameters();
             activeTodoUser = initializeUser(userDB, request);
             request.setAttribute("loginMessage", "First Time Login!");
@@ -167,7 +167,6 @@ public class LoginRoutine {
         activeTodoUser.setPassWord(userList.getUser().get(id).getPassword());
         activeTodoUser.initializeUserSession(request);
     }
-    //Exception handling Todo
     private void loginFailed(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException{
         request.getRequestDispatcher("/incorrectlogin.html").forward(request, response);
     }

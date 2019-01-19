@@ -40,6 +40,8 @@ public class TodoUser {
 
     private Set categorySet = new HashSet();
 
+    private LinkedList<Boolean> overdue = new LinkedList<>();
+
 
     //Constructor
     public TodoUser()
@@ -88,6 +90,7 @@ public class TodoUser {
         for(int i = 0; i<todosObj.getTodo().size(); i++)
         {
             userTodoList.add(todosObj.getTodo().get(i));
+            overdue.add(userTodoList.get(i).isOverdue());
         }
         if(!(userTodoList.isEmpty())) {
             this.SelectionSortListAfterDueDate(userTodoList);
@@ -278,6 +281,10 @@ public class TodoUser {
         //inputList.clear();
         //inputList.addAll(outputList);
         inputList.addAll(intermediateList);
+    }
+
+    public LinkedList<Boolean> getOverdue(){
+        return overdue;
     }
 
 }
