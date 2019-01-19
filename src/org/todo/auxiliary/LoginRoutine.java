@@ -103,6 +103,9 @@ public class LoginRoutine {
                     firstTimeLogin = false;
                     request.setAttribute("loginMessage", "Hello Again!");
                 }
+                else {
+                    firstTimeLogin = false;
+                }
             }
         }
         /*
@@ -141,7 +144,7 @@ public class LoginRoutine {
                         ": "+e.getMessage());
             }
         }
-        if(firstTimeLogin && (!invalidLogin)){
+        if(firstTimeLogin){
             setGeneralXmlFileParameters();
             activeTodoUser = initializeUser(userDB, request);
             request.setAttribute("loginMessage", "First Time Login!");
