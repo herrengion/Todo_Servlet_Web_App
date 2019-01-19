@@ -89,6 +89,9 @@ public class TodoUser {
         {
             userTodoList.add(todosObj.getTodo().get(i));
         }
+        if(!(userTodoList.isEmpty())) {
+            this.insertionSortListAfterDueDate(userTodoList);
+        }
         return userTodoList;
     }
 
@@ -250,20 +253,31 @@ public class TodoUser {
         }
     }
 
-    public TodoList insertionSortListAfterDueDate(TodoList inputList){
-        TodoList outputList = new TodoList();
-        //int pivot = inputList.getTodo().size()/2;
-        XMLGregorianCalendar xmlGregorianCalendar1 = inputList.getTodo().get(0).getDueDate();
-        XMLGregorianCalendar xmlGregorianCalendar2 = inputList.getTodo().get(1).getDueDate();
-        xmlGregorianCalendar1.compare(xmlGregorianCalendar2);
-        for(int i = inputList.getTodo().size()-1; i<=0; i--){
-            int step = i;
-            while(0>=inputList.getTodo().get(i).getDueDate().compare(inputList.getTodo().get(step-1).getDueDate())){
-                step--;
+    public void insertionSortListAfterDueDate(LinkedList<TodoList.Todo> inputList){
+
+        LinkedList<TodoList.Todo> outputList = new LinkedList<>();
+        LinkedList<TodoList.Todo> intermediateList = new LinkedList<>();
+        for(int i=0; i<inputList.size(); i++){
+            if(inputList.get(i).getDueDate() == null){
+                intermediateList.add(inputList.get(i));
+                inputList.remove(i);
             }
-            outputList.getTodo().add(step, inputList.getTodo().get(i));
         }
-        return outputList;
+        int minIndex;
+        for(int i = 0; i < inputList.size()-1; i++) {
+            minIndex=i;
+            for (int j = i+1; j < inputList.size(); j++) {
+                if(inputList.get(j).getDueDate().toGregorianCalendar().compareTo(inputList.get(minIndex).getDueDate().toGregorianCalendar())<0){
+                    minIndex=j;
+                }
+            }
+            inputList.add(i,inputList.get(minIndex));
+            //outputList.add(inputList.get(minIndex));
+            inputList.remove(minIndex+1);
+        }
+        //inputList.clear();
+        //inputList.addAll(outputList);
+        inputList.addAll(intermediateList);
     }
 
 }
