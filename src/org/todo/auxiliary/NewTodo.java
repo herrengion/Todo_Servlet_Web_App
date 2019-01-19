@@ -43,6 +43,13 @@ public class NewTodo {
         {
             TodoList.Todo lastToDo = todoUser.getUserTodoList().get(size - 1);
             newId = lastToDo.getId();
+            long maxId = 0;
+            for(int i = 0; i<activeUser.getUserTodoList().size(); i++){
+                if(activeUser.getUserTodoList().get(i).getId()>=maxId){
+                    maxId=activeUser.getUserTodoList().get(i).getId();
+                }
+            }
+            newId=maxId;
         }
 
         newToDoObj.setId(newId+1);
