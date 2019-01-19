@@ -90,7 +90,7 @@ public class TodoUser {
             userTodoList.add(todosObj.getTodo().get(i));
         }
         if(!(userTodoList.isEmpty())) {
-            this.insertionSortListAfterDueDate(userTodoList);
+            this.SelectionSortListAfterDueDate(userTodoList);
         }
         return userTodoList;
     }
@@ -128,7 +128,7 @@ public class TodoUser {
             }
         }
         //Throw exception with message: Invalid todo index
-        throw new InvalidDataException("Invalid todo ID please reload the pabe");
+        throw new InvalidDataException("Invalid todo ID please reload the page");
     }
 
     public void addTodo(TodoList.Todo newTodo)
@@ -253,14 +253,14 @@ public class TodoUser {
         }
     }
 
-    public void insertionSortListAfterDueDate(LinkedList<TodoList.Todo> inputList){
+    public void SelectionSortListAfterDueDate(LinkedList<TodoList.Todo> inputList){
 
-        LinkedList<TodoList.Todo> outputList = new LinkedList<>();
         LinkedList<TodoList.Todo> intermediateList = new LinkedList<>();
         for(int i=0; i<inputList.size(); i++){
             if(inputList.get(i).getDueDate() == null){
                 intermediateList.add(inputList.get(i));
                 inputList.remove(i);
+                i--;
             }
         }
         int minIndex;
@@ -272,8 +272,8 @@ public class TodoUser {
                 }
             }
             inputList.add(i,inputList.get(minIndex));
-            //outputList.add(inputList.get(minIndex));
             inputList.remove(minIndex+1);
+
         }
         //inputList.clear();
         //inputList.addAll(outputList);

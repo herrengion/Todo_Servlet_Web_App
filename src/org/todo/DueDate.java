@@ -34,7 +34,7 @@ public class DueDate {
     public void setDate(LocalDate date)
     {
         GregorianCalendar cal = new GregorianCalendar();
-        cal.setTime(new Date());
+        cal.set(date.getYear(), date.getMonthValue()-1, date.getDayOfMonth());
         try {
             xmlGregorianCalendar = DatatypeFactory.newInstance().newXMLGregorianCalendarDate(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH) + 1, cal.get(Calendar.DAY_OF_MONTH), DatatypeConstants.FIELD_UNDEFINED);
         }
@@ -53,6 +53,10 @@ public class DueDate {
     public XMLGregorianCalendar getXmlGregorianCalendar()
     {
         return xmlGregorianCalendar;
+    }
+
+    public void setXmlGregorianCalendar(XMLGregorianCalendar xmlGregorianCalendar) {
+        this.xmlGregorianCalendar = xmlGregorianCalendar;
     }
 
     public XMLGregorianCalendar getTransformedDateStringToXMLGregorian(String date)

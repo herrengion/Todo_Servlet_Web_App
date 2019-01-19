@@ -56,10 +56,12 @@ public class TodoServlet extends HttpServlet {
         Map userSessionMap = new HashMap<String, String>();
 
 
-        Enumeration<String> contextAttributeNames = context.getAttributeNames();
+        /*Enumeration<String> contextAttributeNames = context.getAttributeNames();
         while (contextAttributeNames.hasMoreElements()) {
             System.out.println("Context: " + contextAttributeNames.nextElement());
-        }
+        }*/
+
+
 
         if (context.getAttribute("userSessionMap") != null) {
             userSessionMap = (Map) context.getAttribute("userSessionMap");
@@ -69,13 +71,18 @@ public class TodoServlet extends HttpServlet {
 
         try {
             if (!activeRedirectPath.equals("login")) {
-
+                Cookie[] cookies = request.getCookies();
+                for(int i=0; i<cookies.length; i++){
+                    if(cookies[i].getName().equals("name")){
+                        activeUser.setUserName(cookies[i].getValue());
+                    }
+                }
                 activeUser.initializeUserSession(request);
                 userSession = activeUser.getUserSession();
                 if (null != context.getAttribute("userSessionMap")) {
 
                     if (userSessionMap.containsKey(userSession.getId())) {
-                        activeUser.setUserName((String) userSessionMap.get(userSession.getId()));
+                        //activeUser.setUserName((String) userSessionMap.get(userSession.getId()));
                         userToDoXmlFile = new File(contextPath +
                                 DATA_PATH_WEB_INF_USER_DATA +
                                 "/" + activeUser.getUserName() + "/ToDo_list_" + activeUser.getUserName() + ".xml");
@@ -109,6 +116,9 @@ public class TodoServlet extends HttpServlet {
                         context.setAttribute("userSessionMap", userSessionMap);
                         System.out.println("Session would exist already");
                     }
+                    Cookie cookie = new Cookie("name", activeUser.getUserName());
+                    cookie.setMaxAge(30*60);
+                    response.addCookie(cookie);
                     request.setAttribute("todoUserCategorySet", activeUser.getCategorySet());
                     request.setAttribute("todoList", activeUser.getUserTodoList());
                     context.setAttribute("name", activeUser.getUserName());

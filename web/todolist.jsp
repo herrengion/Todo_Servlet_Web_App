@@ -99,11 +99,11 @@
                         <c:forEach items="${todoUserCategorySet}" var="todoUserCategorySet" >
                             <option value="${todoUserCategorySet}">${todoUserCategorySet}</option>
                         </c:forEach>
-                        <form action="todoFSM.do" method="post" id="filterCategory" style="display: inline">
-                            <input type="hidden" name="redirect" value="category">
-                            <button type="submit" value="filter category" class="w3-btn w3-center fa fa-refresh" style="margin-top:2pt;display: inline"></button>
-                        </form>
                     </select>
+                    <form action="todoFSM.do" method="post" id="filterCategory" style="display: inline">
+                        <input type="hidden" name="redirect" value="category">
+                        <button type="submit" value="categoryList" class="w3-btn w3-center fa fa-refresh" style="margin-top:2pt;display: inline"></button>
+                    </form>
                 </th>
                 <th width="10%" style="vertical-align:middle;text-align: center;">
                         till</th>
@@ -235,6 +235,8 @@
     </div>
 </c:forEach>
 </div>
+
+
 
 <%--________________Footer_________________________--%>
         <div class="w3-row w3-padding-64"></div>
