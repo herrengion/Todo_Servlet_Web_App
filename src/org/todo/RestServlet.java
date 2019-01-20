@@ -9,10 +9,14 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.todo.auxiliary.LoginRoutine;
+import org.todo.auxiliary_REST.AuthenticationFilter;
 import users.UserList;
 
 import javax.security.auth.login.LoginException;
+import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -45,6 +49,14 @@ public class RestServlet extends HttpServlet{
         String errorMessge = "No error";
         String contextPath = getServletContext().getRealPath("/");
         Map servletInitMap;
+        AuthenticationFilter authenticationFilter = new AuthenticationFilter();
+        FilterChain chain = new FilterChain() {
+            @Override
+            public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse) throws IOException, ServletException {
+
+            }
+        };
+        authenticationFilter.doFilter(request, response, chain);
         try
         {
             servletInitMap = initialRestApiValues(request, response);
@@ -157,6 +169,15 @@ public class RestServlet extends HttpServlet{
         try
         {
             servletInitMap = initialRestApiValues(request, response);
+
+            AuthenticationFilter authenticationFilter = new AuthenticationFilter();
+            FilterChain chain = new FilterChain() {
+                @Override
+                public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse) throws IOException, ServletException {
+
+                }
+            };
+            authenticationFilter.doFilter(request, response, chain);
 
             System.out.println("Got request on REST API");
             System.out.println("SwitchCase: " + servletInitMap.get("switchCase"));

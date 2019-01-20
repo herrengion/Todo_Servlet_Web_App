@@ -183,13 +183,18 @@ public class LoginRoutine {
     }
     public boolean addUserToXml(UserList.User newXmlUserObj, UserList userDB) throws IOException {
         try{
-            boolean returnValue = false;
+            boolean returnValue = true;
             JAXBContext jaxbContext = JAXBContext.newInstance(UserList.class);
             Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
             SchemaFactory schemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
             Schema schema = schemaFactory.newSchema(userListSchema);
             unmarshaller.setSchema(schema);
             userDB = (UserList) unmarshaller.unmarshal(userList);
+            for(int i=0; i<userDB.getUser().size(); i++){
+                if(userDB.getUser().get(i).getUsername().equals(newXmlUserObj.getUsername())){
+                    returnValue = false;
+                }
+            }
             long maxID = 0;
             for(int i = 0; i<userDB.getUser().size(); i++){
                 if(userDB.getUser().get(i).getId()>maxID){
@@ -197,11 +202,8 @@ public class LoginRoutine {
                 }
             }
             newXmlUserObj.setId(maxID+1);
-            userDB.getUser().add(newXmlUserObj);
-            for(int i=0; i<userDB.getUser().size(); i++){
-                if(userDB.getUser().get(i).getUsername().equals(newXmlUserObj.getUsername())){
-                    returnValue = true;
-                }
+            if(returnValue) {
+                userDB.getUser().add(newXmlUserObj);
             }
             Marshaller marshaller = jaxbContext.createMarshaller();
             marshaller.setSchema(schema);

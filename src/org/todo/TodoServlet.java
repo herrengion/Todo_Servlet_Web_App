@@ -166,6 +166,9 @@ public class TodoServlet extends HttpServlet {
 
                 case "category":
                     String categoryName = request.getParameter("categoryList");
+                    if(categoryName == null){
+                        categoryName = "all";
+                    }
                     System.out.println("category sort routine entered. Value: " + categoryName);
                     activeUser.updateCategoryHashSet(activeUser.getUserTodoList());
                     activeUser.setSortedUserTodoList(categoryName);
