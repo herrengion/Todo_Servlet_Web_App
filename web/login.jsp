@@ -58,12 +58,11 @@
 </form>
 
 <%--________________FOOTER_________________________--%>
-<div class="w3-row w3-padding-64"></div>
-<div class="w3-row w3-padding w3-bottom w3-black">
+<div class="w3-row w3-padding-64 w3-hide-small"></div>
+<div class="w3-bottom w3-black">
     <footer class="w3-col w3-container m12 w3-black w3-padding">
-        <div class="w3-right w3-display-bottomright w3-text-white w3-margin-right w3-padding-24 w3-hide-small">&copy Grunder, Herren, Plüss</div>
+        <div class="w3-right w3-text-white w3-padding-24 w3-hide-small">&copy Grunder, Herren, Plüss</div>
     </footer>
 </div>
-
 </body>
 </html>

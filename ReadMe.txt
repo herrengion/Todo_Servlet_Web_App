@@ -1,7 +1,7 @@
 ****************************************************************************************************
 ----------------------------------------------------------------------------------------------------
 ReadMe.txt
-Grunder, Herren, Plüss, 2019
+Grunder, Herren, Plï¿½ss, 2019
 ----------------------------------------------------------------------------------------------------
 
 						 ________________________________________________
@@ -39,7 +39,7 @@ Grunder, Herren, Plüss, 2019
 ____________________________________________________________________________________________________
 
 	
-	designed by N. Grunder, G. Herren, F. Plüss at BFH for CAS SD 2018/2019, WepApp course.
+	designed by N. Grunder, G. Herren, F. Plï¿½ss at BFH for CAS SD 2018/2019, WepApp course.
 
 ____________________________________________________________________________________________________
 
@@ -267,36 +267,36 @@ ________________________________________________________________________________
 
 Servlet_app [todo]/
 +-- .idea/
-¦   
+ï¿½   
 +-- lib/
-¦   
+ï¿½   
 +-- out/										 |-> The code is compiled in this directory.
-¦   +-- artifacts/
-¦   ¦			+-- todo_war_exploded/
-¦   ¦			¦			+-- WEB-INF/
-¦   ¦			¦			¦		+-- data/    |-> contains the live XML files with login  
-¦   +-- production/								 |	 credentials and a folder for every user 
-¦ 												 |   with the todos in a separate XML file.
-¦												 -------------------------------------------
+ï¿½   +-- artifacts/
+ï¿½   ï¿½			+-- todo_war_exploded/
+ï¿½   ï¿½			ï¿½			+-- WEB-INF/
+ï¿½   ï¿½			ï¿½			ï¿½		+-- data/    |-> contains the live XML files with login  
+ï¿½   +-- production/								 |	 credentials and a folder for every user 
+ï¿½ 												 |   with the todos in a separate XML file.
+ï¿½												 -------------------------------------------
 +-- src/										 |-> the src file holds all the code files
-¦   +-- data									 |   and XML blueprints.
-¦   +-- jsonData
-¦   +-- org.todo
-¦   +-- users
+ï¿½   +-- data									 |   and XML blueprints.
+ï¿½   +-- jsonData
+ï¿½   +-- org.todo
+ï¿½   +-- users
 +-- web/										 |-> contains all the .jsp-files and 
-¦   											 |   stylesheets
+ï¿½   											 |   stylesheets
 +-- .gitignore/
-¦   
+ï¿½   
 +-- ReadMe.txt/
-¦   
+ï¿½   
 +-- todo.iml/
-¦   
+ï¿½   
 +-- Todo_example.xml/
-¦   
+ï¿½   
 +-- Todo_example.xsd/
-¦   
+ï¿½   
 +-- External Libraries/
-¦   
+ï¿½   
 +-- Scratches and Consoles/
 
 
@@ -335,8 +335,9 @@ content according to the needs of the information in the XML pages.
 
 Stylesheet:
 
-The stylesheet is taken from https://www.w3schools.com/ and used to make 
-the page responsive and dynamic.
+The stylesheet is taken from https://www.w3schools.com/ and is used to make
+the page responsive and dynamic. We choose this stylesheet, because of his simple application
+and the good documentations with examples on the web.
 
 Persistence:
 
@@ -368,4 +369,10 @@ twice when initializing a login.
 There are some .java files that are not used anymore.
 
 General tidying up of the code, maybe creation of more auxiliary classes.
+
+Change project to maven.
+
+Remember me checkbox and a link to the forgotpassword-page on the login page
+
+
 ____________________________________________________________________________________________________
