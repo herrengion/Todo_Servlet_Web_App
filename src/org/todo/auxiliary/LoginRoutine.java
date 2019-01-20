@@ -181,8 +181,9 @@ public class LoginRoutine {
             throw new LoginException("Default template for new user does not exist!");
         }
     }
-    public void addUserToXml(UserList.User newXmlUserObj, UserList userDB) throws IOException {
+    public boolean addUserToXml(UserList.User newXmlUserObj, UserList userDB) throws IOException {
         try{
+            boolean returnValue = false;
             JAXBContext jaxbContext = JAXBContext.newInstance(UserList.class);
             Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
             SchemaFactory schemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
@@ -197,11 +198,16 @@ public class LoginRoutine {
             }
             newXmlUserObj.setId(maxID+1);
             userDB.getUser().add(newXmlUserObj);
-
+            for(int i=0; i<userDB.getUser().size(); i++){
+                if(userDB.getUser().get(i).getUsername().equals(newXmlUserObj.getUsername())){
+                    returnValue = true;
+                }
+            }
             Marshaller marshaller = jaxbContext.createMarshaller();
             marshaller.setSchema(schema);
             marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
             marshaller.marshal(userDB, userList);
+            return returnValue;
         }
         catch (Exception e){
             throw new IOException("Extract and store new user data from DB not possible: "+e.getMessage());
