@@ -259,6 +259,7 @@ public class TodoUser {
     public void SelectionSortListAfterDueDate(LinkedList<TodoList.Todo> inputList){
 
         LinkedList<TodoList.Todo> intermediateList = new LinkedList<>();
+        LinkedList<TodoList.Todo> intermediateListCompleted = new LinkedList<>();
         for(int i=0; i<inputList.size(); i++){
             if(inputList.get(i).getDueDate() == null){
                 intermediateList.add(inputList.get(i));
@@ -278,9 +279,15 @@ public class TodoUser {
             inputList.remove(minIndex+1);
 
         }
-        //inputList.clear();
-        //inputList.addAll(outputList);
         inputList.addAll(intermediateList);
+        for(int i = 0; i<inputList.size()-1; i++){
+            if(inputList.get(i).isCompleted()){
+                intermediateListCompleted.add(inputList.get(i));
+                inputList.remove(i);
+                i--;
+            }
+        }
+        inputList.addAll(intermediateListCompleted);
     }
 
     public LinkedList<Boolean> getOverdue(){

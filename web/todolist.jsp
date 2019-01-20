@@ -67,21 +67,21 @@
             <tr class="w3-blue-gray" style="font-weight:bold">
                 <th width="10%" style="min-width: 7%"></th>
                 <th width="56%" style="min-width:45%;vertical-align: middle;text-align: left;">
-                    <%--
-                    Possible script to search for entries
-                            <div>
+                    <%--Possible script to search for entries--%>
+
+                    <div>
                                 <input class="w3-input w3-border w3-padding" type="text" placeholder="Search Todos.." id="myInput" onkeyup="searchFunction()" style="max-width: 90%;">
                             </div>
 
                     <script>
                         function searchFunction() {
-                            var input, filter, table, tr, td, i;
+                            var input, filter, table, tr, td, i, txtValue;
                             input = document.getElementById("myInput");
                             filter = input.value.toUpperCase();
                             table = document.getElementById("myTable");
                             tr = table.getElementsByTagName("tr");
                             for (i = 0; i < tr.length; i++) {
-                                td = tr[i].getElementsByTagName("td")[2];
+                                td = tr[i].getElementsByTagName("td")[1];
                                 if (td) {
                                     txtValue = td.textContent || td.innerText;
                                     if (txtValue.toUpperCase().indexOf(filter) > -1) {
@@ -93,11 +93,10 @@
                             }
                         }
                     </script>
-                    --%>
                 </th>
                 <th width="14%" style="min-width: 12%;">
                     <select name="categoryList" id= "categoryList" form="filterCategory" class="s3-select w3-left" style="margin-top:4pt;vertical-align: middle;max-width: 90%">
-                        <option value="" disabled selected>Groups</option>
+                        <option value="" disabled selected>Categories</option>
                         <option value="all">all</option>
                         <c:forEach items="${todoUserCategorySet}" var="todoUserCategorySet" >
                             <option value="${todoUserCategorySet}">${todoUserCategorySet}</option>
