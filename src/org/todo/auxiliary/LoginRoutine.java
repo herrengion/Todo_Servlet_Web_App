@@ -151,7 +151,7 @@ public class LoginRoutine {
         }
     }
 
-    public LoginRoutine(HttpServletRequest request, HttpServletResponse response, ServletContext servletContext)
+    public LoginRoutine(HttpServletRequest request, HttpServletResponse response, String servletContextPath)
             throws LoginException
     {
         userList = new File(servletContextPath+DATA_PATH_WEB_INF_DATA+"/UserList.xml");
