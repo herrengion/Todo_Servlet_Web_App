@@ -1,5 +1,6 @@
 package org.todo;
 
+import com.sun.deploy.util.StringUtils;
 import data.TodoList;
 import data.Todos;
 import jsonData.JsonTodos;
@@ -22,10 +23,7 @@ import javax.xml.bind.DatatypeConverter;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.HashMap;
-import java.util.InvalidPropertiesFormatException;
-import java.util.LinkedList;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static java.nio.charset.StandardCharsets.ISO_8859_1;
@@ -53,7 +51,8 @@ public class RestServlet extends HttpServlet{
             switch ((String)servletInitMap.get("switchCase"))
             {
                 case "/todos":
-                    if( servletInitMap.get("acceptTypeReq").equals(VALID_RESPONSE_TYPE)) {
+                    if( servletInitMap.get("acceptTypeReq").equals(VALID_RESPONSE_TYPE))
+                    {
                         String category = request.getParameter("category");
                         String idStr = request.getParameter("id");
                         String ouputString;
@@ -81,6 +80,23 @@ public class RestServlet extends HttpServlet{
                         throw new InvalidPropertiesFormatException("Unsupported content type for Request");
                     }
                     System.out.println("todos get");
+                    break;
+                case "/categories":
+                    if( servletInitMap.get("acceptTypeReq").equals(VALID_RESPONSE_TYPE))
+                    {
+                        String ouputString;
+                        TodoUser todoUser = initTodoUser(servletInitMap, contextPath);
+                        Set categorySet = todoUser.getCategorySet();
+
+                        JSONArray categoriesArr = getCategoriesFromUser(categorySet);
+                        prepareSendResponse(response, categoriesArr.toJSONString());
+                        response.setStatus(SC_OK);
+                    }
+                    else
+                    {
+                        throw new InvalidPropertiesFormatException("Unsupported content type for Request");
+                    }
+                    System.out.println("categories get");
                     break;
 
                 default:
@@ -402,6 +418,21 @@ public class RestServlet extends HttpServlet{
         response.setCharacterEncoding("UTF-8");
         out.print(outputString);
     }
+
+    private JSONArray getCategoriesFromUser(Set categoriesSet)
+    {
+        ArrayList<String> categoriesArr = new ArrayList<>();
+        JSONArray categoriesJson = new JSONArray();
+        Iterator<String> iterator = categoriesSet.iterator();
+        while (iterator.hasNext()) {
+            String category = iterator.next();
+            categoriesArr.add(category);
+            categoriesJson.add(category);
+        }
+
+        return categoriesJson;
+    }
+
     private TodoList.Todo convertJsonToTodo(String jsonTodoBody)
     {
         JSONParser parser = new JSONParser();

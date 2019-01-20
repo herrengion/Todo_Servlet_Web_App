@@ -141,7 +141,6 @@ public class TodoUser {
         Iterator<TodoList.Todo> iterator = userTodoList.iterator();
         while (iterator.hasNext()) {
             TodoList.Todo thisTodo = iterator.next();
-            System.out.println("This todo ID:"+thisTodo.getId());
             if(thisTodo.getId().equals(todoId))
             {
                 return thisTodo;
@@ -251,6 +250,7 @@ public class TodoUser {
     }
 
     public Set getCategorySet(){
+        updateCategoryHashSet(getUserTodoList());
         return categorySet;
     }
 
