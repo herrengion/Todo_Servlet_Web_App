@@ -134,8 +134,129 @@ Log out by hovering over your name in the right upper corner and clicking "Log o
 ____________________________________________________________________________________________________
 
 
-4. How to use the TODO FOR YOU REST interface
+4. How to use the TODO FOR YOU REST API
+Main access: http://localhost:8080/Todo_Servlet_Web_App/
+Following requests can be send:
+POST /users
+¦--- Description: Register a user
+¦--- Parameters
+¦------ No parameters
+¦--- Request body (required) -> Type: application/json
+¦------Description: the user to be registered
+¦------Example:
+¦---------{
+¦---------  "name": "string",
+¦---------  "password": "string"
+¦---------}
+¦--- Responses
+¦------ Code	Description	Links
+¦------ 201		user registered
+¦------ 400		invalid user data
+¦------ 409		a user with the same name already exists
+¦------ 415		unsupported content type
 
+GET /todos
+¦--- Description: Get todos
+¦---Parameters
+¦------ Name						Description
+¦------ category(string(query))		the category of the todos to be returned
+¦--- Responses
+¦------ Code	Description	Links
+¦------ 200	the todos of the specified category, or all todos if no category is specified Controls Accept header.
+¦------ Example Value
+¦------ Model
+¦------ [
+¦------   {
+¦------     "id": 0,
+¦------     "title": "string",
+¦------     "category": "string",
+¦------     "dueDate": "2019-01-20",
+¦------     "important": true,
+¦------     "completed": true
+¦------   }
+¦------ ]
+¦------ 401	user not authorized
+¦------ 406	unsupported accept type
+
+POST /todos
+¦--- Description: Add a todo
+¦--- Parameters
+¦------ No parameters
+¦---Request body
+¦------ Description: the todo to be added (must not have an identifier)
+¦--------- Example Value
+¦---------Model
+¦---------{
+¦---------  "id": 0,
+¦---------  "title": "string",
+¦---------  "category": "string",
+¦---------  "dueDate": "2019-01-20",
+¦---------  "important": true,
+¦---------  "completed": true
+¦---------}
+¦--- Responses
+¦------ Code	Description	Links
+¦------ 201		todo added
+¦------ Example Value
+¦------ Model
+¦------ {
+¦------   "id": 0
+¦------ }
+¦------ 400		invalid todo data
+¦------ 401		user not authorized
+¦------ 415		unsupported content type
+
+GET /todos/{id}
+¦--- Description: Get a todo
+¦--- Parameters
+¦------ Name			Description
+¦------ idÂ *integer	the identifier of the todo to be returned
+¦--- Responses
+¦------ Code	Description	Links
+¦------ 200		ok
+¦--------- Controls Accept header.
+¦--------- Example Value
+¦--------- Model
+¦--------- {
+¦---------   "id": 0,
+¦---------   "title": "string",
+¦---------   "category": "string",
+¦---------   "dueDate": "2019-01-20",
+¦---------   "important": true,
+¦---------   "completed": true
+¦--------- }
+¦------ 401				user not authorized
+¦------ 404				todo not found
+¦------ 406				unsupported accept type
+
+PUT  /todos/{id}
+¦--- Description: Update a todo
+¦--- Parameters
+¦------ Name			Description
+¦------ idÂ *integer	the identifier of the todo to be updated
+¦---- Request body
+¦------ the new data of the todo (if present, the identifier must match the path parameter)
+¦------ Example Value
+¦------ Model
+¦------ {
+¦------   "id": 0,
+¦------   "title": "string",
+¦------   "category": "string",
+¦------   "dueDate": "2019-01-20",
+¦------   "important": true,
+¦------   "completed": true
+¦------ }
+¦--- Responses
+¦------ Code	Description	Links
+¦------ 204		todo updated
+¦------ 400		invalid todo data
+¦------ 401		user not authorized
+¦------ 404		todo not found
+¦------ 415		unsupported content type
+
+DELETE /todos/{id}
+
+GET /categories
 
 ____________________________________________________________________________________________________
 
