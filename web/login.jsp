@@ -49,8 +49,9 @@
             <label><b>Password</b></label>
             <input class="w3-input w3-border" type="password" placeholder="Enter Password" name="pw" required>
             <button class="w3-btn w3-block w3-green w3-section w3-padding" type="submit">Login</button>
-            <input class="w3-check w3-margin-top w3-margin-right" type="checkbox" checked="checked">Remember me
-            <a href="forgotpassword.html" class="w3-margin-top w3-padding w3-hide-medium w3-hide-large w3-right" style='text-decoration: none'>Forgot password?</a>
+            <%--<input class="w3-check w3-margin-top w3-margin-right" type="checkbox" checked="checked">Remember me
+            <a href="forgotpassword.html" class="w3-margin-top w3-padding w3-hide-medium w3-hide-large w3-right" style='text-decoration: none'>
+            Forgot password?</a>--%>
         </div>
         <div class="w3-col w3-container m4 l5"></div>
     </div>
@@ -58,10 +59,9 @@
 
 <%--________________FOOTER_________________________--%>
 <div class="w3-row w3-padding-64"></div>
-<div class="w3-bottom w3-black">
+<div class="w3-row w3-padding w3-bottom w3-black">
     <footer class="w3-col w3-container m12 w3-black w3-padding">
-        <div class="w3-left w3-text-white w3-padding-24 w3-hide-small"><a href="forgotpassword.html" style='text-decoration: none'>Forgot password?</a></div>
-        <div class="w3-right w3-text-white w3-padding-24 w3-hide-small">&copy Grunder, Herren, Plüss</div>
+        <div class="w3-right w3-display-bottomright w3-text-white w3-margin-right w3-padding-24 w3-hide-small">&copy Grunder, Herren, Plüss</div>
     </footer>
 </div>
 

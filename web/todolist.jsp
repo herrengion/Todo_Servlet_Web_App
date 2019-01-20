@@ -166,29 +166,15 @@
                         <input type="hidden" name="todoID" value=${todoInstance.id}>
                         <button type="submit" class="w3-btn fa fa-trash w3-center w3-xlarge"></button>
                     </form></td>
-                <c:choose>
-                    <c:when test = "${todoInstance.isOverdue()}">
-                        </tr>
-                    </c:when>
-                    <c:otherwise>
-                        <c:choose>
-                            <c:when test = "${todoInstance.completed}">
-                                </tr>
-                            </c:when>
-                            <c:otherwise>
-                                </tr>
-                            </c:otherwise>
-                        </c:choose>
-                    </c:otherwise>
-                </c:choose>
+                </tr>
             </c:forEach>
         </table>
     </div>
 </div>
 <%--________Small______________--%>
 <div class="w3-hide-medium w3-hide-large">
-    <div class="w3-row">
-        <input class="w3-input w3-orange w3-padding" type="text" placeholder="Search Todos.." id="myInputSmall" onkeyup="searchFunctionSmall()" style="font-weight: blod;max-width: 100%;">
+    <div class="w3-row w3-orange">
+        <input class="w3-input w3-orange w3-border-orange w3-padding" type="text" placeholder="Search Todos.." id="myInputSmall" onkeyup="searchFunctionSmall()" style="font-weight: bold;max-width: 100%;">
         <script>
             function searchFunctionSmall() {
                 var input, filter, table, tr, td, i, txtValue;
@@ -211,7 +197,7 @@
         </script>
     </div>
     <div class="w3-row w3-padding w3-orange">
-        <select name="categoryList" id= "categoryListSmall" form="filterCategorySmall" class="s3-select w3-large w3-orange w3-left" style="font-weight: bold;margin-top:4pt;min-width: 80%">
+        <select name="categoryList" id= "categoryListSmall" form="filterCategorySmall" class="s3-select w3-border-orange w3-large w3-orange w3-left" style="font-weight: bold;margin-top:4pt;min-width: 80%">
             <option value="all" disabled selected>Category</option>
             <option value="all">all</option>
             <c:forEach items="${todoUserCategorySet}" var="todoUserCategorySet" >
@@ -220,7 +206,7 @@
         </select>
         <form action="todoFSM.do" method="post" id="filterCategorySmall" style="display: inline">
             <input type="hidden" name="redirect" value="category">
-            <button type="submit" value="categoryList" class="w3-btn w3-right w3-large fa fa-refresh" style="margin-top:2pt;display:  "></button>
+            <button type="submit" value="categoryList" class="w3-btn w3-right w3-large fa fa-refresh" style="margin-top:2pt;display: inline"></button>
         </form>
     </div>
     <c:forEach items="${todoList}" var="todoInstance">
