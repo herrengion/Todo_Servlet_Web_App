@@ -8,8 +8,7 @@
   <component name="ChangeListManager">
     <list default="true" id="ce9b43c8-2fb0-444b-a76f-21cbc512e61d" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/org/todo/RestServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/org/todo/RestServlet.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/org/todo/TodoServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/org/todo/TodoServlet.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/org/todo/auxiliary/LoginRoutine.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/org/todo/auxiliary/LoginRoutine.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -39,7 +38,8 @@
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="JAVA" value="37" />
+          <entry key="JAVA" value="58" />
+          <entry key="PLAIN_TEXT" value="48" />
         </counts>
       </usages-collector>
     </session>
@@ -54,13 +54,21 @@
           <provider selected="true" editor-type-id="text-editor" />
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/org/todo/auxiliary/LoginRoutine.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-2567">
-              <caret line="32" column="42" lean-forward="true" selection-start-line="32" selection-start-column="42" selection-end-line="32" selection-end-column="42" />
+            <state relative-caret-position="374">
+              <caret line="206" column="13" selection-start-line="206" selection-start-column="13" selection-end-line="206" selection-end-column="13" />
               <folding>
                 <element signature="imports" expanded="true" />
+                <element signature="e#11117#11118#0" expanded="true" />
+                <element signature="e#11155#11156#0" expanded="true" />
+                <element signature="e#11196#11197#0" expanded="true" />
+                <element signature="e#11234#11235#0" expanded="true" />
+                <element signature="e#11280#11281#0" expanded="true" />
+                <element signature="e#11317#11318#0" expanded="true" />
+                <element signature="e#11364#11365#0" expanded="true" />
+                <element signature="e#11401#11402#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -78,11 +86,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/org/todo/TodoServlet.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="204">
-              <caret line="168" column="20" selection-start-line="168" selection-start-column="20" selection-end-line="168" selection-end-column="20" />
+            <state relative-caret-position="142">
+              <caret line="170" column="21" selection-start-line="170" selection-start-column="21" selection-end-line="170" selection-end-column="21" />
             </state>
           </provider>
         </entry>
@@ -152,6 +160,7 @@
     <option name="CHANGED_PATHS">
       <list>
         <option value="$PROJECT_DIR$/src/org/todo/TodoServlet.java" />
+        <option value="$PROJECT_DIR$/src/org/todo/auxiliary/LoginRoutine.java" />
       </list>
     </option>
   </component>
@@ -207,6 +216,13 @@
               <item name="Servlet_app" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="todo" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="todo" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Servlet_app" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="todo" type="462c0819:PsiDirectoryNode" />
+              <item name="auxiliary" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="todo" type="b2602c69:ProjectViewProjectNode" />
@@ -454,14 +470,14 @@
       <workItem from="1547991797082" duration="69000" />
       <workItem from="1547991902232" duration="24000" />
       <workItem from="1547992053967" duration="498000" />
-      <workItem from="1548006354147" duration="1740000" />
+      <workItem from="1548006354147" duration="2059000" />
     </task>
-    <task id="LOCAL-00001" summary="First Merge Version Nath &amp; Gion">
-      <created>1546949163129</created>
+    <task id="LOCAL-00001" summary="Bugfix category when no category selected">
+      <created>1548008240494</created>
       <option name="number" value="00001" />
       <option name="presentableId" value="LOCAL-00001" />
       <option name="project" value="LOCAL" />
-      <updated>1546949163129</updated>
+      <updated>1548008240494</updated>
     </task>
     <task id="LOCAL-00002" summary="//Done: create Classes for FSM functions, front controller paradigma">
       <created>1547057985742</created>
@@ -582,16 +598,17 @@
       <option name="project" value="LOCAL" />
       <updated>1547988658509</updated>
     </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="2873000" />
+    <option name="totallyTimeSpent" value="3192000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-7" y="-7" width="1550" height="838" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.49943247" visible="true" weight="0.26308724" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.49943247" visible="true" weight="0.26308724" />
       <window_info id="Structure" order="1" sideWeight="0.50056756" side_tool="true" weight="0.24946997" />
       <window_info id="Designer" order="2" />
       <window_info id="UI Designer" order="3" />
@@ -601,18 +618,18 @@
       <window_info id="Image Layers" order="7" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.32907802" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.8751678" visible="true" weight="0.22553192" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.8738255" visible="true" weight="0.22553192" />
       <window_info anchor="bottom" id="Debug" order="3" sideWeight="0.47516778" weight="0.39716312" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Application Servers" order="7" sideWeight="0.4986577" weight="0.32907802" />
       <window_info anchor="bottom" id="Terminal" order="8" sideWeight="0.49932885" weight="0.32765958" />
-      <window_info anchor="bottom" id="Event Log" order="9" sideWeight="0.12483221" side_tool="true" visible="true" weight="0.22553192" />
+      <window_info anchor="bottom" id="Event Log" order="9" sideWeight="0.1261745" side_tool="true" visible="true" weight="0.22553192" />
       <window_info anchor="bottom" id="Java Enterprise" order="10" />
       <window_info anchor="bottom" id="Database Changes" order="11" show_stripe_button="false" />
       <window_info anchor="bottom" id="Version Control" order="12" sideWeight="0.4966443" weight="0.32765958" />
-      <window_info anchor="bottom" id="Messages" order="13" sideWeight="0.4919463" weight="0.32765958" />
+      <window_info anchor="bottom" id="Messages" order="13" sideWeight="0.490604" weight="0.32765958" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
@@ -682,7 +699,8 @@
     <MESSAGE value="Readme.txt updated" />
     <MESSAGE value="public boolean addUserToXml(UserList.User newXmlUserObj, UserList userDB)&#10;modified, gives back true when newXMLuser is written in database&#10;(before marshaling)" />
     <MESSAGE value="Authentication filter adapted (to be checked)" />
-    <option name="LAST_COMMIT_MESSAGE" value="Authentication filter adapted (to be checked)" />
+    <MESSAGE value="Bugfix category when no category selected" />
+    <option name="LAST_COMMIT_MESSAGE" value="Bugfix category when no category selected" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -812,16 +830,6 @@
     <entry file="file://$PROJECT_DIR$/.idea/workspace.xml">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/org/todo/auxiliary/LoginRoutine.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-2567">
-          <caret line="32" column="42" lean-forward="true" selection-start-line="32" selection-start-column="42" selection-end-line="32" selection-end-column="42" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/ReadMe.txt">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="147">
@@ -831,8 +839,26 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/org/todo/TodoServlet.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="204">
-          <caret line="168" column="20" selection-start-line="168" selection-start-column="20" selection-end-line="168" selection-end-column="20" />
+        <state relative-caret-position="142">
+          <caret line="170" column="21" selection-start-line="170" selection-start-column="21" selection-end-line="170" selection-end-column="21" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/org/todo/auxiliary/LoginRoutine.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="374">
+          <caret line="206" column="13" selection-start-line="206" selection-start-column="13" selection-end-line="206" selection-end-column="13" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#11117#11118#0" expanded="true" />
+            <element signature="e#11155#11156#0" expanded="true" />
+            <element signature="e#11196#11197#0" expanded="true" />
+            <element signature="e#11234#11235#0" expanded="true" />
+            <element signature="e#11280#11281#0" expanded="true" />
+            <element signature="e#11317#11318#0" expanded="true" />
+            <element signature="e#11364#11365#0" expanded="true" />
+            <element signature="e#11401#11402#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
