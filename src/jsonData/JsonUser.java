@@ -16,11 +16,14 @@ public class JsonUser {
         JSONObject jsonObj = null;
         String userName;
         String pwStr;
-        try {
+        try
+        {
             jsonObj = (JSONObject) parser.parse(jsonString);
             userName = (String) jsonObj.get("name");
             pwStr = (String) jsonObj.get("password");
-        } catch (ParseException e) {
+        }
+        catch (ParseException e)
+        {
             throw new VerifyError("User credential invalid");
         }
         catch (Exception e)

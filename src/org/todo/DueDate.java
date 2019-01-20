@@ -31,6 +31,18 @@ public class DueDate {
         }
     }
 
+    public DueDate(String date) {
+        if(date == null)
+        {
+            xmlGregorianCalendar = null;
+            this.date = null;
+        }
+        else
+        {
+            setDateByString(date);
+        }
+    }
+
     public void setDate(LocalDate date)
     {
         GregorianCalendar cal = new GregorianCalendar();
@@ -43,7 +55,7 @@ public class DueDate {
         }
     }
 
-    public void setDateByString(String dateString) {
+    private void setDateByString(String dateString) {
         if(!dateString.isEmpty()) {
             date = LocalDate.parse(dateString, formatter);
             setDate(date);

@@ -1,9 +1,13 @@
 package org.todo;
 
 import data.TodoList;
+import data.Todos;
 import jsonData.JsonTodos;
 import jsonData.JsonUser;
 import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 import org.todo.auxiliary.LoginRoutine;
 import users.UserList;
 
@@ -51,11 +55,25 @@ public class RestServlet extends HttpServlet{
                 case "/todos":
                     if( servletInitMap.get("acceptTypeReq").equals(VALID_RESPONSE_TYPE)) {
                         String category = request.getParameter("category");
-                        JSONArray jsonArray = getToDoJsonFromUser(servletInitMap, contextPath, category);
-                        PrintWriter out = response.getWriter();
-                        response.setContentType(VALID_RESPONSE_TYPE);
-                        response.setCharacterEncoding("UTF-8");
-                        out.print(jsonArray.toJSONString());
+                        String idStr = request.getParameter("id");
+                        String ouputString;
+                        JSONArray jsonArray = getToDoJsonFromUser(servletInitMap, contextPath, category, idStr);
+                        if(idStr != null) {
+                            if(Long.parseLong(idStr,10) >= 0 &&
+                                    jsonArray.size() > 0)
+                            {
+                                JSONObject jsonTodo = (JSONObject) jsonArray.get(0);
+                                prepareSendResponse(response, jsonTodo.toJSONString());
+                            }
+                            else
+                            {
+                                throw new IOException("Invalid id or todo does not exist");
+                            }
+                        }
+                        else
+                        {
+                            prepareSendResponse(response, jsonArray.toJSONString());
+                        }
                         response.setStatus(SC_OK);
                     }
                     else
@@ -137,12 +155,30 @@ public class RestServlet extends HttpServlet{
 
                 case "/todos":
                     System.out.println("todos post");
-                    if( servletInitMap.get("contentTypeReq").equals(VALID_RESQUEST_TYPE)) {
+                    if( servletInitMap.get("acceptTypeReq") == null ||
+                            servletInitMap.get("contentTypeReq") == null)
+                    {
+                        throw new InvalidPropertiesFormatException("Missing parameter in header for content type");
+                    }
+                    if( servletInitMap.get("acceptTypeReq").equals(VALID_RESQUEST_TYPE) &&
+                            servletInitMap.get("contentTypeReq").equals(VALID_RESPONSE_TYPE))
+                    {
+                        TodoUser todoUser = initTodoUser(servletInitMap, getServletContext().getRealPath("/"));
+                        Long highestTodoId = todoUser.getHighestTodoId();
+                        String body = request.getReader().lines().collect(Collectors.joining());
+                        TodoList.Todo newTodo = convertJsonToTodo(body);
+                        newTodo.setId((highestTodoId+1));
+                        todoUser.addTodo(newTodo);
+                        todoUser.updateTodo();
+                        JSONObject jsonReponseObj = new JSONObject();
+                        jsonReponseObj.put("id", newTodo.getId());
+                        String outputString = jsonReponseObj.toJSONString();
+                        prepareSendResponse(response, outputString);
                         response.setStatus(SC_CREATED);
                     }
                     else
                     {
-                        throw new InvalidPropertiesFormatException("Unsupported content type for Request");
+                        throw new InvalidPropertiesFormatException("Unsupported content type for Request or Response");
                     }
                     break;
 
@@ -183,10 +219,125 @@ public class RestServlet extends HttpServlet{
     //------------------------------------------------------------------------------------------------------------------
 
     public void doPut(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+        String errorMessge = "No error";
+        String contextPath = getServletContext().getRealPath("/");
+        Map servletInitMap;
+        try
+        {
+            servletInitMap = initialRestApiValues(request, response);
+            switch ((String)servletInitMap.get("switchCase"))
+            {
+                case "/todos":
+                    if( servletInitMap.get("contentTypeReq").equals(VALID_RESQUEST_TYPE))
+                    {
+                        String idStr = request.getParameter("id");
+                        Long id;
+                        if(idStr != null) {
+                            id = Long.parseLong(idStr, 10);
+                        }
+                        else
+                        {
+                            throw new IOException("Missing id parameter to update todo");
+                        }
+                        TodoUser todoUser = initTodoUser(servletInitMap, contextPath);
+                        String body = request.getReader().lines().collect(Collectors.joining());
+                        TodoList.Todo newTodo = convertJsonToTodo(body);
+                        todoUser.updateTodoTitle(id, newTodo.getTitle());
+                        todoUser.updateTodoCategory(id, newTodo.getCategory());
+                        todoUser.updateTodoDueDate(id, newTodo.getDueDate().toString());
+                        todoUser.updateTodoImportant(id, newTodo.isImportant());
+                        todoUser.updateTodoCompleted(id, newTodo.isCompleted());
+                        todoUser.updateTodo();
+                        response.setStatus(SC_NO_CONTENT);
+                    }
+                    else
+                    {
+                        throw new InvalidPropertiesFormatException("Unsupported content type for Request");
+                    }
+                    System.out.println("todos put");
+                    break;
+
+                default:
+                    System.err.println("None matching case");
+                    errorMessge = "Switch passes default and no exception occurred!";
+                    throw new IllegalArgumentException(errorMessge);
+            }
+        }
+        catch (InvalidPropertiesFormatException e)
+        {
+            System.err.println("Put exception: "+ e.getMessage());
+            response.setStatus(SC_UNSUPPORTED_MEDIA_TYPE);
+            return;
+        }
+        catch (IOException e)
+        {
+            System.err.println("Todos exception: "+ e.getMessage());
+            response.setStatus(SC_NOT_FOUND);
+            return;
+        }
+
+        catch (Exception e)
+        {
+            e.getStackTrace();
+            System.err.println("Exception: "+ e.getMessage());
+            response.setStatus(SC_BAD_REQUEST);
+            return;
+        }
     }
     //------------------------------------------------------------------------------------------------------------------
 
     public void doDelete(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+        String errorMessge = "No error";
+        String contextPath = getServletContext().getRealPath("/");
+        Map servletInitMap;
+        try
+        {
+            servletInitMap = initialRestApiValues(request, response);
+            switch ((String)servletInitMap.get("switchCase"))
+            {
+                case "/todos":
+
+                    String idStr = request.getParameter("id");
+                    Long id;
+                    if(idStr != null) {
+                        id = Long.parseLong(idStr, 10);
+                    }
+                    else
+                    {
+                        throw new IOException("Missing id parameter to update todo");
+                    }
+                    TodoUser todoUser = initTodoUser(servletInitMap, contextPath);
+                    if(!todoUser.deleteTodoEntry(id))
+                    {
+                        errorMessge = "Requested todo with ID " + id + " does not exist";
+                        throw new IOException(errorMessge);
+                    }
+                    todoUser.updateTodo();
+                    response.setStatus(SC_NO_CONTENT);
+
+                    System.out.println("todos delete");
+                    break;
+
+                default:
+                    System.err.println("None matching case");
+                    errorMessge = "Switch passes default and no exception occurred!";
+                    throw new IllegalArgumentException(errorMessge);
+            }
+        }
+        catch (IOException e)
+        {
+            System.err.println("Todos exception: "+ e.getMessage());
+            response.setStatus(SC_NOT_FOUND);
+            return;
+        }
+
+        catch (Exception e)
+        {
+            e.getStackTrace();
+            System.err.println("Exception: "+ e.getMessage());
+            response.setStatus(SC_UNAUTHORIZED);
+            return;
+        }
     }
     //------------------------------------------------------------------------------------------------------------------
     private Map<String, String> initialRestApiValues(HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -224,7 +375,8 @@ public class RestServlet extends HttpServlet{
         return initialParameterMap;
     }
 
-    private JSONArray getToDoJsonFromUser(Map servletInitMap, String contextPath, String category) throws IOException {
+    private TodoUser initTodoUser(Map servletInitMap, String contextPath)
+    {
         String userName = (String) servletInitMap.get("userName");
         String pw = (String) servletInitMap.get("pw");
         File userToDoXmlFile = new File(contextPath +
@@ -233,10 +385,72 @@ public class RestServlet extends HttpServlet{
                 "/ToDo_list_" + userName + ".xml");
         File xmlSchemaFile = new File(contextPath + DATA_PATH_WEB_INF_DATA + "/ToDo.xsd");
         TodoUser todoUser = new TodoUser(userName, pw);
-        LinkedList<TodoList.Todo> userTodoList;
         try
         {
             todoUser.setUserTodoList(userToDoXmlFile, xmlSchemaFile);
+        }
+        catch (Exception e)
+        {
+            throw new IllegalArgumentException("Read user data not possible as file does not exist");
+        }
+        return todoUser;
+    }
+
+    private void prepareSendResponse(HttpServletResponse response, String outputString) throws IOException {
+        PrintWriter out = response.getWriter();
+        response.setContentType(VALID_RESPONSE_TYPE);
+        response.setCharacterEncoding("UTF-8");
+        out.print(outputString);
+    }
+    private TodoList.Todo convertJsonToTodo(String jsonTodoBody)
+    {
+        JSONParser parser = new JSONParser();
+        JSONObject jsonObj;
+        String title;
+        String category;
+        String dueDate;
+        Boolean important;
+        Boolean completed;
+        Long id;
+        try
+        {
+            jsonObj = (JSONObject) parser.parse(jsonTodoBody);
+            title = (String) jsonObj.get("title");
+            category = (String) jsonObj.get("category");
+            dueDate = (String) jsonObj.get("dueDate");
+            important = (Boolean) jsonObj.get("important");
+            completed = (Boolean) jsonObj.get("completed");
+            id = (Long) jsonObj.get("id");
+        }
+        catch (ParseException e)
+        {
+            throw new VerifyError("Todo data parsing not possible");
+        }
+        catch (Exception e)
+        {
+            throw new IllegalArgumentException("Todo data type is invalid");
+        }
+
+        TodoList.Todo todo = new TodoList.Todo();
+        todo.setTitle(title);
+        todo.setCategory(category);
+        DueDate dueDateObj = new DueDate(dueDate);
+        todo.setDueDate(dueDateObj.getXmlGregorianCalendar());
+        todo.setImportant(important);
+        todo.setCompleted(completed);
+        if(id != null)
+        {
+            todo.setId(id);
+        }
+        return todo;
+    }
+
+    private JSONArray getToDoJsonFromUser(Map servletInitMap, String contextPath, String category, String id) throws IOException {
+        String userName = (String) servletInitMap.get("userName");
+        TodoUser todoUser = initTodoUser(servletInitMap, contextPath);
+        LinkedList<TodoList.Todo> userTodoList;
+        try
+        {
             userTodoList = todoUser.getUserTodoList();
         }
         catch (Exception e)
@@ -246,7 +460,14 @@ public class RestServlet extends HttpServlet{
         try
         {
             JsonTodos jsonTodos = new JsonTodos(userTodoList);
-            JSONArray jsonArray = jsonTodos.getJsonArrOfCategory(category);
+            JSONArray jsonArray;
+            if(id == null) {
+                jsonArray = jsonTodos.getJsonArrOfCategory(category);
+            }
+            else
+            {
+                jsonArray = jsonTodos.getJsonArrOfTodoWithId(Long.parseLong(id,10));
+            }
             return jsonArray;
         }
         catch (Exception e)

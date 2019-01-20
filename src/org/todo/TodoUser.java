@@ -97,6 +97,23 @@ public class TodoUser {
         }
         return userTodoList;
     }
+    public Long getHighestTodoId()
+    {
+        Long newId = Long.valueOf(0);
+
+        int size = getUserTodoList().size();
+        if(size > 0)
+        {
+            long maxId = 0;
+            for(int i = 0; i<getUserTodoList().size(); i++){
+                if(getUserTodoList().get(i).getId()>=maxId){
+                    maxId=getUserTodoList().get(i).getId();
+                }
+            }
+            newId=maxId;
+        }
+        return newId;
+    }
 
     //Set Methods
     public void setUserName(String userName)
@@ -138,7 +155,7 @@ public class TodoUser {
     {
         this.todosObj.getTodo().add(newTodo);
     }
-    public void deleteTodoEntry(Long todoId)
+    public boolean deleteTodoEntry(Long todoId)
     {
         for (final ListIterator<TodoList.Todo> iterator = this.todosObj.getTodo().listIterator(); iterator.hasNext();) {
             final TodoList.Todo thisTodo = iterator.next();
@@ -147,10 +164,11 @@ public class TodoUser {
             if(thisTodo.getId().equals(todoId))
             {
                 iterator.remove();
-                break;
+                return true;
             }
 
         }
+        return false;
     }
     private void convertTodoXmlToLinkedList()
     {
@@ -218,8 +236,7 @@ public class TodoUser {
         }
     }
     public void updateTodoDueDate(Long todoId, String dueDate) throws ParseException, InvalidDataException {
-        DueDate dueDateObj = new DueDate(null);
-        dueDateObj.setDateByString(dueDate);
+        DueDate dueDateObj = new DueDate(dueDate);
        getTodo(todoId).setDueDate(dueDateObj.getXmlGregorianCalendar());
     }
     public void updateTodoImportant(Long todoId, boolean newStatus) throws InvalidDataException {

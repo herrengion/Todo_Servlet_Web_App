@@ -35,8 +35,7 @@ public class NewTodo {
         newTodoString = convertStringToUtf8(newTodoString);
         categoryString = convertStringToUtf8(categoryString);
 
-        DueDate dueDateObj = new DueDate(null);
-        dueDateObj.setDateByString(dueDateString);
+        DueDate dueDateObj = new DueDate(dueDateString);
         TodoList.Todo newToDoObj = new TodoList.Todo();
         int size = todoUser.getUserTodoList().size();
         if(size > 0)

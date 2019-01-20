@@ -62,6 +62,7 @@ public class JsonTodos {
                 jsonArr.add(generateJsonObjFromTodo(thisTodo));
             }
             else if(category != null &&
+                    id == null &&
                     (isCategoryMatchingTodo(category, thisTodo) ||
                             category.equals("")))
             {
