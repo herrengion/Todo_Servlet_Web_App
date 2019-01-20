@@ -189,7 +189,13 @@ public class LoginRoutine {
             Schema schema = schemaFactory.newSchema(userListSchema);
             unmarshaller.setSchema(schema);
             userDB = (UserList) unmarshaller.unmarshal(userList);
-            newXmlUserObj.setId((long) userDB.getUser().size());
+            long maxID = 0;
+            for(int i = 0; i<userDB.getUser().size(); i++){
+                if(userDB.getUser().get(i).getId()>maxID){
+                    maxID = userDB.getUser().get(i).getId();
+                }
+            }
+            newXmlUserObj.setId(maxID+1);
             userDB.getUser().add(newXmlUserObj);
 
             Marshaller marshaller = jaxbContext.createMarshaller();
