@@ -138,126 +138,147 @@ ________________________________________________________________________________
 Main access: http://localhost:8080/Todo_Servlet_Web_App/
 Following requests can be send:
 POST /users
-¦--- Description: Register a user
-¦--- Parameters
-¦------ No parameters
-¦--- Request body (required) -> Type: application/json
-¦------Description: the user to be registered
-¦------Example:
-¦---------{
-¦---------  "name": "string",
-¦---------  "password": "string"
-¦---------}
-¦--- Responses
-¦------ Code	Description	Links
-¦------ 201		user registered
-¦------ 400		invalid user data
-¦------ 409		a user with the same name already exists
-¦------ 415		unsupported content type
+ï¿½--- Description: Register a user
+ï¿½--- Parameters
+ï¿½------ No parameters
+ï¿½--- Request body (required) -> Type: application/json
+ï¿½------Description: the user to be registered
+ï¿½------Example:
+ï¿½---------{
+ï¿½---------  "name": "string",
+ï¿½---------  "password": "string"
+ï¿½---------}
+ï¿½--- Responses
+ï¿½------ Code	Description	Links
+ï¿½------ 201		user registered
+ï¿½------ 400		invalid user data
+ï¿½------ 409		a user with the same name already exists
+ï¿½------ 415		unsupported content type
 
 GET /todos
-¦--- Description: Get todos
-¦---Parameters
-¦------ Name						Description
-¦------ category(string(query))		the category of the todos to be returned
-¦--- Responses
-¦------ Code	Description	Links
-¦------ 200	the todos of the specified category, or all todos if no category is specified Controls Accept header.
-¦------ Example Value
-¦------ Model
-¦------ [
-¦------   {
-¦------     "id": 0,
-¦------     "title": "string",
-¦------     "category": "string",
-¦------     "dueDate": "2019-01-20",
-¦------     "important": true,
-¦------     "completed": true
-¦------   }
-¦------ ]
-¦------ 401	user not authorized
-¦------ 406	unsupported accept type
+ï¿½--- Description: Get todos
+ï¿½---Parameters
+ï¿½------ Name						Description
+ï¿½------ category(string(query))		the category of the todos to be returned
+ï¿½--- Responses
+ï¿½------ Code	Description	Links
+ï¿½------ 200	the todos of the specified category, or all todos if no category is specified Controls Accept header.
+ï¿½------ Example Value
+ï¿½------ Model
+ï¿½------ [
+ï¿½------   {
+ï¿½------     "id": 0,
+ï¿½------     "title": "string",
+ï¿½------     "category": "string",
+ï¿½------     "dueDate": "2019-01-20",
+ï¿½------     "important": true,
+ï¿½------     "completed": true
+ï¿½------   }
+ï¿½------ ]
+ï¿½------ 401	user not authorized
+ï¿½------ 406	unsupported accept type
 
 POST /todos
-¦--- Description: Add a todo
-¦--- Parameters
-¦------ No parameters
-¦---Request body
-¦------ Description: the todo to be added (must not have an identifier)
-¦--------- Example Value
-¦---------Model
-¦---------{
-¦---------  "id": 0,
-¦---------  "title": "string",
-¦---------  "category": "string",
-¦---------  "dueDate": "2019-01-20",
-¦---------  "important": true,
-¦---------  "completed": true
-¦---------}
-¦--- Responses
-¦------ Code	Description	Links
-¦------ 201		todo added
-¦------ Example Value
-¦------ Model
-¦------ {
-¦------   "id": 0
-¦------ }
-¦------ 400		invalid todo data
-¦------ 401		user not authorized
-¦------ 415		unsupported content type
+ï¿½--- Description: Add a todo
+ï¿½--- Parameters
+ï¿½------ No parameters
+ï¿½---Request body
+ï¿½------ Description: the todo to be added (must not have an identifier)
+ï¿½--------- Example Value
+ï¿½---------Model
+ï¿½---------{
+ï¿½---------  "id": 0,
+ï¿½---------  "title": "string",
+ï¿½---------  "category": "string",
+ï¿½---------  "dueDate": "2019-01-20",
+ï¿½---------  "important": true,
+ï¿½---------  "completed": true
+ï¿½---------}
+ï¿½--- Responses
+ï¿½------ Code	Description	Links
+ï¿½------ 201		todo added
+ï¿½------ Example Value
+ï¿½------ Model
+ï¿½------ {
+ï¿½------   "id": 0
+ï¿½------ }
+ï¿½------ 400		invalid todo data
+ï¿½------ 401		user not authorized
+ï¿½------ 415		unsupported content type
 
 GET /todos/{id}
-¦--- Description: Get a todo
-¦--- Parameters
-¦------ Name			Description
-¦------ idÂ *integer	the identifier of the todo to be returned
-¦--- Responses
-¦------ Code	Description	Links
-¦------ 200		ok
-¦--------- Controls Accept header.
-¦--------- Example Value
-¦--------- Model
-¦--------- {
-¦---------   "id": 0,
-¦---------   "title": "string",
-¦---------   "category": "string",
-¦---------   "dueDate": "2019-01-20",
-¦---------   "important": true,
-¦---------   "completed": true
-¦--------- }
-¦------ 401				user not authorized
-¦------ 404				todo not found
-¦------ 406				unsupported accept type
+ï¿½--- Description: Get a todo
+ï¿½--- Parameters
+ï¿½------ Name			Description
+ï¿½------ idï¿½ *integer	the identifier of the todo to be returned
+ï¿½--- Responses
+ï¿½------ Code	Description	Links
+ï¿½------ 200		ok
+ï¿½--------- Controls Accept header.
+ï¿½--------- Example Value
+ï¿½--------- Model
+ï¿½--------- {
+ï¿½---------   "id": 0,
+ï¿½---------   "title": "string",
+ï¿½---------   "category": "string",
+ï¿½---------   "dueDate": "2019-01-20",
+ï¿½---------   "important": true,
+ï¿½---------   "completed": true
+ï¿½--------- }
+ï¿½------ 401				user not authorized
+ï¿½------ 404				todo not found
+ï¿½------ 406				unsupported accept type
 
 PUT  /todos/{id}
-¦--- Description: Update a todo
-¦--- Parameters
-¦------ Name			Description
-¦------ idÂ *integer	the identifier of the todo to be updated
-¦---- Request body
-¦------ the new data of the todo (if present, the identifier must match the path parameter)
-¦------ Example Value
-¦------ Model
-¦------ {
-¦------   "id": 0,
-¦------   "title": "string",
-¦------   "category": "string",
-¦------   "dueDate": "2019-01-20",
-¦------   "important": true,
-¦------   "completed": true
-¦------ }
-¦--- Responses
-¦------ Code	Description	Links
-¦------ 204		todo updated
-¦------ 400		invalid todo data
-¦------ 401		user not authorized
-¦------ 404		todo not found
-¦------ 415		unsupported content type
+ï¿½--- Description: Update a todo
+ï¿½--- Parameters
+ï¿½------ Name			Description
+ï¿½------ idï¿½ *integer	the identifier of the todo to be updated
+ï¿½---- Request body
+ï¿½------ the new data of the todo (if present, the identifier must match the path parameter)
+ï¿½------ Example Value
+ï¿½------ Model
+ï¿½------ {
+ï¿½------   "id": 0,
+ï¿½------   "title": "string",
+ï¿½------   "category": "string",
+ï¿½------   "dueDate": "2019-01-20",
+ï¿½------   "important": true,
+ï¿½------   "completed": true
+ï¿½------ }
+ï¿½--- Responses
+ï¿½------ Code	Description	Links
+ï¿½------ 204		todo updated
+ï¿½------ 400		invalid todo data
+ï¿½------ 401		user not authorized
+ï¿½------ 404		todo not found
+ï¿½------ 415		unsupported content type
 
 DELETE /todos/{id}
+ï¿½--- Description: Remove a todo
+ï¿½--- Parameters
+ï¿½------ Name			Description
+ï¿½------ idï¿½ *integer	the identifier of the todo to be removed
+ï¿½--- Responses
+ï¿½------ Code	Description	Links
+ï¿½------ 204		todo removed
+ï¿½------ 401		user not authorized
+ï¿½------ 404		todo not found
 
 GET /categories
-
+ï¿½--- Description: Get the todo categories
+ï¿½--- Parameters
+ï¿½------ No Parameters
+ï¿½--- Responses
+ï¿½------ Code	Description	Links
+ï¿½------ 200 	ok
+ï¿½------         Example Value
+ï¿½------         Model
+ï¿½------         {
+ï¿½------         "String"
+ï¿½------         }
+ï¿½------ 401		user not authorized
+ï¿½------ 406		unsupported accept type
 ____________________________________________________________________________________________________
 
 

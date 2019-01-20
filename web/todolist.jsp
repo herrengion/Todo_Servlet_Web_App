@@ -173,29 +173,6 @@
 </div>
 <%--________Small______________--%>
 <div class="w3-hide-medium w3-hide-large">
-    <div class="w3-row w3-orange">
-        <input class="w3-input w3-orange w3-border-orange w3-padding" type="text" placeholder="Search Todos.." id="myInputSmall" onkeyup="searchFunctionSmall()" style="font-weight: bold;max-width: 100%;">
-        <script>
-            function searchFunctionSmall() {
-                var input, filter, table, tr, td, i, txtValue;
-                input = document.getElementById("myInputSmall");
-                filter = input.value.toUpperCase();
-                table = document.getElementById("myTable");
-                tr = table.getElementsByTagName("tr");
-                for (i = 0; i < tr.length; i++) {
-                    td = tr[i].getElementsByTagName("td")[1];
-                    if (td) {
-                        txtValue = td.textContent || td.innerText;
-                        if (txtValue.toUpperCase().indexOf(filter) > -1) {
-                            tr[i].style.display = "";
-                        } else {
-                            tr[i].style.display = "none";
-                        }
-                    }
-                }
-            }
-        </script>
-    </div>
     <div class="w3-row w3-padding w3-orange">
         <select name="categoryList" id= "categoryListSmall" form="filterCategorySmall" class="s3-select w3-border-orange w3-large w3-orange w3-left" style="font-weight: bold;margin-top:4pt;min-width: 80%">
             <option value="all" disabled selected>Category</option>
