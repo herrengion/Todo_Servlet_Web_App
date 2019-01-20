@@ -67,7 +67,8 @@
             <tr class="w3-blue-gray" style="font-weight:bold">
                 <th width="10%" style="min-width: 7%"></th>
                 <th width="56%" style="min-width:45%;vertical-align: middle;text-align: left;">
-                    <%--Possible script to search for entries
+                    <%--
+                    Possible script to search for entries
                             <div>
                                 <input class="w3-input w3-border w3-padding" type="text" placeholder="Search Todos.." id="myInput" onkeyup="searchFunction()" style="max-width: 90%;">
                             </div>
@@ -91,7 +92,8 @@
                                 }
                             }
                         }
-                    </script>--%>
+                    </script>
+                    --%>
                 </th>
                 <th width="14%" style="min-width: 12%;">
                     <select name="categoryList" id= "categoryList" form="filterCategory" class="s3-select w3-left" style="margin-top:4pt;vertical-align: middle;max-width: 90%">
@@ -110,9 +112,17 @@
                         till</th>
                 <th width="10%"></th></tr>
 
-            <c:forEach items="${todoList}" var="todoInstance" >
-                    <tr>
-                    <td width="10%" style="min-width: 7%;vertical-align:middle;text-align: left;">
+            <c:forEach items="${todoList}" var="todoInstance">
+                <c:choose>
+
+                    <c:when test = "${todoInstance.isOverdue()}">
+                        <td bgcolor="#ff9800" width="10%" style="min-width: 7%;vertical-align:middle;text-align: left;">
+                    </c:when>
+
+                    <c:otherwise>
+                        <td width="10%" style="min-width: 7%;vertical-align:middle;text-align: left;">
+                    </c:otherwise>
+                </c:choose>
                         <c:choose>
                             <c:when test="${todoInstance.completed}">
                                 <form action="todoFSM.do" method="post" style="display: inline">
@@ -132,7 +142,7 @@
                             </c:otherwise>
                          </c:choose>
                         <c:choose>
-                            <c:when test="${todoInstance.important}">
+                            <c:when test="${todoInstance.isImportant()}">
                                 <button style="vertical-align:middle;display: inline;" class="w3-btn w3-text-yellow w3-xlarge fa fa-exclamation-triangle"></button>
                             </c:when>
                             <c:otherwise>
@@ -140,20 +150,62 @@
                             </c:otherwise>
                         </c:choose>
                     </td>
-                    <td width="56%" style="min-width:45%;word-wrap: break-word;vertical-align:middle;text-align: left;">${todoInstance.title}</td>
-                    <td width="14%" style="word-wrap: break-word;vertical-align:middle;text-align: left;">${todoInstance.category}</td>
-                    <td width="10%" style="max-width:10%; vertical-align:middle;text-align: center;">${todoInstance.dueDate}</td>
-                    <td width="10%" style="max-width:7%;vertical-align:middle;text-align: center;">
-                        <form action="todoFSM.do" method="post" style="display:inline">
-                            <input type="hidden" name="redirect" value="toUpdateTodo"/>
-                            <input type="hidden" name="todoID" value=${todoInstance.id}>
-                            <button type="submit" class="w3-btn fa fa-pencil w3-center w3-xlarge"></button>
-                        </form>
-                        <form action="todoFSM.do" method="post" style="display:inline">
-                            <input type="hidden" name="redirect" value="discardTodo"/>
-                            <input type="hidden" name="todoID" value=${todoInstance.id}>
-                            <button type="submit" class="w3-btn fa fa-trash w3-center w3-xlarge"></button>
-                        </form></td>
+                <c:choose>
+                    <c:when test = "${todoInstance.isOverdue()}">
+                        <td bgcolor="#ff9800" width="56%" style="min-width:45%;word-wrap: break-word;vertical-align:middle;text-align: left;">${todoInstance.title}</td>
+                    </c:when>
+
+                    <c:otherwise>
+                        <td width="56%" style="min-width:45%;word-wrap: break-word;vertical-align:middle;text-align: left;">${todoInstance.title}</td>
+                    </c:otherwise>
+                </c:choose>
+                <c:choose>
+                    <c:when test = "${todoInstance.isOverdue()}">
+                        <td bgcolor="#ff9800" width="14%" style="word-wrap: break-word;vertical-align:middle;text-align: left;">${todoInstance.category}</td>
+                    </c:when>
+
+                    <c:otherwise>
+                        <td width="14%" style="word-wrap: break-word;vertical-align:middle;text-align: left;">${todoInstance.category}</td>
+                    </c:otherwise>
+                </c:choose>
+                <c:choose>
+                    <c:when test = "${todoInstance.isOverdue()}">
+                        <td bgcolor="#ff9800" width="10%" style="max-width:10%; vertical-align:middle;text-align: center;">${todoInstance.dueDate}</td>
+                    </c:when>
+
+                    <c:otherwise>
+                        <td width="10%" style="max-width:10%; vertical-align:middle;text-align: center;">${todoInstance.dueDate}</td>
+                    </c:otherwise>
+                </c:choose>
+                <c:choose>
+                    <c:when test = "${todoInstance.isOverdue()}">
+                        <td bgcolor="#ff9800" width="10%" style="max-width:7%;vertical-align:middle;text-align: center;">
+                            <form action="todoFSM.do" method="post" style="display:inline">
+                                <input type="hidden" name="redirect" value="toUpdateTodo"/>
+                                <input type="hidden" name="todoID" value=${todoInstance.id}>
+                                <button type="submit" class="w3-btn fa fa-pencil w3-center w3-xlarge"></button>
+                            </form>
+                            <form action="todoFSM.do" method="post" style="display:inline">
+                                <input type="hidden" name="redirect" value="discardTodo"/>
+                                <input type="hidden" name="todoID" value=${todoInstance.id}>
+                                <button type="submit" class="w3-btn fa fa-trash w3-center w3-xlarge"></button>
+                            </form></td>
+                    </c:when>
+
+                    <c:otherwise>
+                        <td width="10%" style="max-width:7%;vertical-align:middle;text-align: center;">
+                            <form action="todoFSM.do" method="post" style="display:inline">
+                                <input type="hidden" name="redirect" value="toUpdateTodo"/>
+                                <input type="hidden" name="todoID" value=${todoInstance.id}>
+                                <button type="submit" class="w3-btn fa fa-pencil w3-center w3-xlarge"></button>
+                            </form>
+                            <form action="todoFSM.do" method="post" style="display:inline">
+                                <input type="hidden" name="redirect" value="discardTodo"/>
+                                <input type="hidden" name="todoID" value=${todoInstance.id}>
+                                <button type="submit" class="w3-btn fa fa-trash w3-center w3-xlarge"></button>
+                            </form></td>
+                    </c:otherwise>
+                </c:choose>
                 </tr>
             </c:forEach>
         </table>

@@ -86,7 +86,7 @@ public class TodoUser {
     public LinkedList<TodoList.Todo> getUserTodoList()
     {
         userTodoList.clear();
-        //userTodoList.add(todosObj.getTodo().get(0));
+        overdue.clear();
         for(int i = 0; i<todosObj.getTodo().size(); i++)
         {
             userTodoList.add(todosObj.getTodo().get(i));
@@ -286,5 +286,7 @@ public class TodoUser {
     public LinkedList<Boolean> getOverdue(){
         return overdue;
     }
+
+
 
 }

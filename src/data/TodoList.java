@@ -271,6 +271,9 @@ public class TodoList {
             if(dueDate==null){
                 return false;
             }
+            if(this.isCompleted()){
+                return false;
+            }
             else{
                 SimpleDateFormat formatter= new SimpleDateFormat("yyyy-MM-dd");
                 Date date = new Date(System.currentTimeMillis());
@@ -278,7 +281,7 @@ public class TodoList {
                 GregorianCalendar now = new GregorianCalendar();
                 now.setTime(date);
                 int overdue = now.compareTo(this.dueDate.toGregorianCalendar());
-                if(overdue >= 0){
+                if(overdue <= 0){
                     return false;
                 }
                 else{
