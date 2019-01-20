@@ -197,8 +197,15 @@ public class RestServlet extends HttpServlet{
                         LoginRoutine loginRoutine = new LoginRoutine(request, response, getServletContext().getRealPath("/"));
                         newXMLUser.setUsername((String) servletInitMap.get("userName"));
                         newXMLUser.setPassword((String) servletInitMap.get("pw"));
-                        loginRoutine.addUserToXml(newXMLUser, userDB);
-                        response.setStatus(SC_CREATED);
+                        if(loginRoutine.addUserToXml(newXMLUser, userDB))
+                        {
+                            response.setStatus(SC_CREATED);
+                        }
+                        else
+                        {
+                            response.setStatus(SC_CONFLICT);
+                        }
+
                     }
                     else
                     {
