@@ -34,7 +34,7 @@ public class AuthenticationFilter extends HttpFilter {
 	@Override
 	public void doFilter(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
 			throws IOException, ServletException {
-		if (request.getMethod().equals("POST")) {
+		if (!request.getServletPath().equals("/users")) {
 			try {
 				String authHeader = request.getHeader("Authorization");
 				String scheme = authHeader.split(" ")[0];
@@ -44,9 +44,12 @@ public class AuthenticationFilter extends HttpFilter {
 				String username = credentials.split(":")[0];
 				String password = credentials.split(":")[1];
 				servletContext = request.getServletContext();
-				servletContextPath = request.getContextPath();
+				ServletContext context = getServletContext();
+
+				servletContextPath = context.getRealPath("/");
 				File userList = new File(servletContextPath+DATA_PATH_WEB_INF_DATA+"/UserList.xml");
 				File userListSchema = new File(servletContextPath+DATA_PATH_WEB_INF_DATA+"/UserList.xsd");
+
 				if(!(userList.isFile() || !userListSchema.isFile()))
 				{
 					throw new LoginException("User data are not available or the corresponding schema to check the data!");

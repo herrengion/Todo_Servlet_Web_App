@@ -81,12 +81,15 @@ public class RestServlet extends HttpServlet{
                         {
                             prepareSendResponse(response, jsonArray.toJSONString());
                         }
+
                         response.setStatus(SC_OK);
                     }
                     else if(servletInitMap.get("acceptTypeReq").equals(VALID_RESPONSE_TYPE_XML))
                     {
                         TodoUser todoUser = initTodoUser(servletInitMap, contextPath);
                         prepareSendResponse(response, todoUser.getXmlTodoString(category, id));
+                        response.setContentType(VALID_RESPONSE_TYPE_XML);
+                        response.setStatus(SC_OK);
                     }
                     else
                     {
