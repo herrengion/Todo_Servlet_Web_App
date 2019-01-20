@@ -1,8 +1,7 @@
 package org.todo;
 
-import com.sun.deploy.util.StringUtils;
+import com.sun.media.sound.InvalidDataException;
 import data.TodoList;
-import data.Todos;
 import jsonData.JsonTodos;
 import jsonData.JsonUser;
 import org.json.simple.JSONArray;
@@ -31,8 +30,9 @@ import static javax.servlet.http.HttpServletResponse.*;
 
 @WebServlet({"/users","/todos","/todos/*","/categories"})
 public class RestServlet extends HttpServlet{
-    private static final String VALID_RESPONSE_TYPE = "application/json";
-    private static final String VALID_RESQUEST_TYPE = "application/json";
+    private static final String VALID_RESPONSE_TYPE_JSON = "application/json";
+    private static final String VALID_RESPONSE_TYPE_XML = "application/xml";
+    private static final String VALID_REQUEST_TYPE = "application/json";
 
     public static final String DATA_PATH_WEB_INF = "/WEB-INF";
     public static final String DATA_PATH_WEB_INF_DATA = DATA_PATH_WEB_INF + "/data";
@@ -51,29 +51,42 @@ public class RestServlet extends HttpServlet{
             switch ((String)servletInitMap.get("switchCase"))
             {
                 case "/todos":
-                    if( servletInitMap.get("acceptTypeReq").equals(VALID_RESPONSE_TYPE))
+                    String category = request.getParameter("category");
+                    String idStr = request.getParameter("id");
+                    Long id = null;
+                    if (idStr != null)
                     {
-                        String category = request.getParameter("category");
-                        String idStr = request.getParameter("id");
+                        id = Long.parseLong(idStr, 10);
+                    }
+
+                    if( servletInitMap.get("acceptTypeReq").equals(VALID_RESPONSE_TYPE_JSON))
+                    {
                         String ouputString;
                         JSONArray jsonArray = getToDoJsonFromUser(servletInitMap, contextPath, category, idStr);
                         if(idStr != null) {
-                            if(Long.parseLong(idStr,10) >= 0 &&
+                            JSONObject jsonTodo;
+                            if(id >= 0 &&
                                     jsonArray.size() > 0)
                             {
-                                JSONObject jsonTodo = (JSONObject) jsonArray.get(0);
-                                prepareSendResponse(response, jsonTodo.toJSONString());
+                                jsonTodo = (JSONObject) jsonArray.get(0);
                             }
                             else
                             {
                                 throw new IOException("Invalid id or todo does not exist");
                             }
+
+                            prepareSendResponse(response, jsonTodo.toJSONString());
                         }
                         else
                         {
                             prepareSendResponse(response, jsonArray.toJSONString());
                         }
                         response.setStatus(SC_OK);
+                    }
+                    else if(servletInitMap.get("acceptTypeReq").equals(VALID_RESPONSE_TYPE_XML))
+                    {
+                        TodoUser todoUser = initTodoUser(servletInitMap, contextPath);
+                        prepareSendResponse(response, todoUser.getXmlTodoString(category, id));
                     }
                     else
                     {
@@ -82,7 +95,7 @@ public class RestServlet extends HttpServlet{
                     System.out.println("todos get");
                     break;
                 case "/categories":
-                    if( servletInitMap.get("acceptTypeReq").equals(VALID_RESPONSE_TYPE))
+                    if( servletInitMap.get("acceptTypeReq").equals(VALID_RESPONSE_TYPE_JSON))
                     {
                         String ouputString;
                         TodoUser todoUser = initTodoUser(servletInitMap, contextPath);
@@ -105,7 +118,7 @@ public class RestServlet extends HttpServlet{
                     throw new IllegalArgumentException(errorMessge);
             }
         }
-        catch (VerifyError | IllegalArgumentException e)
+        catch (VerifyError | IllegalArgumentException | InvalidDataException e)
         {
             System.err.println("Login exception: "+ e.getMessage());
             response.setStatus(SC_BAD_REQUEST);
@@ -154,7 +167,7 @@ public class RestServlet extends HttpServlet{
             switch ((String)servletInitMap.get("switchCase")) {
 
                 case "/users":
-                    if( servletInitMap.get("contentTypeReq").equals(VALID_RESQUEST_TYPE)) {
+                    if( servletInitMap.get("contentTypeReq").equals(VALID_REQUEST_TYPE)) {
                         UserList userDB = new UserList();
                         UserList.User newXMLUser = new UserList.User();
                         LoginRoutine loginRoutine = new LoginRoutine(request, response, getServletContext().getRealPath("/"));
@@ -176,8 +189,8 @@ public class RestServlet extends HttpServlet{
                     {
                         throw new InvalidPropertiesFormatException("Missing parameter in header for content type");
                     }
-                    if( servletInitMap.get("acceptTypeReq").equals(VALID_RESQUEST_TYPE) &&
-                            servletInitMap.get("contentTypeReq").equals(VALID_RESPONSE_TYPE))
+                    if( servletInitMap.get("acceptTypeReq").equals(VALID_REQUEST_TYPE) &&
+                            servletInitMap.get("contentTypeReq").equals(VALID_RESPONSE_TYPE_JSON))
                     {
                         TodoUser todoUser = initTodoUser(servletInitMap, getServletContext().getRealPath("/"));
                         Long highestTodoId = todoUser.getHighestTodoId();
@@ -244,7 +257,7 @@ public class RestServlet extends HttpServlet{
             switch ((String)servletInitMap.get("switchCase"))
             {
                 case "/todos":
-                    if( servletInitMap.get("contentTypeReq").equals(VALID_RESQUEST_TYPE))
+                    if( servletInitMap.get("contentTypeReq").equals(VALID_REQUEST_TYPE))
                     {
                         String idStr = request.getParameter("id");
                         Long id;
@@ -414,7 +427,7 @@ public class RestServlet extends HttpServlet{
 
     private void prepareSendResponse(HttpServletResponse response, String outputString) throws IOException {
         PrintWriter out = response.getWriter();
-        response.setContentType(VALID_RESPONSE_TYPE);
+        response.setContentType(VALID_RESPONSE_TYPE_JSON);
         response.setCharacterEncoding("UTF-8");
         out.print(outputString);
     }

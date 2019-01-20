@@ -19,6 +19,7 @@ import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 
 import java.io.File;
+import java.io.StringWriter;
 import java.text.ParseException;
 import java.util.*;
 
@@ -209,6 +210,57 @@ public class TodoUser {
             e.printStackTrace();
             System.err.println(" & ToDo list is not possible to write!");
         }
+    }
+
+    public String getXmlTodoString(String category, Long id) throws InvalidDataException {
+        StringWriter sw = null;
+        TodoList localTodosObj = todoObjectFactory.createTodoList();
+        if(id != null || category != null) {
+            if (id != null) {
+                localTodosObj.getTodo().add(getTodo(id));
+            }
+            if (category != null && id == null) {
+                if (!category.isEmpty()) {
+                    Iterator<TodoList.Todo> iterator = todosObj.getTodo().iterator();
+                    while (iterator.hasNext()) {
+                        TodoList.Todo thisTodo = iterator.next();
+                        if(thisTodo.getCategory().equals(category))
+                        {
+                            localTodosObj.getTodo().add(thisTodo);
+                        }
+                    }
+                }
+                else
+                {
+                    localTodosObj = todosObj;
+                }
+            }
+        }
+        else
+        {
+            localTodosObj = todosObj;
+        }
+        System.out.println("ToDo XML to string");
+        try{
+            JAXBContext jc = JAXBContext.newInstance(TodoList.class);
+            Marshaller marshaller = jc.createMarshaller();
+            SchemaFactory schemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
+            Schema schema = schemaFactory.newSchema(xmlSchemaTodoFile);
+            marshaller.setSchema(schema);
+            marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+            marshaller.setProperty(Marshaller.JAXB_ENCODING, "UTF-8");
+            System.out.println("Store new todo object in file!"+userTodoXmlFile.getAbsolutePath());
+            sw = new StringWriter();
+            //OutputStream os = new FileOutputStream(userTodoXmlFile);
+            marshaller.marshal(localTodosObj, sw);
+        }
+        //catch(JAXBException | SAXException | FileNotFoundException e)
+        catch(JAXBException | SAXException e)
+        {
+            e.printStackTrace();
+            System.err.println(" & ToDo list is not possible to write!");
+        }
+        return sw.toString();
     }
 
     //Specific Update Methods for User Todos
