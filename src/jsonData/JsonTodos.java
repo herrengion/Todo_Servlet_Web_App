@@ -26,21 +26,54 @@ public class JsonTodos {
         this.todoLinkedList = todoLinkedList;
     }
 
-    private  void convertTodoListToJsonArr()
+    private boolean isIdMatchingTodo(Long id, TodoList.Todo todo)
+    {
+        if(id.equals(todo.getId()))
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+    private boolean isCategoryMatchingTodo(String category, TodoList.Todo todo)
+    {
+        if(category.equals(todo.getCategory()))
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+    private  void convertTodoListToJsonArr(String category, Long id)
     {
         Iterator<TodoList.Todo> iterator = todoLinkedList.iterator();
         jsonArr = new JSONArray();
         while (iterator.hasNext()) {
             TodoList.Todo thisTodo = iterator.next();
-//            if(thisTodo.getCategory() == reqCategory)
-            jsonArr.add(generateJsonObjFromTodo(thisTodo));
+            if(category == null && id == null) {
+                jsonArr.add(generateJsonObjFromTodo(thisTodo));
+            }
+            else if(id != null && isIdMatchingTodo(id, thisTodo))
+            {
+                jsonArr.add(generateJsonObjFromTodo(thisTodo));
+            }
+            else if(category != null &&
+                    (isCategoryMatchingTodo(category, thisTodo) ||
+                            category.equals("")))
+            {
+                jsonArr.add(generateJsonObjFromTodo(thisTodo));
+            }
         }
     }
 
     private JSONObject generateJsonObjFromTodo(TodoList.Todo todo)
     {
         JSONObject jsonTodoObj = new JSONObject();
-        jsonTodoObj.put("id", "foo");
+        jsonTodoObj.put("id", new Long(todo.getId()));
         jsonTodoObj.put("title", new String(todo.getTitle()));
         jsonTodoObj.put("category", new String(todo.getCategory()));
         DueDate dueDate = new DueDate(todo.getDueDate());
@@ -53,7 +86,21 @@ public class JsonTodos {
 
     public JSONArray getJsonArr()
     {
-        convertTodoListToJsonArr();
+        /* add all todos in the array*/
+        convertTodoListToJsonArr("", null);
+        return jsonArr;
+    }
+
+    public JSONArray getJsonArrOfCategory(String category)
+    {
+        /* add all todos in the array*/
+        convertTodoListToJsonArr(category, null);
+        return jsonArr;
+    }
+    public JSONArray getJsonArrOfTodoWithId(Long id)
+    {
+        /* add all todos in the array*/
+        convertTodoListToJsonArr("", id);
         return jsonArr;
     }
 }

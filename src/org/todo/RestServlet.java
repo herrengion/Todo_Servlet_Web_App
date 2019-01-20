@@ -50,7 +50,8 @@ public class RestServlet extends HttpServlet{
             {
                 case "/todos":
                     if( servletInitMap.get("acceptTypeReq").equals(VALID_RESPONSE_TYPE)) {
-                        JSONArray jsonArray = getToDoJsonFromUser(servletInitMap, contextPath);
+                        String category = request.getParameter("category");
+                        JSONArray jsonArray = getToDoJsonFromUser(servletInitMap, contextPath, category);
                         PrintWriter out = response.getWriter();
                         response.setContentType(VALID_RESPONSE_TYPE);
                         response.setCharacterEncoding("UTF-8");
@@ -122,7 +123,7 @@ public class RestServlet extends HttpServlet{
                     if( servletInitMap.get("contentTypeReq").equals(VALID_RESQUEST_TYPE)) {
                         UserList userDB = new UserList();
                         UserList.User newXMLUser = new UserList.User();
-                        LoginRoutine loginRoutine = new LoginRoutine(request, response, getServletContext());
+                        LoginRoutine loginRoutine = new LoginRoutine(request, response, getServletContext().getRealPath("/"));
                         newXMLUser.setUsername((String) servletInitMap.get("userName"));
                         newXMLUser.setPassword((String) servletInitMap.get("pw"));
                         loginRoutine.addUserToXml(newXMLUser, userDB);
@@ -135,7 +136,14 @@ public class RestServlet extends HttpServlet{
                     break;
 
                 case "/todos":
-                    System.out.println("todos get");
+                    System.out.println("todos post");
+                    if( servletInitMap.get("contentTypeReq").equals(VALID_RESQUEST_TYPE)) {
+                        response.setStatus(SC_CREATED);
+                    }
+                    else
+                    {
+                        throw new InvalidPropertiesFormatException("Unsupported content type for Request");
+                    }
                     break;
 
                 default:
@@ -216,7 +224,7 @@ public class RestServlet extends HttpServlet{
         return initialParameterMap;
     }
 
-    private JSONArray getToDoJsonFromUser(Map servletInitMap, String contextPath) throws IOException {
+    private JSONArray getToDoJsonFromUser(Map servletInitMap, String contextPath, String category) throws IOException {
         String userName = (String) servletInitMap.get("userName");
         String pw = (String) servletInitMap.get("pw");
         File userToDoXmlFile = new File(contextPath +
@@ -238,7 +246,8 @@ public class RestServlet extends HttpServlet{
         try
         {
             JsonTodos jsonTodos = new JsonTodos(userTodoList);
-            return jsonTodos.getJsonArr();
+            JSONArray jsonArray = jsonTodos.getJsonArrOfCategory(category);
+            return jsonArray;
         }
         catch (Exception e)
         {
