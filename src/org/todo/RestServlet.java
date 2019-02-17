@@ -13,10 +13,7 @@ import org.todo.auxiliary_REST.AuthenticationFilter;
 import users.UserList;
 
 import javax.security.auth.login.LoginException;
-import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
+import javax.servlet.*;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -169,6 +166,7 @@ public class RestServlet extends HttpServlet{
         try
         {
             servletInitMap = initialRestApiValues(request, response);
+            ServletContext context = getServletContext();
 
             AuthenticationFilter authenticationFilter = new AuthenticationFilter();
             FilterChain chain = new FilterChain() {
@@ -194,11 +192,12 @@ public class RestServlet extends HttpServlet{
                     if( servletInitMap.get("contentTypeReq").equals(VALID_REQUEST_TYPE)) {
                         UserList userDB = new UserList();
                         UserList.User newXMLUser = new UserList.User();
-                        LoginRoutine loginRoutine = new LoginRoutine(request, response, getServletContext().getRealPath("/"));
+                        LoginRoutine loginRoutine = new LoginRoutine(request, response, context);
                         newXMLUser.setUsername((String) servletInitMap.get("userName"));
                         newXMLUser.setPassword((String) servletInitMap.get("pw"));
                         if(loginRoutine.addUserToXml(newXMLUser, userDB))
                         {
+                            loginRoutine.initUserXml(request, (String) servletInitMap.get("userName"));
                             response.setStatus(SC_CREATED);
                         }
                         else
@@ -550,6 +549,5 @@ public class RestServlet extends HttpServlet{
             String errorMsg = "Could not read the todos from user"+userName;
             throw new IOException(errorMsg);
         }
-
     }
 }

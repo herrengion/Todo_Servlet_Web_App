@@ -151,11 +151,17 @@ public class LoginRoutine {
         }
     }
 
-    public LoginRoutine(HttpServletRequest request, HttpServletResponse response, String servletContextPath)
+    public LoginRoutine(HttpServletRequest request, HttpServletResponse response, ServletContext servletContext)
             throws LoginException
     {
+        this.servletContext  = servletContext;
+        this.servletContextPath = servletContext.getRealPath("/");
+
         userList = new File(servletContextPath+DATA_PATH_WEB_INF_DATA+"/UserList.xml");
         userListSchema = new File(servletContextPath+DATA_PATH_WEB_INF_DATA+"/UserList.xsd");
+
+        setGeneralXmlFileParameters();
+
     }
     public boolean checkUserCredential(String userName, String password)
     {
@@ -216,36 +222,23 @@ public class LoginRoutine {
         }
     }
 
-    private TodoUser initializeUser(UserList userDB, HttpServletRequest request) throws LoginException, IOException {
-        UserList.User newXMLUser = new UserList.User();
-        newXMLUser.setUsername(enteredUserName);
-        newXMLUser.setPassword(enteredPassWord);
+    public TodoUser initUserXml(HttpServletRequest request, String userName) throws IOException, LoginException {
         File newUserToDoXml = null;
-
-        //here new user xml persistence
-        userList = new File(servletContextPath+DATA_PATH_WEB_INF_DATA+"/UserList.xml");
-        userListSchema = new File(servletContextPath+DATA_PATH_WEB_INF_DATA+"/UserList.xsd");
-        if(!(userList.isFile() || !userListSchema.isFile()))
-        {
-            throw new LoginException("User data are not available or the corresponding schema to check the data!");
-        }
-        addUserToXml(newXMLUser, userDB);
-
         TodoUser newUser = new TodoUser(servletContext, request);
+
         // Create new empty template to persist his todos
-        System.out.println("New User is: "+enteredUserName);
+        System.out.println("New User is: "+userName);
         System.out.println("Initial context path: "+ servletContextPath);
-        File newDirUserData = new File(servletContextPath + DATA_PATH_WEB_INF_USER_DATA + "/" + enteredUserName);
+        File newDirUserData = new File(servletContextPath + DATA_PATH_WEB_INF_USER_DATA + "/" + userName);
         if(newDirUserData.mkdirs())
         {
             try {
                 newUserToDoXml = new File(servletContextPath +
                         DATA_PATH_WEB_INF_USER_DATA +
-                        "/" + enteredUserName + "/ToDo_list_" + enteredUserName+".xml");
+                        "/" + userName + "/ToDo_list_" + userName+".xml");
                 Files.copy(templateUserToDoXml.toPath(),newUserToDoXml.toPath());
             } catch (FileNotFoundException e) {
                 throw new LoginException("Generating initial todo DB is not possible for the user " +
-
                         newUser.getUserName()+
                         ": "+e.getMessage());
             } catch (IOException e) {
@@ -256,17 +249,34 @@ public class LoginRoutine {
         }
         else if(newDirUserData.isDirectory())
         {
-            System.err.println("Directory exists already for user: "+enteredUserName);
+            System.err.println("Directory exists already for user: "+userName);
         }
         else
         {
-            System.err.println("Not able to create directory for user: "+enteredUserName);
+            System.err.println("Not able to create directory for user: "+userName);
         }
         return newUser;
     }
 
+    private TodoUser initializeUser(UserList userDB, HttpServletRequest request) throws LoginException, IOException {
+        UserList.User newXMLUser = new UserList.User();
+        newXMLUser.setUsername(enteredUserName);
+        newXMLUser.setPassword(enteredPassWord);
+
+
+        //here new user xml persistence
+        userList = new File(servletContextPath+DATA_PATH_WEB_INF_DATA+"/UserList.xml");
+        userListSchema = new File(servletContextPath+DATA_PATH_WEB_INF_DATA+"/UserList.xsd");
+        if(!(userList.isFile() || !userListSchema.isFile()))
+        {
+            throw new LoginException("User data are not available or the corresponding schema to check the data!");
+        }
+        addUserToXml(newXMLUser, userDB);
+        return initUserXml(request, enteredUserName);
+    }
+
     private String getEnteredUserName()
-            {
+    {
         return enteredUserName;
     }
     private String getEnteredPassWord(){
